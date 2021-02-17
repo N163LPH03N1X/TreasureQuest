@@ -17,7 +17,7 @@
 # /[Aa]ssets/AssetStoreTools*
 
 # Uncomment this line if you wish to ignore the project scenes and baked data
-/[Aa]ssets/Scenes/
+# /[Aa]ssets/Scenes/
 
 # Uncomment this line if you wish to ignore the project prefabs
 # /[Aa]ssets/Prefabs/

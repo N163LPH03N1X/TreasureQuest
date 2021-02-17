@@ -1,2 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+UnityProject/Assets/Scenes/Dungeon1/LightingData.asset filter=lfs diff=lfs merge=lfs -text
+UnityProject/Assets/Scenes/Dungeon3.unity filter=lfs diff=lfs merge=lfs -text
