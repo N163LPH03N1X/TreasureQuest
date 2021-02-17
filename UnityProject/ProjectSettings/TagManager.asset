@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Vitality
+  - Damage
+  - Recovery
+  - Gold
+  - CheckPoint
+  - Wall
+  - Sword
+  - Ladder
+  - Platform
+  - Enemy
+  - Darkness
+  - EnemyTop
+  - Helix
+  - Apex
+  - Mythic
+  - Legendary
+  - Flare
+  - Lightning
+  - Frost
+  - Terra
+  - Interactive
+  - Door
+  - Water
+  - Wood
+  - MainMenu
+  - Hovers
+  - Cinders
+  - Storms
+  - Medicals
+  - Story1
+  - Dungeon1In
+  - Dungeon1Out
+  - Metal
+  - Lava
+  - Ice
+  - Grass
+  - Slide
+  - Head
+  - HeadHover
+  - Swamp
+  - GhostShipIn
+  - GhostShipOut
+  - GhostShip
+  - Dungeon2In
+  - Dungeon2Out
+  - Ball
+  - SpikeBall
+  - Dungeon2AltOut
+  - Dungeon2AltIn
+  - Person
+  - Dungeon2Part2In
+  - Dungeon2Part2Out
+  - Story2
+  - BoulderEnd
+  - BoulderStart
+  - Carry
+  - KillBlock
+  - Heal
+  - Shockwave
+  - CarePack
+  - IntroSceneOut
+  - PurpleJewel
+  - Torch
+  - DwellingTimberOut
+  - DwellingTimberIn
+  - Dungeon3In
+  - Dungeon3Out
+  - Dungeon3AltIn
+  - Dungeon3AltOut
+  - Dungeon3Alt2In
+  - Dungeon3Alt2Out
+  - Climbable
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - PostProcessing
+  - Head
+  - PlayerModel
+  - Platform
+  - PlayerCtrl
+  - Sword
+  - Territory
+  - Item
+  - Rock
+  - Enemy
+  - Floor
+  - BlockOff
+  - Shroud
+  - Terrain
+  - Ocean
+  - Effect
+  - BoulderOnly
+  - PickUpObj
+  - Rain
+  - LightProbe
+  - GhostEnemy
+  - Climbable
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
