@@ -39,34 +39,15 @@ public class AnimateText : MonoBehaviour
     }
     public void StartAnimating(int num)
     {
+        reset = false;
         textMessage = GetComponent<Text>();
         textMessage.text = null;
         fileDeletion = SelectComponents.FileDeletion;
-        if (!fileDeletion)
-        {
-            if (num == 0)
-                message = "Would you like to load File 1?";
-            else if (num == 1)
-                message = "Would you like to load File 2?";
-            else if (num == 2)
-                message = "Would you like to load File 3?";
-            else if (num == 3)
-                message = "Would you like to load File 4?";
-            reset = false;
-        }
-
-        else if (fileDeletion)
-        {
-            if (num == 0)
-                message = "Would you like to delete File 1?";
-            else if (num == 1)
-                message = "Would you like to delete File 2?";
-            else if (num == 2)
-                message = "Would you like to delete File 3?";
-            else if (num == 2)
-                message = "Would you like to delete File 4?";
-            reset = false;
-        }
+        string[] subject = new string[2] { "load", "delete" };
+        int index = 0;
+        if (!fileDeletion) index = 0;
+        else if (fileDeletion) index = 1;
+        for (int m = 0; m < 4; m++) if (m == num) message = "Would you like to " + subject[index] + "File " + (m + 1) + "?";
         if (routine != null)
             StopCoroutine(routine);
         routine = Animate();
@@ -88,22 +69,14 @@ public class AnimateText : MonoBehaviour
         {
             textMessage = GetComponent<Text>();
             textMessage.text = null;
-            if (num == 0 && !CoreObject.newGameOne)
-                message = "File 1 has been deleted...";
-            else if (num == 0 && CoreObject.newGameOne)
-                message = "No file found...";
-            if (num == 1 && !CoreObject.newGameTwo)
-                message = "File 2 has been deleted...";
-            else if (num == 1 && CoreObject.newGameTwo)
-                message = "No file found...";
-            if (num == 2 && !CoreObject.newGameThree)
-                message = "File 1 has been deleted...";
-            else if (num == 2 && CoreObject.newGameThree)
-                message = "No file found...";
-            if (num == 3 && !CoreObject.newGameFour)
-                message = "File 1 has been deleted...";
-            else if (num == 3 && CoreObject.newGameFour)
-                message = "No file found...";
+            for(int ng = 0; ng < 4; ng++)
+            {
+                if (num == ng)
+                {
+                    if (!CoreObject.newGame[ng]) message = "File " + (ng + 1) + "has been deleted...";
+                    else if (CoreObject.newGame[ng]) message = "No file found...";
+                }
+            }
             reset = false;
             if (routine != null)
                 StopCoroutine(routine);

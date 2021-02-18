@@ -564,34 +564,17 @@ public class SceneSystem : MonoBehaviour
     public void StartLevel(bool True)
     {
         isQuit = false;
-        if (CoreObject.file1Active)
+        for(int fa = 0; fa < 4; fa++)
         {
-            if (CoreObject.newGameOne)
-                isNewGame = true;
-            else if (!CoreObject.newGameOne)
-                isNewGame = false;
+            if (CoreObject.fileActive[fa])
+            {
+                if (CoreObject.newGame[fa])
+                    isNewGame = true;
+                else if (!CoreObject.newGame[fa])
+                    isNewGame = false;
+            }
         }
-        else if (CoreObject.file2Active)
-        {
-            if (CoreObject.newGameTwo)
-                isNewGame = true;
-            else if (!CoreObject.newGameTwo)
-                isNewGame = false;
-        }
-        else if (CoreObject.file3Active)
-        {
-            if (CoreObject.newGameThree)
-                isNewGame = true;
-            else if (!CoreObject.newGameThree)
-                isNewGame = false;
-        }
-        else if (CoreObject.file4Active)
-        {
-            if (CoreObject.newGameFour)
-                isNewGame = true;
-            else if (!CoreObject.newGameFour)
-                isNewGame = false;
-        }
+
         if (True)
         {
             if (titleActive)

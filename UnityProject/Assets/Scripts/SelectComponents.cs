@@ -15,7 +15,8 @@ public class SelectComponents : MonoBehaviour
     bool backButton = false;
     private void Update()
     {
-        if (!MMTransition.file1Open && !MMTransition.file2Open && !MMTransition.file3Open && !MMTransition.file4Open)
+
+        if (!MMTransition.fileOpen[0] && !MMTransition.fileOpen[1] && !MMTransition.fileOpen[2] && !MMTransition.fileOpen[3])
         {
             if (Input.GetButtonDown("Cancel") && !backButton)
             {
@@ -25,10 +26,8 @@ public class SelectComponents : MonoBehaviour
             else if (Input.GetButtonDown("Cancel"))
                 backButton = false;
         }
-        else if(MMTransition.file1Open || MMTransition.file2Open  || MMTransition.file3Open || MMTransition.file4Open)
-        {
+        else if(MMTransition.fileOpen[0] || MMTransition.fileOpen[1] || MMTransition.fileOpen[2] || MMTransition.fileOpen[3])
             backButton = true;
-        }
     }
 
     public void clickStartButton()

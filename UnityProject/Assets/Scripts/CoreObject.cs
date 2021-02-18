@@ -8,12 +8,11 @@ using System.Collections;
 public class CoreObject : MonoBehaviour
 {
     IEnumerator routine;
-    public AudioSource audioSrc;
-    public AudioClip deleteSfx;
-    public AudioClip errorSfx;
-    public AudioClip saveSfx;
+
+    public AudioClip[] menuFx;
     public static CoreObject control;
     public static PlayerData playerData;
+    public Transform gamePlayer;
     PlayerSystem playerSystem;
     SceneSystem sceneSystem;
     ObjectSystem objectSystem;
@@ -23,57 +22,31 @@ public class CoreObject : MonoBehaviour
     JewelSystem jewelSystem;
     ShopSystem shopSystem;
     StorySystem storySystem;
-    public GameObject Player;
-    public Text file1Text;
-    public Text file2Text;
-    public Text file3Text;
-    public Text file4Text;
+    InteractionSystem interactionSystem;
+    DialogueSystem dialogueSystem;
+    public Texture defaultTexture;
     public Image savingImage;
     public static bool isSaving;
     public float savingTimer = 3;
     float savingTime;
-
-    public static bool newGameOne = true;
-    public static bool newGameTwo = true;
-    public static bool newGameThree = true;
-    public static bool newGameFour = true;
-
-    public Texture defaultTexture;
-
-    public static bool file1Active = false;
-    public RawImage file1Picture;
-    public static bool file2Active = false;
-    public RawImage file2Picture;
-    public static bool file3Active = false;
-    public RawImage file3Picture;
-    public static bool file4Active = false;
-    public RawImage file4Picture;
-
+    public static bool[] newGame = new bool[4] { true, true, true, true };
+    public static bool[] fileActive = new bool[4] { false, false, false, false };
+    public RawImage[] fileScreenShot;
+    public Text[] fileText;
     public static bool isLoaded;
 
     string SAVE_FILE;
 
-    public string SAVE_FILE1 = "/SAVEGAME_1";
-    public string SAVE_FILE2 = "/SAVEGAME_2";
-    public string SAVE_FILE3 = "/SAVEGAME_3";
-    public string SAVE_FILE4 = "/SAVEGAME_4";
-
-    string LOAD_FILE1;
-    string LOAD_FILE2;
-    string LOAD_FILE3;
-    string LOAD_FILE4;
+    string[] SAVE_FILENAME = new string[4] { "/SAVEGAME_1", "/SAVEGAME_2", "/SAVEGAME_3", "/SAVEGAME_4" };
+    string[] LOAD_FILENAME = new string[4] { null, null, null, null };
 
     public string FILE_EXTENSION = ".TQG";
     public string PIC_EXTENSION = ".PNG";
 
-    string LoadImage;
+    string LOAD_IMAGENAME;
+    string[] LOAD_IMAGENAMES = new string[4] { "LOADIMAGE_1", "LOADIMAGE_2", "LOADIMAGE_3", "LOADIMAGE_4" };
 
-    public string LoadImage1 = "LOADIMAGE_1";
-    public string LoadImage2 = "LOADIMAGE_2";
-    public string LoadImage3 = "LOADIMAGE_3";
-    public string LoadImage4 = "LOADIMAGE_4";
-
-    RawImage image;
+    RawImage screenShot;
     public static int scene;
 
     public float gameProgress = 0;
@@ -81,6 +54,15 @@ public class CoreObject : MonoBehaviour
 
     void Awake()
     {
+        playerSystem = gamePlayer.GetComponent<PlayerSystem>();
+        interactionSystem = gamePlayer.GetComponent<InteractionSystem>();
+        itemSystem = gamePlayer.GetComponent<ItemSystem>();
+        swordSystem = gamePlayer.GetComponent<SwordSystem>();
+        jewelSystem = gamePlayer.GetComponent<JewelSystem>();
+        shopSystem = gamePlayer.GetComponent<ShopSystem>();
+        storySystem = gamePlayer.GetComponent<StorySystem>();
+        objectSystem = GetComponent<ObjectSystem>();
+        sceneSystem = gamePlayer.transform.parent.GetComponent<SceneSystem>();
         if (control == null)
         {
             DontDestroyOnLoad(gameObject);
@@ -91,33 +73,25 @@ public class CoreObject : MonoBehaviour
             Destroy(gameObject);
         }
         playerData = new PlayerData();
+        
     }
     private void Start()
     {
 
-        if (!File.Exists(Application.dataPath + "/" + LoadImage1 + PIC_EXTENSION))
-            File.Create(Application.dataPath + "/" + LoadImage1 + PIC_EXTENSION);
-        if (!File.Exists(Application.dataPath + "/" + LoadImage2 + PIC_EXTENSION))
-            File.Create(Application.dataPath + "/" + LoadImage2 + PIC_EXTENSION);
-        if (!File.Exists(Application.dataPath + "/" + LoadImage3 + PIC_EXTENSION))
-            File.Create(Application.dataPath + "/" + LoadImage3 + PIC_EXTENSION);
-        if (!File.Exists(Application.dataPath + "/" + LoadImage4 + PIC_EXTENSION))
-            File.Create(Application.dataPath + "/" + LoadImage4 + PIC_EXTENSION);
-
-        if (!File.Exists(Application.dataPath + SAVE_FILE1 + FILE_EXTENSION))
-            newGameOne = true;
-        if (!File.Exists(Application.dataPath + SAVE_FILE2 + FILE_EXTENSION))
-            newGameTwo = true;
-        if (!File.Exists(Application.dataPath + SAVE_FILE3 + FILE_EXTENSION))
-            newGameThree = true;
-        if (!File.Exists(Application.dataPath + SAVE_FILE4 + FILE_EXTENSION))
-            newGameFour = true;
-
-        file1Picture.texture = defaultTexture;
-        file2Picture.texture = defaultTexture;
-        file3Picture.texture = defaultTexture;
-        file4Picture.texture = defaultTexture;
-
+        for (int s = 0; s < LOAD_IMAGENAMES.Length; s++)
+        {
+            if (!File.Exists(Application.dataPath + "/" + LOAD_IMAGENAMES[s] + PIC_EXTENSION))
+                File.Create(Application.dataPath + "/" + LOAD_IMAGENAMES[s] + PIC_EXTENSION);
+        }
+        for(int s = 0; s < SAVE_FILENAME.Length; s++)
+        {
+            if (!File.Exists(Application.dataPath + SAVE_FILENAME[s] + FILE_EXTENSION))
+                newGame[s] = true;
+        }
+        for(int t = 0; t < SAVE_FILENAME.Length; t++)
+        {
+            fileScreenShot[t].texture = defaultTexture;
+        }
         savingTime = savingTimer;
         ApplyGameProgress();
     }
@@ -140,35 +114,23 @@ public class CoreObject : MonoBehaviour
             else if (savingTime < 0)
             {
                 savingImage.enabled = false;
-                audioSrc.PlayOneShot(saveSfx);
+                AudioSystem.PlayAudioSource(menuFx[2], 1, 1);
                 SaveGame();
                 isSaving = false;
                 savingTime = savingTimer;
-               
             }
         }
         else
             savingImage.enabled = false;
 
-        if (!newGameOne)
-            file1Text.text = null;
-        else if(newGameOne)
-            file1Text.text = "Empty Slot";
 
-        if (!newGameTwo)
-            file2Text.text = null;
-        else if (newGameTwo)
-            file2Text.text = "Empty Slot";
-
-        if (!newGameThree)
-            file3Text.text = null;
-        else if (newGameThree)
-            file3Text.text = "Empty Slot";
-
-        if (!newGameFour)
-            file4Text.text = null;
-        else if (newGameFour)
-            file4Text.text = "Empty Slot";
+        for(int ng = 0; ng < newGame.Length; ng++)
+        {
+            if (!newGame[ng])
+                fileText[ng].text = null;
+            else if (newGame[ng])
+                fileText[ng].text = "Empty Slot";
+        }
     }
   
     public void Loading(bool True)
@@ -180,91 +142,37 @@ public class CoreObject : MonoBehaviour
     }
     public void SetFileSelection(int num)
     {
-        if(num == 0)
+        for(int fa = 0; fa < 4; fa++)
         {
-            file1Active = true;
-            file2Active = false;
-            file3Active = false;
-            file4Active = false;
-        }
-        if (num == 1)
-        {
-
-            file1Active = false;
-            file2Active = true;
-            file3Active = false;
-            file4Active = false;
-        }
-        if (num == 2)
-        {
-            file1Active = false;
-            file2Active = false;
-            file3Active = true;
-            file4Active = false;
-        }
-        if(num == 3)
-        {
-            file1Active = false;
-            file2Active = false;
-            file3Active = false;
-            file4Active = true;
+            if (fa == num) fileActive[fa] = true;
+            else fileActive[fa] = false;
         }
     }
     public void SaveGame()
     {
-        if (file1Active)
+        for(int fa = 0; fa < 4; fa++)
         {
-            newGameOne = false;
-            SAVE_FILE = SAVE_FILE1;
-            LoadImage = LoadImage1;
-            file1Picture.enabled = true;
-            image = file1Picture;
+            if (fileActive[fa])
+            {
+                newGame[fa] = false;
+                SAVE_FILE = SAVE_FILENAME[fa];
+                LOAD_IMAGENAME = LOAD_IMAGENAMES[fa];
+                fileScreenShot[fa].enabled = true;
+                screenShot = fileScreenShot[fa];
+                break;
+            }
         }
-        else if (file2Active)
-        {
-            newGameTwo = false;
-            SAVE_FILE = SAVE_FILE2;
-            LoadImage = LoadImage2;
-            file2Picture.enabled = true;
-            image = file2Picture;
-        }
-        else if (file3Active)
-        {
-            newGameThree = false;
-            SAVE_FILE = SAVE_FILE3;
-            LoadImage = LoadImage3;
-            file3Picture.enabled = true;
-            image = file3Picture;
-        }
-        else if (file4Active)
-        {
-            newGameFour = false;
-            SAVE_FILE = SAVE_FILE4;
-            LoadImage = LoadImage4;
-            file4Picture.enabled = true;
-            image = file4Picture;
-        }
-        ScreenCapture.CaptureScreenshot(Application.dataPath + "/" + LoadImage + PIC_EXTENSION);
-       
-        string path = Application.dataPath + "/" + LoadImage + PIC_EXTENSION;
+        ScreenCapture.CaptureScreenshot(Application.dataPath + "/" + LOAD_IMAGENAME + PIC_EXTENSION);
+        string path = Application.dataPath + "/" + LOAD_IMAGENAME + PIC_EXTENSION;
         var loadImageFile = File.ReadAllBytes(path);
         Texture2D texture = new Texture2D(127, 120);
         texture.LoadImage(loadImageFile);
-        if(image != null)
-            image.texture = texture;
-       
-          
-
-
+        if(screenShot != null)
+            screenShot.texture = texture;
         Stream stream = File.Create(Application.dataPath + SAVE_FILE + FILE_EXTENSION);
         BinaryFormatter bf = new BinaryFormatter();
         Debug.Log("File Saved To: " + stream);
-
-        GameObject PlayerController = GameObject.FindGameObjectWithTag("Player");
-        playerSystem = PlayerController.GetComponent<PlayerSystem>();
         playerSystem.SavePosition();
-
-
         //============================GameTime================================================//
         playerData.totalGameTime = TimeSystem.totalGameTime;
         playerData.day = TimeSystem.day;
@@ -277,14 +185,10 @@ public class CoreObject : MonoBehaviour
         playerData.dayNightDisplay = TimeSystem.dayNightDisplay;
         //============================ObjectSystem============================================//
         playerData.gameProgress = gameProgress;
-
-
         //StoreVitality========================//
-
         playerData.storeVitality1 = ShopSystem.vitality1Bought;
         playerData.storeVitality2 = ShopSystem.vitality2Bought;
         playerData.storeVitality3 = ShopSystem.vitality3Bought;
-
         //Chests===============================//
         playerData.chest1 = ObjectSystem.chest1;
         playerData.chest2 = ObjectSystem.chest2;
@@ -522,18 +426,15 @@ public class CoreObject : MonoBehaviour
     public IEnumerator QuitWait()
     {
         yield return new WaitForSecondsRealtime(1);
-        InteractionSystem interact = GameObject.FindGameObjectWithTag("Player").GetComponent<InteractionSystem>();
-        interact.DialogueInteraction(true, "Game saved successfully!");
+        interactionSystem.DialogueInteraction(true, "Game saved successfully!");
         yield return new WaitForSecondsRealtime(1);
-        interact.DialogueInteraction(false, null);
-        DialogueSystem diagSys = GameObject.FindGameObjectWithTag("Player").GetComponent<DialogueSystem>();
-        diagSys.PressButton(DialogueSystem.ButtonType.quit);
-        yield return null;
+        interactionSystem.DialogueInteraction(false, null);
+        dialogueSystem.PressButton(DialogueSystem.ButtonType.quit);
+        yield break;
     }
     public void QuitWithoutSave()
     {
-        DialogueSystem diagSys = GameObject.FindGameObjectWithTag("Player").GetComponent<DialogueSystem>();
-        diagSys.PressButton(DialogueSystem.ButtonType.quit);
+        dialogueSystem.PressButton(DialogueSystem.ButtonType.quit);
     }
     public void QuitWithSave()
     {
@@ -550,14 +451,11 @@ public class CoreObject : MonoBehaviour
     }
     public void LoadGame()
     {
-        if(File.Exists(Application.dataPath + SAVE_FILE1 + FILE_EXTENSION) && !newGameOne && file1Active)
-            SAVE_FILE = SAVE_FILE1;
-        if (File.Exists(Application.dataPath + SAVE_FILE2 + FILE_EXTENSION) && !newGameTwo && file2Active)
-            SAVE_FILE = SAVE_FILE2;
-        if (File.Exists(Application.dataPath + SAVE_FILE3 + FILE_EXTENSION) && !newGameThree && file3Active)
-            SAVE_FILE = SAVE_FILE3;
-        if (File.Exists(Application.dataPath + SAVE_FILE4 + FILE_EXTENSION) && !newGameFour && file4Active)
-            SAVE_FILE = SAVE_FILE4;
+        for(int sf = 0; sf < 4; sf++)
+        {
+            if (File.Exists(Application.dataPath + SAVE_FILENAME[sf] + FILE_EXTENSION) && !newGame[sf] && fileActive[sf])
+                SAVE_FILE = SAVE_FILENAME[sf];
+        }
         if (SAVE_FILE != null)
         {
             Stream stream = File.Open(Application.dataPath + SAVE_FILE + FILE_EXTENSION, FileMode.Open);
@@ -565,18 +463,6 @@ public class CoreObject : MonoBehaviour
 
             playerData = (PlayerData)bf.Deserialize(stream);
             stream.Close();
-
-            GameObject PlayerController = GameObject.FindGameObjectWithTag("Player");
-
-            playerSystem = PlayerController.GetComponent<PlayerSystem>();
-            itemSystem = PlayerController.GetComponent<ItemSystem>();
-            swordSystem = PlayerController.GetComponent<SwordSystem>();
-            sceneSystem = Player.GetComponent<SceneSystem>();
-            objectSystem = GetComponent<ObjectSystem>();
-            shopSystem = PlayerController.GetComponent<ShopSystem>();
-            timeSystem = GameObject.Find("Core/TimeSystem/System").GetComponent<TimeSystem>();
-            jewelSystem = PlayerController.GetComponent<JewelSystem>();
-            storySystem = PlayerController.GetComponent<StorySystem>();
             timeSystem.LoadTimeOfDay(playerData.totalGameTime, playerData.currentTimeOfDay, playerData.timeInterval, playerData.day, playerData.hour,
                                      playerData.minute, playerData.isNight, playerData.isRain, playerData.dayNightDisplay);
 
@@ -768,14 +654,11 @@ public class CoreObject : MonoBehaviour
     }
     public void LoadScene()
     {
-        if (File.Exists(Application.dataPath + SAVE_FILE1 + FILE_EXTENSION) && !newGameOne && file1Active)
-            SAVE_FILE = SAVE_FILE1;
-        if (File.Exists(Application.dataPath + SAVE_FILE2 + FILE_EXTENSION) && !newGameTwo && file2Active)
-            SAVE_FILE = SAVE_FILE2;
-        if (File.Exists(Application.dataPath + SAVE_FILE3 + FILE_EXTENSION) && !newGameThree && file3Active)
-            SAVE_FILE = SAVE_FILE3;
-        if (File.Exists(Application.dataPath + SAVE_FILE4 + FILE_EXTENSION) && !newGameFour && file4Active)
-            SAVE_FILE = SAVE_FILE4;
+        for (int sf = 0; sf < 4; sf++)
+        {
+            if (File.Exists(Application.dataPath + SAVE_FILENAME[sf] + FILE_EXTENSION) && !newGame[sf] && fileActive[sf])
+                SAVE_FILE = SAVE_FILENAME[sf];
+        }
         if (SAVE_FILE != null)
         {
             Stream stream = File.Open(Application.dataPath + SAVE_FILE + FILE_EXTENSION, FileMode.Open);
@@ -784,157 +667,64 @@ public class CoreObject : MonoBehaviour
             playerData = (PlayerData)bf.Deserialize(stream);
             stream.Close();
         }
-        sceneSystem = Player.GetComponent<SceneSystem>();
         sceneSystem.LoadSceneSystem(playerData.scene);
     }
     public void LoadFileExisting()
     {
-        if (File.Exists(Application.dataPath + SAVE_FILE1 + FILE_EXTENSION))
+        for (int sf = 0; sf < 4; sf++)
         {
-            newGameOne = false;
-            file1Text.text = null;
-            if (File.Exists(Application.dataPath + "/" + LoadImage1 + PIC_EXTENSION))
+            if (File.Exists(Application.dataPath + SAVE_FILENAME[sf] + FILE_EXTENSION))
             {
-                file1Picture.enabled = true;
-                image = file1Picture;
-                string path = Application.dataPath + "/" + LoadImage1 + PIC_EXTENSION;
-                var loadImageFile = File.ReadAllBytes(path);
-                Texture2D texture = new Texture2D(127, 120);
-                texture.LoadImage(loadImageFile);
-                image.texture = texture;
+                newGame[sf] = false;
+                fileText[sf].text = null;
+                if (File.Exists(Application.dataPath + "/" + LOAD_IMAGENAMES[sf] + PIC_EXTENSION))
+                {
+                    fileScreenShot[sf].enabled = true;
+                    screenShot = fileScreenShot[sf];
+                    string path = Application.dataPath + "/" + LOAD_IMAGENAMES[sf] + PIC_EXTENSION;
+                    var loadImageFile = File.ReadAllBytes(path);
+                    Texture2D texture = new Texture2D(127, 120);
+                    texture.LoadImage(loadImageFile);
+                    screenShot.texture = texture;
+                }
             }
+                
         }
-        if (File.Exists(Application.dataPath + SAVE_FILE2 + FILE_EXTENSION))
-        {
-            newGameTwo = false;
-            file2Text.text = null;
-            if (File.Exists(Application.dataPath + "/" + LoadImage2 + PIC_EXTENSION))
-            {
-                file2Picture.enabled = true;
-                image = file2Picture;
-                string path = Application.dataPath + "/" + LoadImage2 + PIC_EXTENSION;
-                var loadImageFile = File.ReadAllBytes(path);
-                Texture2D texture = new Texture2D(127, 120);
-                texture.LoadImage(loadImageFile);
-                image.texture = texture;
-            }
-        }
-        if (File.Exists(Application.dataPath + SAVE_FILE3 + FILE_EXTENSION))
-        {
-            newGameThree = false;
-            file3Text.text = null;
-            if (File.Exists(Application.dataPath + "/" + LoadImage3 + PIC_EXTENSION))
-            {
-                file3Picture.enabled = true;
-                image = file3Picture;
-                string path = Application.dataPath + "/" + LoadImage3 + PIC_EXTENSION;
-                var loadImageFile = File.ReadAllBytes(path);
-                Texture2D texture = new Texture2D(127, 120);
-                texture.LoadImage(loadImageFile);
-                image.texture = texture;
-            }
-        }
-        if (File.Exists(Application.dataPath + SAVE_FILE4 + FILE_EXTENSION))
-        {
-            newGameFour = false;
-            file4Text.text = null;
-            if (File.Exists(Application.dataPath + "/" + LoadImage4 + PIC_EXTENSION))
-            {
-                file4Picture.enabled = true;
-                image = file4Picture;
-                string path = Application.dataPath + "/" + LoadImage4 + PIC_EXTENSION;
-                var loadImageFile = File.ReadAllBytes(path);
-                Texture2D texture = new Texture2D(127, 120);
-                texture.LoadImage(loadImageFile);
-                image.texture = texture;
-            }
-        }
-
     }
     public void DeleteExistingFile(int num)
     {
         if (SelectComponents.FileDeletion)
         {
-            if (num == 0)
+
+            for(int fa = 0; fa < 4; fa++)
             {
-                if (MMTransition.file1Open) {
-                    if (File.Exists(Application.dataPath + SAVE_FILE1 + FILE_EXTENSION))
+                if(fa == num)
+                {
+                    if (MMTransition.fileOpen[fa])
                     {
-                        File.Delete(Application.dataPath + SAVE_FILE1 + FILE_EXTENSION);
-                        audioSrc.PlayOneShot(deleteSfx);
+                        if (File.Exists(Application.dataPath + SAVE_FILENAME[fa] + FILE_EXTENSION))
+                        {
+                            File.Delete(Application.dataPath + SAVE_FILENAME[fa] + FILE_EXTENSION);
+                            AudioSystem.PlayAudioSource(menuFx[0], 1, 1);
+                        }
+                        else if (!File.Exists(Application.dataPath + SAVE_FILENAME[fa] + FILE_EXTENSION))
+                            AudioSystem.PlayAudioSource(menuFx[1], 1, 1);
+                        if (File.Exists(Application.dataPath + "/" + LOAD_IMAGENAMES[fa] + PIC_EXTENSION))
+                        {
+                            newGame[fa] = true;
+                            fileScreenShot[fa].texture = defaultTexture;
+                            File.Delete(Application.dataPath + "/" + LOAD_IMAGENAMES[fa] + PIC_EXTENSION);
+
+                        }
                     }
-                    else if (!File.Exists(Application.dataPath + SAVE_FILE1 + FILE_EXTENSION))
-                        audioSrc.PlayOneShot(errorSfx);
-                    if (File.Exists(Application.dataPath + "/" + LoadImage1 + PIC_EXTENSION))
-                    {
-                        newGameOne = true;
-                        file1Picture.texture = defaultTexture;
-                        File.Delete(Application.dataPath + "/" + LoadImage1 + PIC_EXTENSION);
-
-                    }
                 }
             }
-            if (num == 1)
-            {
-                if (File.Exists(Application.dataPath + SAVE_FILE2 + FILE_EXTENSION))
-                {
-                    File.Delete(Application.dataPath + SAVE_FILE2 + FILE_EXTENSION);
-                    audioSrc.PlayOneShot(deleteSfx);
-                }
-                else if (!File.Exists(Application.dataPath + SAVE_FILE2 + FILE_EXTENSION))
-                    audioSrc.PlayOneShot(errorSfx);
-                if (File.Exists(Application.dataPath + "/" + LoadImage2 + PIC_EXTENSION))
-                {
-                    newGameTwo = true;
-                    file2Picture.texture = defaultTexture;
-                    File.Delete(Application.dataPath + "/" + LoadImage2 + PIC_EXTENSION);
-                }
-            }
-            if (num == 2)
-            {
-
-                if (File.Exists(Application.dataPath + SAVE_FILE3 + FILE_EXTENSION))
-                {
-                    File.Delete(Application.dataPath + SAVE_FILE3 + FILE_EXTENSION);
-                    audioSrc.PlayOneShot(deleteSfx);
-                }
-                else if (!File.Exists(Application.dataPath + SAVE_FILE3 + FILE_EXTENSION))
-                    audioSrc.PlayOneShot(errorSfx);
-                if (File.Exists(Application.dataPath + "/" + LoadImage3 + PIC_EXTENSION))
-                {
-                    newGameThree = true;
-                    file3Picture.texture = defaultTexture;
-                    File.Delete(Application.dataPath + "/" + LoadImage3 + PIC_EXTENSION);
-                }
-
-            }
-            if (num == 3)
-            {
-
-                if (File.Exists(Application.dataPath + SAVE_FILE4 + FILE_EXTENSION))
-                {
-                    File.Delete(Application.dataPath + SAVE_FILE4 + FILE_EXTENSION);
-                    audioSrc.PlayOneShot(deleteSfx);
-                }
-                else if (!File.Exists(Application.dataPath + SAVE_FILE4 + FILE_EXTENSION))
-                    audioSrc.PlayOneShot(errorSfx);
-                if (File.Exists(Application.dataPath + "/" + LoadImage4 + PIC_EXTENSION))
-                {
-                    newGameFour = true;
-                    file4Picture.texture = defaultTexture;
-                    File.Delete(Application.dataPath + "/" + LoadImage4 + PIC_EXTENSION);
-                }
-
-            }
-
         }
     }
     public void ResetActiveFiles()
     {
-        file1Active = false;
-        file2Active = false;
-        file3Active = false;
-        file4Active = false;
+        for (int fa = 0; fa < 4; fa++)
+            fileActive[fa] = false;
     }
     public void SetGameProgress(float amount)
     {

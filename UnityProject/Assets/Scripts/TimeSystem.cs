@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-public class TimeSystem : MonoBehaviour {
+public class TimeSystem : MonoBehaviour 
+{
+   
     public bool isPermanentRain = false;
     public bool setDebug;
     public static bool isDebug;
     public Text timeOfDayDisplay;
-    public AudioSource ambientAudioSrc;
     public AudioClip ambientDay;
     public AudioClip ambientNight;
     public AudioClip ambientStorm;
@@ -16,7 +17,6 @@ public class TimeSystem : MonoBehaviour {
     public int currentIncrement;
     ParticleSystem rainSystem;
     public GameObject playerRain;
-    public AudioSource rainAudioSrc;
     GameObject clouds;
 
     public float sunRotation = -90;
@@ -352,9 +352,7 @@ public class TimeSystem : MonoBehaviour {
             }
             if (SceneSystem.isOverWorld)
             {
-                ambientAudioSrc.volume = 0.8f;
-                ambientAudioSrc.clip = ambientStorm;
-                ambientAudioSrc.Play();
+                AudioSystem.PlayAltAudioSource(1, ambientStorm, 0.8f, 1, true);
             }
             currentWeather = "(Rain)";
             weatherText.text = currentWeather;
@@ -364,15 +362,11 @@ public class TimeSystem : MonoBehaviour {
         {
             if (SceneSystem.isOverWorld && !isNight)
             {
-                ambientAudioSrc.volume = 0.1f;
-                ambientAudioSrc.clip = ambientDay;
-                ambientAudioSrc.Play();
+                AudioSystem.PlayAltAudioSource(1, ambientDay, 0.1f, 1, true);
             }
             else if(SceneSystem.isOverWorld && isNight)
             {
-                ambientAudioSrc.volume = 0.1f;
-                ambientAudioSrc.clip = ambientNight;
-                ambientAudioSrc.Play();
+                AudioSystem.PlayAltAudioSource(1, ambientNight, 0.1f, 1, true);
             }
             rainSystem = playerRain.GetComponent<ParticleSystem>();
             rainSystem.Stop();
@@ -463,14 +457,8 @@ public class TimeSystem : MonoBehaviour {
             case Day.morning:
                 {
                     isShophours = true;
-
                     if (!isRain && SceneSystem.isOverWorld)
-                    {
-                        ambientAudioSrc.volume = 0.1f;
-                        ambientAudioSrc.clip = ambientDay;
-                        ambientAudioSrc.Play();
-                    }
-                   
+                        AudioSystem.PlayAltAudioSource(1, ambientDay, 0.1f, 1, true);
                     break;
                 }
             //======12PM=======//
@@ -483,11 +471,7 @@ public class TimeSystem : MonoBehaviour {
                 {
                     isShophours = false;
                     if (!isRain && SceneSystem.isOverWorld)
-                    {
-                        ambientAudioSrc.volume = 0.1f;
-                        ambientAudioSrc.clip = ambientNight;
-                        ambientAudioSrc.Play();
-                    }
+                        AudioSystem.PlayAltAudioSource(1, ambientNight, 0.1f, 1, true);
                     break;
                 }
         }
@@ -521,73 +505,14 @@ public class TimeSystem : MonoBehaviour {
         dayNightDisplay = dayNightDisp;
         timeInterval = timeIntervalNum; 
         FixTimeOfDay(CurrentTimeOfDay);
-
     }
   
     public void SetTimeSpecifics()
     {
         isTimeSkiped = true;
     }
-    IEnumerator AudioFadeOut(AudioSource audio)
-    {
-        audio.volume = 1.0f;
-        float MinVol = 0;
-        for (float f = 1f; f > MinVol; f -= 0.05f)
-        {
-            audio.volume = f;
-            yield return new WaitForSecondsRealtime(2f);
-            if (f <= 0.1)
-            {
-                audio.Stop();
-                audio.volume = MinVol;
-            }
-        }
-    }
-    IEnumerator AudioFadeIn(AudioSource audio)
-    {
-        audio.volume = 0.0f;
-        float MaxVol = 1;
-        audio.Play();
-        for (float f = 0f; f < MaxVol; f += 0.05f)
-        {
-            audio.volume = f;
-            yield return new WaitForSecondsRealtime(2f);
-            if (f >= 0.9)
-            {
-                audio.volume = MaxVol;
-            }
-        }
-    }
-    IEnumerator Audio2FadeOut(AudioSource audio)
-    {
-        audio.volume = 1.0f;
-        float MinVol = 0;
-        for (float f = 1f; f > MinVol; f -= 0.05f)
-        {
-            audio.volume = f;
-            yield return new WaitForSecondsRealtime(.5f);
-            if (f <= 0.1)
-            {
-                audio.Stop();
-                audio.volume = MinVol;
-            }
-        }
-    }
-    IEnumerator Audio2FadeIn(AudioSource audio)
-    {
-        audio.volume = 0.0f;
-        float MaxVol = 1;
-        audio.Play();
-        for (float f = 0f; f < MaxVol; f += 0.05f)
-        {
-            audio.volume = f;
-            yield return new WaitForSecondsRealtime(.5f);
-            if (f >= 0.9)
-            {
-                audio.volume = MaxVol;
-            }
-        }
-    }
+   
+   
     public void resetTimeSystem()
     {
         RenderSettings.skybox = Skyboxes[1];

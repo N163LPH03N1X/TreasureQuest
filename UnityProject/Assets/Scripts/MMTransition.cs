@@ -59,19 +59,17 @@ public class MMTransition : MonoBehaviour
     public float flashScreenTimer;
     public bool flash;
     bool isIntro;
-
+    CoreObject core;
     SceneSystem sceneSystem;
 
     bool isStarted = false;
 
-    public static bool file1Open;
-    public static bool file2Open;
-    public static bool file3Open;
-    public static bool file4Open;
-
-   
-
+    public static bool[] fileOpen = new bool[4] { false, false, false, false };
     private Selectable m_Selectable;
+    private void OnEnable()
+    {
+        core = GameObject.Find("Core").GetComponent<CoreObject>();
+    }
 
     private void Start()
     {
@@ -144,15 +142,11 @@ public class MMTransition : MonoBehaviour
             }
         }
 
-
-        if (file1Open && Input.GetButtonDown("Cancel"))
-            DeselectFileAnimation(0);
-        else if (file2Open && Input.GetButtonDown("Cancel"))
-            DeselectFileAnimation(1);
-        else if (file3Open && Input.GetButtonDown("Cancel"))
-            DeselectFileAnimation(2);
-        else if (file4Open && Input.GetButtonDown("Cancel"))
-            DeselectFileAnimation(3);
+        for(int fo = 0; fo < 4; fo++)
+        {
+            if (fileOpen[fo] && Input.GetButtonDown("Cancel"))
+                DeselectFileAnimation(fo);
+        }
     }
     public IEnumerator ScrollTitle(float fillTime)
     {
@@ -238,79 +232,27 @@ public class MMTransition : MonoBehaviour
                 }
                 else if (num == 4)
                 {
-                   
                     fileMain.SetActive(false);
                     fileMenuEffects.SetActive(false);
-                    if (CoreObject.file1Active)
+                    for(int fa = 0; fa < 4; fa++)
                     {
-                        if (CoreObject.newGameOne)
+                        if (CoreObject.fileActive[fa])
                         {
-                            StopCoroutine(screenBlack);
-                            screenBlack = FadeIn(1.0f, 4.0f, blackScreen, true, 5);
-                            StartCoroutine(screenBlack);
-                        }
-                        else if (!CoreObject.newGameOne)
-                        {
-                            StopCoroutine(screenBlack);
-                            Player.SetActive(true);
-                            CoreObject core = GameObject.Find("Core").GetComponent<CoreObject>();
-                            core.Loading(true);
-                            core.LoadScene();
+                            if (CoreObject.newGame[fa])
+                            {
+                                StopCoroutine(screenBlack);
+                                screenBlack = FadeIn(1.0f, 4.0f, blackScreen, true, 5);
+                                StartCoroutine(screenBlack);
+                            }
+                            else if (!CoreObject.newGame[fa])
+                            {
+                                StopCoroutine(screenBlack);
+                                Player.SetActive(true);
+                                core.Loading(true);
+                                core.LoadScene();
+                            }
                         }
                     }
-                    if (CoreObject.file2Active)
-                    {
-                        if (CoreObject.newGameTwo)
-                        {
-                            StopCoroutine(screenBlack);
-                            screenBlack = FadeIn(1.0f, 4.0f, blackScreen, true, 5);
-                            StartCoroutine(screenBlack);
-                        }
-                        else if (!CoreObject.newGameTwo)
-                        {
-                            StopCoroutine(screenBlack);
-                            Player.SetActive(true);
-                            CoreObject core = GameObject.Find("Core").GetComponent<CoreObject>();
-                            core.Loading(true);
-                            core.LoadScene();
-                        }
-                    }
-                    if (CoreObject.file3Active)
-                    {
-                        if (CoreObject.newGameThree)
-                        {
-                            StopCoroutine(screenBlack);
-                            screenBlack = FadeIn(1.0f, 4.0f, blackScreen, true, 5);
-                            StartCoroutine(screenBlack);
-                        }
-                        else if (!CoreObject.newGameThree)
-                        {
-                            StopCoroutine(screenBlack);
-                            Player.SetActive(true);
-                            CoreObject core = GameObject.Find("Core").GetComponent<CoreObject>();
-                            core.Loading(true);
-                            core.LoadScene();
-                        }
-                    }
-                    if (CoreObject.file4Active)
-                    {
-                        if (CoreObject.newGameFour)
-                        {
-                            StopCoroutine(screenBlack);
-                            screenBlack = FadeIn(1.0f, 4.0f, blackScreen, true, 5);
-                            StartCoroutine(screenBlack);
-                        }
-                        else if (!CoreObject.newGameFour)
-                        {
-                            StopCoroutine(screenBlack);
-                            Player.SetActive(true);
-                            CoreObject core = GameObject.Find("Core").GetComponent<CoreObject>();
-                            core.Loading(true);
-                            core.LoadScene();
-                        }
-                    }
-                  
-               
                     Color returnColor2 = new Color(0, 0, 0, 0);
                     blackScreen.GetComponent<Image>().color = returnColor2;
                 }
@@ -528,125 +470,49 @@ public class MMTransition : MonoBehaviour
     public void DeselectFileAnimation(int num)
     {
         Animator anim = fileMenu.GetComponent<Animator>();
-        if (file1Open)
+        string animID = "OpenFile" + (num + 1).ToString();
+        if (fileOpen[num])
         {
-            anim.SetBool("OpenFile1", false);
-            file1Open = false;
-        }
-        if (file2Open)
-        {
-            anim.SetBool("OpenFile2", false);
-            file2Open = false;
-        }
-        if (file3Open)
-        {
-            anim.SetBool("OpenFile3", false);
-            file3Open = false;
-        }
-        if (file4Open)
-        {
-            anim.SetBool("OpenFile4", false);
-            file4Open = false;
+            anim.SetBool(animID, false);
+            fileOpen[num] = false;
         }
     }
     public void SelectFileAnimation(int num)
     {
         Animator anim = fileMenu.GetComponent<Animator>();
-        if (num == 0)
+        for (int fo = 0; fo < 4; fo++)
         {
-            if (!file1Open)
+            if (num == fo)
             {
-                anim.SetBool("OpenFile1", true);
-                file1Open = true;
-            }
-            else if (file1Open && !SelectComponents.FileDeletion)
-            {
-                anim.Rebind();
-                StartIntroSceneTransition();
-                file1Open = false;
-            }
-            else if(file1Open && SelectComponents.FileDeletion)
-            {
-                AnimateText animText = animationText.GetComponent<AnimateText>();
-                animText.DeletedFileOnClick(0);
-                CoreObject core = GameObject.Find("Core").GetComponent<CoreObject>();
-                core.DeleteExistingFile(0);
-                DeselectFileAnimation(0);
-            }
-        }
-        else if(num == 1)
-        {
-            if (!file2Open)
-            {
-                anim.SetBool("OpenFile2", true);
-                file2Open = true;
-            }
-            else if (file2Open && !SelectComponents.FileDeletion)
-            {
-                anim.Rebind();
-                StartIntroSceneTransition();
-                file2Open = false;
-            }
-            else if (file2Open && SelectComponents.FileDeletion)
-            {
-                AnimateText animText = animationText.GetComponent<AnimateText>();
-                animText.DeletedFileOnClick(1);
-                CoreObject core = GameObject.Find("Core").GetComponent<CoreObject>();
-                core.DeleteExistingFile(1);
-                DeselectFileAnimation(1);
-            }
-        }
-        else if (num == 2)
-        {
-            if (!file3Open)
-            {
-                anim.SetBool("OpenFile3", true);
-                file3Open = true;
-            }
-            else if (file3Open && !SelectComponents.FileDeletion)
-            {
-                anim.Rebind();
-                StartIntroSceneTransition();
-                file3Open = false;
-            }
-            else if (file3Open && SelectComponents.FileDeletion)
-            {
-                AnimateText animText = animationText.GetComponent<AnimateText>();
-                animText.DeletedFileOnClick(2);
-                CoreObject core = GameObject.Find("Core").GetComponent<CoreObject>();
-                core.DeleteExistingFile(2);
-                DeselectFileAnimation(2);
-            }
-        }
-        else if (num == 3)
-        {
-            if (!file4Open)
-            {
-                anim.SetBool("OpenFile4", true);
-                file4Open = true;
-            }
-            else if (file4Open && !SelectComponents.FileDeletion)
-            {
-                anim.Rebind();
-                StartIntroSceneTransition();
-                file4Open = false;
-            }
-            else if (file4Open && SelectComponents.FileDeletion)
-            {
-                AnimateText animText = animationText.GetComponent<AnimateText>();
-                animText.DeletedFileOnClick(3);
-                CoreObject core = GameObject.Find("Core").GetComponent<CoreObject>();
-                core.DeleteExistingFile(3);
-                DeselectFileAnimation(3);
+                string animID = "OpenFile" + (fo + 1).ToString();
+                if (!fileOpen[fo])
+                {
+                    anim.SetBool(animID, true);
+                    fileOpen[fo] = true;
+                }
+                else if(fileOpen[fo])
+                {
+                    if (SelectComponents.FileDeletion)
+                    {
+                        AnimateText animText = animationText.GetComponent<AnimateText>();
+                        animText.DeletedFileOnClick(fo);
+                        core.DeleteExistingFile(fo);
+                        DeselectFileAnimation(fo);
+                    }
+                    else
+                    {
+                        anim.Rebind();
+                        StartIntroSceneTransition();
+                        fileOpen[fo] = false;
+                    }
+                }
             }
         }
     }
-  
 }
 [Serializable]
 public struct Intro
 {
-   
     public string message1;
     public string message2;
     public string message3;
