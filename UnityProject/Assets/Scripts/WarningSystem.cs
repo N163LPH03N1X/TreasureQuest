@@ -3,6 +3,7 @@
 public enum Warning { Lava, Ice, Water}
 public class WarningSystem : MonoBehaviour
 {
+    OptSystem optSystem = new OptSystem();
     public Warning warningType;
     public GameObject blockOffObj;
     BoxCollider blockOff;
@@ -23,7 +24,7 @@ public class WarningSystem : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Submit") && entered)
+        if (optSystem.Input.GetButtonDown("Submit") && entered)
         {
             InteractionSystem interactSys = GameObject.FindGameObjectWithTag("Player").GetComponent<InteractionSystem>();
             blockOff = blockOffObj.GetComponent<BoxCollider>();

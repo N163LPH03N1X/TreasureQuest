@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections;
 public class PauseGame : MonoBehaviour
 {
+    OptSystem optSystem = new OptSystem();
     private Selectable m_Selectable;
     public static bool isPaused = false;
     bool isSave;
@@ -34,7 +35,7 @@ public class PauseGame : MonoBehaviour
     {
         if (!SceneSystem.isDisabled && !PlayerSystem.isDead && !SceneSystem.inTransition && !CoreObject.isSaving && !DialogueSystem.isDialogueActive && !ShopSystem.isShop && !CharacterSystem.isCarrying)
         {
-            if (Input.GetButtonDown("Pause") || Input.GetKeyDown(KeyCode.Return))
+            if (optSystem.Input.GetButtonDown("Pause"))
                 PauseTheGame();
         }
         if (Input.GetKeyUp(KeyCode.Escape))
@@ -42,7 +43,7 @@ public class PauseGame : MonoBehaviour
 
         if (isPaused && !ShopSystem.isShop)
         {
-            if (Input.GetButtonDown("Select") && !isStatus)
+            if (optSystem.Input.GetButtonDown("Select") && !isStatus)
             {
                 isStatus = true;
                 pauseBanner.SetActive(false);
@@ -63,7 +64,7 @@ public class PauseGame : MonoBehaviour
                 playSys.ApplyHealthOrVitality();
 
             }
-            else if (Input.GetButtonDown("Select") && isStatus && !isSave && !CoreObject.isSaving && !UnderWaterSystem.isSwimming)
+            else if (optSystem.Input.GetButtonDown("Select") && isStatus && !isSave && !CoreObject.isSaving && !UnderWaterSystem.isSwimming)
             {
                 diagSys = GetComponent<DialogueSystem>();
                 diagSys.PressButton(DialogueSystem.ButtonType.Save);
@@ -73,14 +74,14 @@ public class PauseGame : MonoBehaviour
                 audioSrc.pitch = 1;
                 audioSrc.PlayOneShot(pauseSfx);
             }
-            else if(Input.GetButtonDown("Select") && isStatus && !isSave && !CoreObject.isSaving && UnderWaterSystem.isSwimming)
+            else if(optSystem.Input.GetButtonDown("Select") && isStatus && !isSave && !CoreObject.isSaving && UnderWaterSystem.isSwimming)
             {
                 InteractionSystem interact = GetComponent<InteractionSystem>();
                 interact.DialogueInteraction(true, "Cannot Save While Swimming.");
                 interactionActive = true;
             }
         }
-        if (Input.GetButtonDown("Submit") && interactionActive)
+        if (optSystem.Input.GetButtonDown("Submit") && interactionActive)
         {
             InteractionSystem interact = GetComponent<InteractionSystem>();
             interact.DialogueInteraction(false, null);

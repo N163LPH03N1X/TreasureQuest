@@ -15,7 +15,7 @@ public class ShopSystem : MonoBehaviour
     ItemSystem itemSys;
     DialogueSystem diagSys;
     InteractionSystem interaction;
-
+    OptSystem optSystem = new OptSystem();
     public Text shopName;
 
     public Text specialItemName;
@@ -88,12 +88,12 @@ public class ShopSystem : MonoBehaviour
 
         if (isShop)
         { 
-            if (Input.GetButtonDown("Cancel") && !backButton)
+            if (optSystem.Input.GetButtonDown("Cancel") && !backButton)
             {
                 BackOut();
                 backButton = true;
             }
-            else if (Input.GetButtonUp("Cancel"))
+            else if (optSystem.Input.GetButtonUp("Cancel"))
                 backButton = false;
         }
         if(!PauseGame.isPaused && !DebugSystem.toggleCodeList)
@@ -848,7 +848,7 @@ public class ShopSystem : MonoBehaviour
             interaction.DialogueInteraction(true, "Enjoy your stay!");
             dialogueActive = true;
         }
-        else if (Input.GetButtonDown("Submit") && dialogueActive && !finishedDialogue)
+        else if (optSystem.Input.GetButtonDown("Submit") && dialogueActive && !finishedDialogue)
         {
             SceneSystem sceneSys = GameObject.Find("Player").GetComponent<SceneSystem>();
             InteractionSystem interaction = GameObject.FindGameObjectWithTag("Player").GetComponent<InteractionSystem>();

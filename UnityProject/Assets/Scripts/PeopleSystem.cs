@@ -9,7 +9,7 @@ using System.Collections;
 
 public class PeopleSystem : MonoBehaviour
 {
-
+    OptSystem optSystem = new OptSystem();
     public Material sourceMat;
     public EventType selectEvent;
     public PeopleType personType;
@@ -134,7 +134,7 @@ public class PeopleSystem : MonoBehaviour
         }
         if (inRange)
         {
-            if (!SceneSystem.inTransition && !ShopSystem.isSleeping && Input.GetButtonDown("Submit") && !PauseGame.isPaused && !ShopSystem.isShop && dialogueActive && !CharacterSystem.isCarrying)
+            if (!SceneSystem.inTransition && !ShopSystem.isSleeping && optSystem.Input.GetButtonDown("Submit") && !PauseGame.isPaused && !ShopSystem.isShop && dialogueActive && !CharacterSystem.isCarrying)
             {
                 playerController = GameObject.FindGameObjectWithTag("Player");
                 CharacterSystem playChar = playerController.GetComponent<CharacterSystem>();

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class MimicEncounter : MonoBehaviour
 {
+    OptSystem optSystem = new OptSystem();
     bool isOpen;
     public bool inTerritory;
     AudioSource audioSrc;
@@ -30,7 +31,7 @@ public class MimicEncounter : MonoBehaviour
         }
         if (inTerritory)
         {
-            if (Input.GetButtonDown("Submit") && !isOpen && !PauseGame.isPaused)
+            if (optSystem.Input.GetButtonDown("Submit") && !isOpen && !PauseGame.isPaused)
             {
                 isOpen = true;
                 audioSrc = GetComponent<AudioSource>();

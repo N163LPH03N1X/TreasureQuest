@@ -5,6 +5,7 @@ using System.Collections;
 
 public class MouseLook : MonoBehaviour {
 
+    OptSystem optSystem = new OptSystem();
 	public enum RotationAxes { MouseXAndY = 0, MouseX = 1, MouseY = 2 }
 	public RotationAxes axes = RotationAxes.MouseXAndY;
     public float sensitivityX;
@@ -40,9 +41,9 @@ public class MouseLook : MonoBehaviour {
                     {
                         if (axes == RotationAxes.MouseXAndY)
                         {
-                            float rotationX = transform.localEulerAngles.y + -Input.GetAxis("Mouse X") * sensitivityX;
+                            float rotationX = transform.localEulerAngles.y + -optSystem.Input.GetAxis("MouseX") * sensitivityX;
 
-                            rotationY += Input.GetAxis("Mouse Y") * sensitivityY * (CharacterSystem.isConfused ? -1 : 1);
+                            rotationY += optSystem.Input.GetAxis("MouseY") * sensitivityY * (CharacterSystem.isConfused ? -1 : 1);
                             if (CharacterSystem.isClimbing)
                                 rotationY = Mathf.Clamp(rotationY, 45, 45);
                             else
@@ -56,18 +57,18 @@ public class MouseLook : MonoBehaviour {
 
                             if (smoothRotation)
                             {
-                                transform.Rotate(0, -Input.GetAxis("Mouse X") * Time.deltaTime * sensitivityX * 40, 0);
+                                transform.Rotate(0, -optSystem.Input.GetAxis("MouseX") * Time.deltaTime * sensitivityX * 40, 0);
                             }
                             else
                             {
-                                transform.Rotate(0, -Input.GetAxis("Mouse X") * sensitivityX, 0);
+                                transform.Rotate(0, -optSystem.Input.GetAxis("MouseX") * sensitivityX, 0);
                             }
                         }
                         else
                         {
                             if (smoothRotation)
                             {
-                                rotationY += Input.GetAxis("Mouse Y") * Time.deltaTime * sensitivityY * (CharacterSystem.isConfused ? -1 : 1) * 40;
+                                rotationY += optSystem.Input.GetAxis("MouseY") * Time.deltaTime * sensitivityY * (CharacterSystem.isConfused ? -1 : 1) * 40;
                                 if (CharacterSystem.isClimbing)
                                     rotationY = Mathf.Clamp(rotationY, 45, 45);
                                 else
@@ -75,7 +76,7 @@ public class MouseLook : MonoBehaviour {
                             }
                             else
                             {
-                                rotationY += Input.GetAxis("Mouse Y") * sensitivityY * (CharacterSystem.isConfused ? -1 : 1);
+                                rotationY += optSystem.Input.GetAxis("MouseY") * sensitivityY * (CharacterSystem.isConfused ? -1 : 1);
                                 if (CharacterSystem.isClimbing)
                                     rotationY = Mathf.Clamp(rotationY, 45, 45);
                                 else
@@ -88,9 +89,9 @@ public class MouseLook : MonoBehaviour {
                     {
                         if (axes == RotationAxes.MouseXAndY)
                         {
-                            float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
+                            float rotationX = transform.localEulerAngles.y + optSystem.Input.GetAxis("MouseX") * sensitivityX;
 
-                            rotationY += Input.GetAxis("Mouse Y") * sensitivityY * (invertY ? -1 : 1);
+                            rotationY += optSystem.Input.GetAxis("MouseY") * sensitivityY * (invertY ? -1 : 1);
                             if (CharacterSystem.isClimbing)
                                 rotationY = Mathf.Clamp(rotationY, 45, 45);
                             else
@@ -104,18 +105,18 @@ public class MouseLook : MonoBehaviour {
 
                             if (smoothRotation)
                             {
-                                transform.Rotate(0, Input.GetAxis("Mouse X") * Time.deltaTime * sensitivityX * 40, 0);
+                                transform.Rotate(0, optSystem.Input.GetAxis("MouseX") * Time.deltaTime * sensitivityX * 40, 0);
                             }
                             else
                             {
-                                transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityX, 0);
+                                transform.Rotate(0, optSystem.Input.GetAxis("MouseX") * sensitivityX, 0);
                             }
                         }
                         else
                         {
                             if (smoothRotation)
                             {
-                                rotationY += Input.GetAxis("Mouse Y") * Time.deltaTime * sensitivityY * (invertY ? -1 : 1) * 40;
+                                rotationY += optSystem.Input.GetAxis("MouseY") * Time.deltaTime * sensitivityY * (invertY ? -1 : 1) * 40;
                                 if (CharacterSystem.isClimbing)
                                     rotationY = Mathf.Clamp(rotationY, 45, 45);
                                 else
@@ -123,7 +124,7 @@ public class MouseLook : MonoBehaviour {
                             }
                             else
                             {
-                                rotationY += Input.GetAxis("Mouse Y") * sensitivityY * (invertY ? -1 : 1);
+                                rotationY += optSystem.Input.GetAxis("MouseY") * sensitivityY * (invertY ? -1 : 1);
                                 if (CharacterSystem.isClimbing)
                                     rotationY = Mathf.Clamp(rotationY, 45, 45);
                                 else

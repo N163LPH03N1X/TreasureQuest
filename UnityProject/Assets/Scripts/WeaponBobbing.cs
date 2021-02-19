@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 public class WeaponBobbing : MonoBehaviour
 {
+    OptSystem optSystem = new OptSystem();
     private float timer = 0.0f;
     public float bobbingSpeed = 0.2f;
     public float bobbingAmount = 3f;
@@ -17,8 +18,8 @@ public class WeaponBobbing : MonoBehaviour
         if (CharacterSystem.isCarrying && !CharacterSystem.isJumping)
         {
             float waveslice = 0.0f;
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
+            float horizontal = optSystem.Input.GetAxis("Horizontal");
+            float vertical = optSystem.Input.GetAxis("Vertical");
 
             Vector3 cSharpConversion = transform.localPosition;
             if (Mathf.Abs(horizontal) == 0 && Mathf.Abs(vertical) == 0)

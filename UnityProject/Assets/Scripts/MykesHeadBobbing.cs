@@ -5,7 +5,7 @@ using UnityEngine;
 public class MykesHeadBobbing : MonoBehaviour {
 
     private float timer = 0.0f;
-
+    OptSystem optSystem = new OptSystem();
     public static float bobbingSpeed;
     public static float bobbingAmount;
 
@@ -42,8 +42,8 @@ public class MykesHeadBobbing : MonoBehaviour {
         if (!isDisabled && !isPaused && !isPetrified && !isClimbing && !SelectionalSystem.isSelecting)
         {
             float waveslice = 1.0f;
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
+            float horizontal = optSystem.Input.GetAxis("Horizontal");
+            float vertical = optSystem.Input.GetAxis("Vertical");
 
             if (isRunning)
             {

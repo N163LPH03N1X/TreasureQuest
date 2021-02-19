@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class CharacterSystem : MonoBehaviour
 {
+    OptSystem optSystem = new OptSystem();
     //Call Variables
     Animator anim;
     Vector3 rigidbodyMoveDirection;
@@ -192,7 +193,7 @@ public class CharacterSystem : MonoBehaviour
         }
         if (inRange && !isCarrying && carryObj != null)
         {
-            if (Input.GetButtonDown("Sheath") && !carryingObj
+            if (optSystem.Input.GetButtonDown("Sheath") && !carryingObj
                 && SwordSystem.UnArmed && !PlayerSystem.isDead && !SceneSystem.isDisabled
                 && !PauseGame.isPaused && !SelectionalSystem.isSelecting && !ShopSystem.isShop
                 && !DialogueSystem.isDialogueActive && !JewelSystem.isJewelEnabled)
@@ -203,7 +204,7 @@ public class CharacterSystem : MonoBehaviour
             }
 
         }
-        else if (Input.GetButtonDown("Sheath") && carryingObj && !inRange
+        else if (optSystem.Input.GetButtonDown("Sheath") && carryingObj && !inRange
             && SwordSystem.UnArmed && !PlayerSystem.isDead && !SceneSystem.isDisabled
             && !PauseGame.isPaused && !SelectionalSystem.isSelecting && !ShopSystem.isShop
             && !DialogueSystem.isDialogueActive && isJumping)
@@ -213,7 +214,7 @@ public class CharacterSystem : MonoBehaviour
 
         }
        
-        else if (Input.GetButtonDown("Sheath") && carryingObj && !inRange
+        else if (optSystem.Input.GetButtonDown("Sheath") && carryingObj && !inRange
             && SwordSystem.UnArmed && !PlayerSystem.isDead && !SceneSystem.isDisabled
             && !PauseGame.isPaused && !SelectionalSystem.isSelecting && !ShopSystem.isShop
             && !DialogueSystem.isDialogueActive && !isJumping)
@@ -231,19 +232,19 @@ public class CharacterSystem : MonoBehaviour
             isActive = false;
         }
         if (!PlayerSystem.isDead && !SceneSystem.isDisabled && !PauseGame.isPaused && !SelectionalSystem.isSelecting && !ShopSystem.isShop && !DialogueSystem.isDialogueActive) {
-            if (Input.GetAxis("Horizontal") > 0)
+            if (optSystem.Input.GetAxis("Horizontal") > 0)
                 SwitchMovement(MovementType.right);
-            else if (Input.GetAxis("Horizontal") < 0)
+            else if (optSystem.Input.GetAxis("Horizontal") < 0)
                 SwitchMovement(MovementType.left);
-            else if (Input.GetAxis("Vertical") > 0)
+            else if (optSystem.Input.GetAxis("Vertical") > 0)
                 SwitchMovement(MovementType.forward);
-            else if (Input.GetAxis("Vertical") < 0)
+            else if (optSystem.Input.GetAxis("Vertical") < 0)
                 SwitchMovement(MovementType.back);
-            else if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+            else if (optSystem.Input.GetAxis("Horizontal") == 0 && optSystem.Input.GetAxis("Vertical") == 0)
                 SwitchMovement(MovementType.none);
             if (!UnderWaterSystem.isSwimming && !isIcy)
             {
-                if (Input.GetButton("Sprint") && !isMovingBack && !isCarrying)
+                if (optSystem.Input.GetButton("Sprint") && !isMovingBack && !isCarrying)
                 {
                     isRunning = true;
                     if (JewelSystem.blueJewelEnabled && JewelSystem.isJewelActive)
@@ -325,8 +326,8 @@ public class CharacterSystem : MonoBehaviour
             {
                 if (isConfused && !isParalyzed)
                 {
-                    inputX = -Input.GetAxis("Horizontal");
-                    inputY = -Input.GetAxis("Vertical");
+                    inputX = -optSystem.Input.GetAxis("Horizontal");
+                    inputY = -optSystem.Input.GetAxis("Vertical");
                 }
 
                 else if (isParalyzed)
@@ -336,8 +337,8 @@ public class CharacterSystem : MonoBehaviour
                 }
                 else
                 {
-                    inputX = Input.GetAxis("Horizontal");
-                    inputY = Input.GetAxis("Vertical");
+                    inputX = optSystem.Input.GetAxis("Horizontal");
+                    inputY = optSystem.Input.GetAxis("Vertical");
                 }
 
                 float inputModifyFactor = (inputX != 0.0f && inputY != 0.0f && limitDiagonalSpeed) ? .7071f : 1.0f;
@@ -402,11 +403,11 @@ public class CharacterSystem : MonoBehaviour
                 moveDirection.y -= gravity * Time.unscaledDeltaTime;
             else if (isClimbing)
             {
-                if (Input.GetAxis("Vertical") == 1)
+                if (optSystem.Input.GetAxis("Vertical") == 1)
                     SwitchMovement(MovementType.climbUp);
-                else if (Input.GetAxis("Vertical") == -1)
+                else if (optSystem.Input.GetAxis("Vertical") == -1)
                     SwitchMovement(MovementType.climbDown);
-                else if (Input.GetAxis("Vertical") == 0)
+                else if (optSystem.Input.GetAxis("Vertical") == 0)
                     SwitchMovement(MovementType.climbHold);
             }
             if (isActive && !SelectionalSystem.isSelecting)
@@ -436,8 +437,8 @@ public class CharacterSystem : MonoBehaviour
 
             Camera.main.transform.rotation = new Quaternion(0, 0, 0, 0);
             
-            float MouseY = Input.GetAxis("Mouse Y");
-            float MouseX = Input.GetAxis("Mouse X");
+            float MouseY = optSystem.Input.GetAxis("MouseY");
+            float MouseX = optSystem.Input.GetAxis("MouseX");
 
             if (MouseX > 0)
                 transform.Rotate(Vector3.down * -MouseX * LookSensitivity * Time.unscaledDeltaTime, Space.Self);
@@ -449,8 +450,8 @@ public class CharacterSystem : MonoBehaviour
             if (MouseY < 0)
                 transform.Rotate(Vector3.right * -MouseY * LookSensitivity * (SettingsMenu.invertY ? -1 : 1) * Time.unscaledDeltaTime, Space.Self);
  
-            if(Input.GetAxisRaw("Vertical") > 0)
-                VerticalMovement = Input.GetAxisRaw("Vertical");
+            if(optSystem.Input.GetAxisRaw("Vertical") > 0)
+                VerticalMovement = optSystem.Input.GetAxisRaw("Vertical");
            
             float Axisz = transform.rotation.eulerAngles.z;
             // 0-45------------------------------------------------------------------------------------
@@ -499,8 +500,8 @@ public class CharacterSystem : MonoBehaviour
 
             rb.constraints = RigidbodyConstraints.FreezeRotation;
             rb.useGravity = true;
-            float HorizontalMovement = Input.GetAxisRaw("Horizontal");
-            float VerticalMovement = Input.GetAxisRaw("Vertical");
+            float HorizontalMovement = optSystem.Input.GetAxisRaw("Horizontal");
+            float VerticalMovement = optSystem.Input.GetAxisRaw("Vertical");
 
             rigidbodyStrafeDirection = (HorizontalMovement * transform.right);
             rigidbodyMoveDirection = (VerticalMovement * transform.forward);
@@ -509,7 +510,7 @@ public class CharacterSystem : MonoBehaviour
 
             bool IsGrounded = Physics.Raycast(transform.position, Vector3.down, DisstanceToTheGround + 0.1f);
 
-            if (Input.GetButtonDown("Jump") && IsGrounded)
+            if (optSystem.Input.GetButtonDown("Jump") && IsGrounded)
             {
                 isJumping = true;
                 SelectAnimation(PlayerAnimation.Jump, true);
@@ -529,7 +530,7 @@ public class CharacterSystem : MonoBehaviour
             if (isMoving)
             {
                
-                if (Input.GetButton("Sprint") && !isMovingBack)
+                if (optSystem.Input.GetButton("Sprint") && !isMovingBack)
                 {
                     SelectAnimation(PlayerAnimation.Run, true);
                     SelectAnimation(PlayerAnimation.Walk, false);
@@ -1343,7 +1344,7 @@ public class CharacterSystem : MonoBehaviour
                 }
             case MovementType.jump:
                 {
-                    if (!Input.GetButton("Jump"))
+                    if (!optSystem.Input.GetButton("Jump"))
                     {
 
                         jumpTimer++;

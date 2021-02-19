@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class SelectComponents : MonoBehaviour
 {
+    OptSystem optSystem = new OptSystem();
     private Selectable m_Selectable;
     public Image fileBg;
     public Sprite[] backgrounds;
@@ -18,12 +19,12 @@ public class SelectComponents : MonoBehaviour
 
         if (!MMTransition.fileOpen[0] && !MMTransition.fileOpen[1] && !MMTransition.fileOpen[2] && !MMTransition.fileOpen[3])
         {
-            if (Input.GetButtonDown("Cancel") && !backButton)
+            if (optSystem.Input.GetButtonDown("Cancel") && !backButton)
             {
                 Backout();
                 backButton = true;
             }
-            else if (Input.GetButtonDown("Cancel"))
+            else if (optSystem.Input.GetButtonDown("Cancel"))
                 backButton = false;
         }
         else if(MMTransition.fileOpen[0] || MMTransition.fileOpen[1] || MMTransition.fileOpen[2] || MMTransition.fileOpen[3])

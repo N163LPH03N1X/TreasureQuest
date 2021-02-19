@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class SkipNonInteractable : MonoBehaviour, ISelectHandler
 {
+    OptSystem optSystem = new OptSystem();
     private Selectable m_Selectable;
     private Button b_Pointable;
     StorySystem story;
@@ -25,28 +26,28 @@ public class SkipNonInteractable : MonoBehaviour, ISelectHandler
         if (m_Selectable.interactable) return;
 
         // Check if the user navigated to this selectable.
-        if (Input.GetAxis("DHorizontal") < 0)
+        if (optSystem.Input.GetAxis("DHorizontal") < 0)
         {
             Selectable select = m_Selectable.FindSelectableOnLeft();
             if (select == null || !select.gameObject.activeInHierarchy)
                 select = m_Selectable.FindSelectableOnRight();
             StartCoroutine(DelaySelect(select));
         }
-        else if (Input.GetAxis("DHorizontal") > 0)
+        else if (optSystem.Input.GetAxis("DHorizontal") > 0)
         {
             Selectable select = m_Selectable.FindSelectableOnRight();
             if (select == null || !select.gameObject.activeInHierarchy)
                 select = m_Selectable.FindSelectableOnLeft();
             StartCoroutine(DelaySelect(select));
         }
-        else if (Input.GetAxis("DVertical") < 0)
+        else if (optSystem.Input.GetAxis("DVertical") < 0)
         {
             Selectable select = m_Selectable.FindSelectableOnDown();
             if (select == null || !select.gameObject.activeInHierarchy)
                 select = m_Selectable.FindSelectableOnUp();
             StartCoroutine(DelaySelect(select));
         }
-        else if (Input.GetAxis("DVertical") > 0)
+        else if (optSystem.Input.GetAxis("DVertical") > 0)
         {
             Selectable select = m_Selectable.FindSelectableOnUp();
             if (select == null || !select.gameObject.activeInHierarchy)

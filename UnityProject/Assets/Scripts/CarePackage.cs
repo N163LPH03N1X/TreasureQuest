@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class CarePackage : MonoBehaviour
 {
+    OptSystem optSystem = new OptSystem();
     AudioSource audioSrc;
     public AudioClip pickupSfx;
     public GetItem getItem;
@@ -34,7 +35,7 @@ public class CarePackage : MonoBehaviour
         }
         if (inRange)
         {
-            if(Input.GetButtonDown("Submit") && !PauseGame.isPaused && !ShopSystem.isShop && dialogueActive && !CharacterSystem.isCarrying && !CharacterSystem.isJumping)
+            if(optSystem.Input.GetButtonDown("Submit") && !PauseGame.isPaused && !ShopSystem.isShop && dialogueActive && !CharacterSystem.isCarrying && !CharacterSystem.isJumping)
             {
                 playerController = GameObject.FindGameObjectWithTag("Player");
                 InteractionSystem interaction = playerController.GetComponent<InteractionSystem>();
@@ -44,7 +45,7 @@ public class CarePackage : MonoBehaviour
                 interaction.DialogueInteraction(true, "You Found " + message);
                 SetupPopupCanvas(false, null);
             }
-            else if (Input.GetButtonDown("Submit") && !PauseGame.isPaused && !ShopSystem.isShop && !dialogueActive && !CharacterSystem.isCarrying && !CharacterSystem.isJumping)
+            else if (optSystem.Input.GetButtonDown("Submit") && !PauseGame.isPaused && !ShopSystem.isShop && !dialogueActive && !CharacterSystem.isCarrying && !CharacterSystem.isJumping)
             {
                 playerController = GameObject.FindGameObjectWithTag("Player");
                 InteractionSystem interaction = playerController.GetComponent<InteractionSystem>();

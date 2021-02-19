@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class ItemSystem : MonoBehaviour
 {
+    OptSystem optSystem = new OptSystem();
     public GameObject itemWindow;
     public GameObject equipmentWindow;
     public GameObject optionWindow;
@@ -161,12 +162,12 @@ public class ItemSystem : MonoBehaviour
     private void Update()
     {
         DemonEnabled(demonMaskEnabled);
-        if (Input.GetButtonDown("Cancel") && !backButton && PauseGame.isPaused && !ShopSystem.isShop)
+        if (optSystem.Input.GetButtonDown("Cancel") && !backButton && PauseGame.isPaused && !ShopSystem.isShop)
         {
             BackOut();
             backButton = true;
         }
-        else if (Input.GetButtonUp("Cancel"))
+        else if (optSystem.Input.GetButtonUp("Cancel"))
             backButton = false;
     }
     public enum Item { LifeBerry, Rixile, NicirPlant, MindRemedy, PetriShroom, ReliefOintment,

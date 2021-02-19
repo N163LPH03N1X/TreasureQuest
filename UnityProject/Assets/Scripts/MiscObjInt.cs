@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class MiscObjInt : MonoBehaviour
 {
+    OptSystem optSystem = new OptSystem();
     public string message;
     public StoryType story;
     public int currentStory;
@@ -120,7 +121,7 @@ public class MiscObjInt : MonoBehaviour
         {
             if (useAButton && !useBButton)
             {
-                if (Input.GetButtonDown("Submit") && !PauseGame.isPaused && !active)
+                if (optSystem.Input.GetButtonDown("Submit") && !PauseGame.isPaused && !active)
                 {
                     CharacterSystem characterSystem = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterSystem>();
                     characterSystem.SelectAnimation(CharacterSystem.PlayerAnimation.Rebind, true);
@@ -147,7 +148,7 @@ public class MiscObjInt : MonoBehaviour
                     active = true;
                     SetupPopupCanvas(false, null);
                 }
-                else if (Input.GetButtonDown("Submit") && !PauseGame.isPaused && active && !OpenStory)
+                else if (optSystem.Input.GetButtonDown("Submit") && !PauseGame.isPaused && active && !OpenStory)
                 {
                    
                     if (addDialogue)
@@ -161,14 +162,14 @@ public class MiscObjInt : MonoBehaviour
                     SetupPopupCanvas(false, null);
                     active = false;
                 }
-                else if (Input.GetButtonUp("Submit") && OpenStory && active && !StorySystem.isReading && StorySystem.isBook)
+                else if (optSystem.Input.GetButtonUp("Submit") && OpenStory && active && !StorySystem.isReading && StorySystem.isBook)
                 {
                     if (useEvent)
                         TriggerEvent(eventNum);
                     active = false;
                     SetupPopupCanvas(true, buttonText);
                 }
-                else if(Input.GetButtonDown("Submit") && OpenStory && active && StorySystem.isReading && !StorySystem.isBook)
+                else if(optSystem.Input.GetButtonDown("Submit") && OpenStory && active && StorySystem.isReading && !StorySystem.isBook)
                 {
                     if (useEvent)
                         TriggerEvent(eventNum);
@@ -181,7 +182,7 @@ public class MiscObjInt : MonoBehaviour
             }
             else if (useBButton && !useAButton && !OpenStory)
             {
-                if (Input.GetButtonDown("Cancel") && !PauseGame.isPaused && !active)
+                if (optSystem.Input.GetButtonDown("Cancel") && !PauseGame.isPaused && !active)
                 {
                     if (addDialogue)
                     {
@@ -194,7 +195,7 @@ public class MiscObjInt : MonoBehaviour
                     SetupPopupCanvas(false, null);
                     active = true;
                 }
-                else if (Input.GetButtonDown("Cancel") && !PauseGame.isPaused && active)
+                else if (optSystem.Input.GetButtonDown("Cancel") && !PauseGame.isPaused && active)
                 {
                     if (addDialogue)
                     {

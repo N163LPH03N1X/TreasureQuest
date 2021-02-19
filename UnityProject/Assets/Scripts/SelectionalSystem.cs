@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 public class SelectionalSystem : MonoBehaviour
 {
+    OptSystem optSystem = new OptSystem();
     PlayerSystem playSys;
     SwordSystem swordSys;
     JewelSystem jewelSys;
@@ -69,7 +70,7 @@ public class SelectionalSystem : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetButtonDown("Select") && !CharacterSystem.isClimbing && !CharacterSystem.isCarrying && !active && !SceneSystem.isDisabled && !PauseGame.isPaused  && !DialogueSystem.isDialogueActive && !PlayerSystem.isDead && !ShopSystem.isShop && !SwordSystem.isAttacking)
+        if (optSystem.Input.GetButtonDown("Select") && !CharacterSystem.isClimbing && !CharacterSystem.isCarrying && !active && !SceneSystem.isDisabled && !PauseGame.isPaused  && !DialogueSystem.isDialogueActive && !PlayerSystem.isDead && !ShopSystem.isShop && !SwordSystem.isAttacking)
         {
             characterCtrl = GetComponent<CharacterSystem>();
             
@@ -82,7 +83,7 @@ public class SelectionalSystem : MonoBehaviour
             active = true;
             isSelecting = true;
         }
-        else if(Input.GetButtonUp("Select"))
+        else if(optSystem.Input.GetButtonUp("Select"))
         {
             if(!CharacterSystem.isClimbing && !CharacterSystem.isCarrying && !SceneSystem.isDisabled && !PauseGame.isPaused && !DialogueSystem.isDialogueActive && !PlayerSystem.isDead && !ShopSystem.isShop && !SwordSystem.isAttacking)
                 audioSrc.PlayOneShot(selectSfx2);
@@ -93,40 +94,40 @@ public class SelectionalSystem : MonoBehaviour
         if (isSelecting)
         {
             SetIcons();
-            if (Input.GetAxis("DVertical") == 1 && !isUpC)
+            if (optSystem.Input.GetButtonDown("Up") && !isUpC)
             {
                 audioSrc.PlayOneShot(selectSfx3);
                 SelectEquipment(Equipment.Sword);
                 isUpC = true;
             }
-            else if (Input.GetAxis("DVertical") == 0)
+            else if (optSystem.Input.GetButtonUp("Up"))
                 isUpC = false;
 
-            if (Input.GetAxis("DVertical") == -1 && !isDownC && !JewelSystem.isJewelActive)
+            if (optSystem.Input.GetButtonDown("Down") && !isDownC && !JewelSystem.isJewelActive)
             {
                 audioSrc.PlayOneShot(selectSfx3);
                 SelectEquipment(Equipment.jewels);
                 isDownC = true;
             }
-            else if (Input.GetAxis("DVertical") == 0)
+            else if (optSystem.Input.GetButtonUp("Down"))
                 isDownC = false;
 
-            if (Input.GetAxis("DHorizontal") == 1 && !isRightC)
+            if (optSystem.Input.GetButtonDown("Right") && !isRightC)
             {
                 audioSrc.PlayOneShot(selectSfx3);
                 SelectEquipment(Equipment.boots);
                 isRightC = true;
             }
-            else if (Input.GetAxis("DHorizontal") == 0)
+            else if (optSystem.Input.GetButtonUp("Right"))
                 isRightC = false;
 
-            if (Input.GetAxis("DHorizontal") == -1 && !isLeftC)
+            if (optSystem.Input.GetButtonDown("Left") && !isLeftC)
             {
                 audioSrc.PlayOneShot(selectSfx3);
                 SelectEquipment(Equipment.armor);
                 isLeftC = true;
             }
-            else if (Input.GetAxis("DHorizontal") == 0)
+            else if (optSystem.Input.GetButtonUp("Left"))
                 isLeftC = false;
 
             ///////////////////////////////////Keyboard///////////////////////////////////////////////////////////

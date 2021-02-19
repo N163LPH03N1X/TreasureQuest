@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class DebugSystem : MonoBehaviour
 {
+    public AudioSource M_audioSrc;
     PlayerSystem playerSystem;
     SwordSystem swordSystem;
     JewelSystem jewelSystem;
@@ -13,7 +14,6 @@ public class DebugSystem : MonoBehaviour
     CharacterSystem characterSystem;
     UnderWaterSystem underWaterSystem;
     PauseGame pauseGame;
-    AudioSource audioSrc;
     StorySystem storySystem;
     ObjectSystem objectSystem;
     public AudioClip[] soundFx;
@@ -372,7 +372,6 @@ public class DebugSystem : MonoBehaviour
     {
         startRoutine = StartGUI();
         StartCoroutine(startRoutine);
-        audioSrc = GameObject.Find("Core/GameMusic&Sound/GameSound").GetComponent<AudioSource>();
         sceneSystem = GameObject.Find("Core/Player").GetComponent<SceneSystem>();
         underWaterSystem = GameObject.FindGameObjectWithTag("Head").GetComponent<UnderWaterSystem>();
         objectSystem = GameObject.Find("Core").GetComponent<ObjectSystem>();
@@ -615,7 +614,7 @@ public class DebugSystem : MonoBehaviour
                 debugIndex++;
                 if (debugIndex == debugCode.Length)
                 {
-                    audioSrc.PlayOneShot(soundFx[0]);
+                    AudioSystem.PlayAudioSource(soundFx[0], 1, 1);
                     isDebugMode = true;
                     sceneSystem.SetPlaceName(SceneSystem.Place.debug, null);
                     ResetAllIndexes();
@@ -645,7 +644,7 @@ public class DebugSystem : MonoBehaviour
                 CodeList.SetActive(true);
                 toggleCodeList = true;
                 sceneSystem.EnablePlayer(false);
-                audioSrc.PlayOneShot(soundFx[73]);
+                AudioSystem.PlayAudioSource(soundFx[73], 1, 1);
                 ResetAllIndexes();
             }
             else if (Input.GetKeyDown(KeyCode.F1) && toggleCodeList)
@@ -654,7 +653,7 @@ public class DebugSystem : MonoBehaviour
                 sceneSystem.EnablePlayer(true);
                 CodeList.SetActive(false);
                 toggleCodeList = false;
-                audioSrc.PlayOneShot(soundFx[74]);
+                AudioSystem.PlayAudioSource(soundFx[74], 1, 1);
             }
 
             //============================Master================================//
@@ -1514,8 +1513,7 @@ public class DebugSystem : MonoBehaviour
         {
             case Code.Everything:
                 {
-                    audioSrc.PlayOneShot(soundFx[1]);
-
+                    AudioSystem.PlayAudioSource(soundFx[1], 1, 1);
                     statusText.text = "Give Everything";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1564,8 +1562,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.Nothing:
                 {
-                    audioSrc.PlayOneShot(soundFx[91]);
-
+                    AudioSystem.PlayAudioSource(soundFx[91], 1, 1);
                     statusText.text = "Lose Everything";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1578,8 +1575,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.BeatGame:
                 {
-                    audioSrc.PlayOneShot(soundFx[76]);
-
+                    AudioSystem.PlayAudioSource(soundFx[76], 1, 1);
                     statusText.text = "Game Levels Beat and Items Obtained ";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1590,8 +1586,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.ResetGame:
                 {
-                    audioSrc.PlayOneShot(soundFx[79]);
-
+                    AudioSystem.PlayAudioSource(soundFx[79], 1, 1);
                     statusText.text = "Game Levels Reset and Items Restored";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1602,7 +1597,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.InvincibleOn:
                 {
-                    audioSrc.PlayOneShot(soundFx[2]);
+                    AudioSystem.PlayAudioSource(soundFx[2], 1, 1);
                     statusText.text = "Invincibility On";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1614,7 +1609,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.InvincibleOff:
                 {
-                    audioSrc.PlayOneShot(soundFx[3]);
+                    AudioSystem.PlayAudioSource(soundFx[3], 1, 1);
                     statusText.text = "Invincibility Off";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1626,7 +1621,8 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.MaxedOutSwordOn:
                 {
-                    audioSrc.PlayOneShot(soundFx[4]);
+                    AudioSystem.PlayAudioSource(soundFx[4], 1, 1);
+
                     statusText.text = "Infinite Sword Power On";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1637,7 +1633,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.MaxedOutSwordOff:
                 {
-                    audioSrc.PlayOneShot(soundFx[5]);
+                    AudioSystem.PlayAudioSource(soundFx[5], 1, 1);
                     statusText.text = "Infinite Sword Power Off";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1649,7 +1645,7 @@ public class DebugSystem : MonoBehaviour
             //-------------------------------Sword----------------------------------//
             case Code.AllSwords:
                 {
-                    audioSrc.PlayOneShot(soundFx[6]);
+                    AudioSystem.PlayAudioSource(soundFx[6], 1, 1);
                     statusText.text = "All Swords Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1663,7 +1659,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.FlareSword:
                 {
-                    audioSrc.PlayOneShot(soundFx[7]);
+                    AudioSystem.PlayAudioSource(soundFx[7], 1, 1);
                     statusText.text = "Flare Sword Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1674,7 +1670,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.LightningSword:
                 {
-                    audioSrc.PlayOneShot(soundFx[8]);
+                    AudioSystem.PlayAudioSource(soundFx[8], 1, 1);
                     statusText.text = "Lightning Sword Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1685,7 +1681,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.FrostSword:
                 {
-                    audioSrc.PlayOneShot(soundFx[9]);
+                    AudioSystem.PlayAudioSource(soundFx[9], 1, 1);
                     statusText.text = "Frost Sword Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1696,7 +1692,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.TerraSword:
                 {
-                    audioSrc.PlayOneShot(soundFx[10]);
+                    AudioSystem.PlayAudioSource(soundFx[10], 1, 1);
                     statusText.text = "Terra Sword Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1708,7 +1704,7 @@ public class DebugSystem : MonoBehaviour
             //-------------------------------Journals----------------------------------//
             case Code.AllJournals:
                 {
-                    audioSrc.PlayOneShot(soundFx[75]);
+                    AudioSystem.PlayAudioSource(soundFx[75], 1, 1);
                     statusText.text = "All Journals Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1719,7 +1715,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.Discovery1:
                 {
-                    audioSrc.PlayOneShot(soundFx[78]);
+                    AudioSystem.PlayAudioSource(soundFx[78], 1, 1);
                     statusText.text = "Island Discovery - ID-0 Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1730,7 +1726,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.History1:
                 {
-                    audioSrc.PlayOneShot(soundFx[89]);
+                    AudioSystem.PlayAudioSource(soundFx[89], 1, 1);
                     statusText.text = "Ancient History - AH-0 Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1741,7 +1737,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.History2:
                 {
-                    audioSrc.PlayOneShot(soundFx[86]);
+                    AudioSystem.PlayAudioSource(soundFx[86], 1, 1);
                     statusText.text = "Ancient History - AH-1 Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1752,7 +1748,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.History3:
                 {
-                    audioSrc.PlayOneShot(soundFx[84]);
+                    AudioSystem.PlayAudioSource(soundFx[84], 1, 1);
                     statusText.text = "Ancient History - AH-2 Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1763,7 +1759,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.History4:
                 {
-                    audioSrc.PlayOneShot(soundFx[85]);
+                    AudioSystem.PlayAudioSource(soundFx[85], 1, 1);
                     statusText.text = "Ancient History - AH-3 Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1774,7 +1770,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.History5:
                 {
-                    audioSrc.PlayOneShot(soundFx[87]);
+                    AudioSystem.PlayAudioSource(soundFx[87], 1, 1);
                     statusText.text = "Ancient History - AH-4 Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1785,7 +1781,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.History6:
                 {
-                    audioSrc.PlayOneShot(soundFx[88]);
+                    AudioSystem.PlayAudioSource(soundFx[88], 1, 1);
                     statusText.text = "Ancient History - AH-5 Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1796,7 +1792,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.CodeBook1:
                 {
-                    audioSrc.PlayOneShot(soundFx[93]);
+                    AudioSystem.PlayAudioSource(soundFx[93], 1, 1);
                     statusText.text = "Decoded Script - DS-0 Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1807,7 +1803,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.CodeBook2:
                 {
-                    audioSrc.PlayOneShot(soundFx[93]);
+                    AudioSystem.PlayAudioSource(soundFx[93], 1, 1);
                     statusText.text = "Decoded Script - DS-1 Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1818,7 +1814,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.Discovery2:
                 {
-                    audioSrc.PlayOneShot(soundFx[82]);
+                    AudioSystem.PlayAudioSource(soundFx[82], 1, 1);
                     statusText.text = "Island discovery - ID-1 Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1830,7 +1826,7 @@ public class DebugSystem : MonoBehaviour
             //-------------------------------Armor----------------------------------//
             case Code.AllArmor:
                 {
-                    audioSrc.PlayOneShot(soundFx[11]);
+                    AudioSystem.PlayAudioSource(soundFx[11], 1, 1);
                     statusText.text = "All Armor Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1844,7 +1840,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.HelixArmor:
                 {
-                    audioSrc.PlayOneShot(soundFx[12]);
+                    AudioSystem.PlayAudioSource(soundFx[12], 1, 1);
                     statusText.text = "Helix Armor Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1855,7 +1851,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.ApexArmor:
                 {
-                    audioSrc.PlayOneShot(soundFx[13]);
+                    AudioSystem.PlayAudioSource(soundFx[13], 1, 1);
                     statusText.text = "Apex Armor Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1866,7 +1862,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.MythicArmor:
                 {
-                    audioSrc.PlayOneShot(soundFx[14]);
+                    AudioSystem.PlayAudioSource(soundFx[14], 1, 1);
                     statusText.text = "Mythic Armor Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1877,7 +1873,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.LegendaryArmor:
                 {
-                    audioSrc.PlayOneShot(soundFx[15]);
+                    AudioSystem.PlayAudioSource(soundFx[15], 1, 1);
                     statusText.text = "Legendary Armor Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1889,7 +1885,7 @@ public class DebugSystem : MonoBehaviour
             //-------------------------------Boot----------------------------------//
             case Code.AllBoots:
                 {
-                    audioSrc.PlayOneShot(soundFx[16]);
+                    AudioSystem.PlayAudioSource(soundFx[16], 1, 1);
                     statusText.text = "All Boots Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1903,7 +1899,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.HoverBoots:
                 {
-                    audioSrc.PlayOneShot(soundFx[17]);
+                    AudioSystem.PlayAudioSource(soundFx[17], 1, 1);
                     statusText.text = "Hovers Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1914,7 +1910,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.CinderBoots:
                 {
-                    audioSrc.PlayOneShot(soundFx[18]);
+                    AudioSystem.PlayAudioSource(soundFx[18], 1, 1);
                     statusText.text = "Cinders Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1925,7 +1921,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.StormBoots:
                 {
-                    audioSrc.PlayOneShot(soundFx[19]);
+                    AudioSystem.PlayAudioSource(soundFx[19], 1, 1);
                     statusText.text = "Storms Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1936,7 +1932,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.MedicalBoots:
                 {
-                    audioSrc.PlayOneShot(soundFx[20]);
+                    AudioSystem.PlayAudioSource(soundFx[20], 1, 1);
                     statusText.text = "Medicals Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1948,7 +1944,7 @@ public class DebugSystem : MonoBehaviour
             //-------------------------------Jewel----------------------------------//
             case Code.AllJewels:
                 {
-                    audioSrc.PlayOneShot(soundFx[21]);
+                    AudioSystem.PlayAudioSource(soundFx[21], 1, 1);
                     statusText.text = "All Jewels Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1963,7 +1959,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.RedJewel:
                 {
-                    audioSrc.PlayOneShot(soundFx[22]);
+                    AudioSystem.PlayAudioSource(soundFx[22], 1, 1);
                     statusText.text = "Jewel of Power Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1974,7 +1970,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.BlueJewel:
                 {
-                    audioSrc.PlayOneShot(soundFx[23]);
+                    AudioSystem.PlayAudioSource(soundFx[23], 1, 1);
                     statusText.text = "Jewel of Spirit Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1985,7 +1981,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.GreenJewel:
                 {
-                    audioSrc.PlayOneShot(soundFx[24]);
+                    AudioSystem.PlayAudioSource(soundFx[24], 1, 1);
                     statusText.text = "Jewel of Time Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -1996,7 +1992,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.YellowJewel:
                 {
-                    audioSrc.PlayOneShot(soundFx[25]);
+                    AudioSystem.PlayAudioSource(soundFx[25], 1, 1);
                     statusText.text = "Jewel of Light Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2007,7 +2003,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.PurpleJewel:
                 {
-                    audioSrc.PlayOneShot(soundFx[26]);
+                    AudioSystem.PlayAudioSource(soundFx[26], 1, 1);
                     statusText.text = "Jewel of Dark Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2019,7 +2015,7 @@ public class DebugSystem : MonoBehaviour
             //-------------------------------Item----------------------------------//
             case Code.AllItems:
                 {
-                    audioSrc.PlayOneShot(soundFx[27]);
+                    AudioSystem.PlayAudioSource(soundFx[27], 1, 1);
                     statusText.text = "Give All Items";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2042,7 +2038,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.LifeBerry:
                 {
-                    audioSrc.PlayOneShot(soundFx[28]);
+                    AudioSystem.PlayAudioSource(soundFx[28], 1, 1);
                     statusText.text = "Max Life Berries";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2053,7 +2049,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.Rixile:
                 {
-                    audioSrc.PlayOneShot(soundFx[29]);
+                    AudioSystem.PlayAudioSource(soundFx[29], 1, 1);
                     statusText.text = "Max Rixiles";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2064,7 +2060,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.NicirPlant:
                 {
-                    audioSrc.PlayOneShot(soundFx[30]);
+                    AudioSystem.PlayAudioSource(soundFx[30], 1, 1);
                     statusText.text = "Max Nicir Plants";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2075,7 +2071,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.MindRemedy:
                 {
-                    audioSrc.PlayOneShot(soundFx[31]);
+                    AudioSystem.PlayAudioSource(soundFx[31], 1, 1);
                     statusText.text = "Max Mind Remedies";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2086,7 +2082,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.PetriShroom:
                 {
-                    audioSrc.PlayOneShot(soundFx[32]);
+                    AudioSystem.PlayAudioSource(soundFx[32], 1, 1);
                     statusText.text = "Max Petri-Shrooms";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2097,7 +2093,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.ReliefOinment:
                 {
-                    audioSrc.PlayOneShot(soundFx[33]);
+                    AudioSystem.PlayAudioSource(soundFx[33], 1, 1);
                     statusText.text = "Max Relief Ointments";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2108,7 +2104,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.TerraIdol:
                 {
-                    audioSrc.PlayOneShot(soundFx[34]);
+                    AudioSystem.PlayAudioSource(soundFx[34], 1, 1);
                     statusText.text = "Max Terra Idols";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2119,7 +2115,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.MagicIdol:
                 {
-                    audioSrc.PlayOneShot(soundFx[35]);
+                    AudioSystem.PlayAudioSource(soundFx[35], 1, 1);
                     statusText.text = "Max Magic Idols";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2130,7 +2126,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.Key:
                 {
-                    audioSrc.PlayOneShot(soundFx[36]);
+                    AudioSystem.PlayAudioSource(soundFx[36], 1, 1);
                     statusText.text = "Max Keys";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2141,7 +2137,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.DemonMask:
                 {
-                    audioSrc.PlayOneShot(soundFx[37]);
+                    AudioSystem.PlayAudioSource(soundFx[37], 1, 1);
                     statusText.text = "Demon Mask Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2152,7 +2148,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.MoonPearl:
                 {
-                    audioSrc.PlayOneShot(soundFx[38]);
+                    AudioSystem.PlayAudioSource(soundFx[38], 1, 1);
                     statusText.text = "Moon Pearl Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2163,7 +2159,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.MarkOfEtymology:
                 {
-                    audioSrc.PlayOneShot(soundFx[80]);
+                    AudioSystem.PlayAudioSource(soundFx[80], 1, 1);
                     statusText.text = "Mark of Etymology Unlocked";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2175,7 +2171,7 @@ public class DebugSystem : MonoBehaviour
             //-------------------------------Effects----------------------------------//
             case Code.AllEffectsOn:
                 {
-                    audioSrc.PlayOneShot(soundFx[39]);
+                    AudioSystem.PlayAudioSource(soundFx[39], 1, 1);
                     statusText.text = "All Status Effects On";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2189,7 +2185,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.AllEffectsOff:
                 {
-                    audioSrc.PlayOneShot(soundFx[40]);
+                    AudioSystem.PlayAudioSource(soundFx[40], 1, 1);
                     statusText.text = "All Status Effects Off";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2203,7 +2199,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.PoisonMinOn:
                 {
-                    audioSrc.PlayOneShot(soundFx[41]);
+                    AudioSystem.PlayAudioSource(soundFx[41], 1, 1);
                     statusText.text = "Minimally Poisoned On";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2214,7 +2210,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.PoisonMinOff:
                 {
-                    audioSrc.PlayOneShot(soundFx[42]);
+                    AudioSystem.PlayAudioSource(soundFx[42], 1, 1);
                     statusText.text = "Minimally Poisoned Off";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2225,7 +2221,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.PoisonMaxOn:
                 {
-                    audioSrc.PlayOneShot(soundFx[43]);
+                    AudioSystem.PlayAudioSource(soundFx[43], 1, 1);
                     statusText.text = "Maximally Poisoned On";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2236,7 +2232,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.PoisonMaxOff:
                 {
-                    audioSrc.PlayOneShot(soundFx[44]);
+                    AudioSystem.PlayAudioSource(soundFx[44], 1, 1);
                     statusText.text = "Maximally Poisoned Off";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2247,7 +2243,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.ConfuseOn:
                 {
-                    audioSrc.PlayOneShot(soundFx[45]);
+                    AudioSystem.PlayAudioSource(soundFx[45], 1, 1);
                     statusText.text = "Confusion On";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2258,7 +2254,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.ConfuseOff:
                 {
-                    audioSrc.PlayOneShot(soundFx[46]);
+                    AudioSystem.PlayAudioSource(soundFx[46], 1, 1);
                     statusText.text = "Confusion Off";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2269,7 +2265,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.SilenceOn:
                 {
-                    audioSrc.PlayOneShot(soundFx[47]);
+                    AudioSystem.PlayAudioSource(soundFx[47], 1, 1);
                     statusText.text = "Silenced On";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2280,7 +2276,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.SilenceOff:
                 {
-                    audioSrc.PlayOneShot(soundFx[48]);
+                    AudioSystem.PlayAudioSource(soundFx[48], 1, 1);
                     statusText.text = "Silenced Off";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2291,7 +2287,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.ParalyzedOn:
                 {
-                    audioSrc.PlayOneShot(soundFx[49]);
+                    AudioSystem.PlayAudioSource(soundFx[49], 1, 1);
                     statusText.text = "Paralysis On";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2302,7 +2298,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.ParalyzedOff:
                 {
-                    audioSrc.PlayOneShot(soundFx[50]);
+                    AudioSystem.PlayAudioSource(soundFx[50], 1, 1);
                     statusText.text = "Paralysis Off";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2314,7 +2310,7 @@ public class DebugSystem : MonoBehaviour
             //-------------------------------Player----------------------------------//
             case Code.HealthMax:
                 {
-                    audioSrc.PlayOneShot(soundFx[51]);
+                    AudioSystem.PlayAudioSource(soundFx[51], 1, 1);
                     statusText.text = "Full Health";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2325,7 +2321,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.SetHealth:
                 {
-                    audioSrc.PlayOneShot(soundFx[52]);
+                    AudioSystem.PlayAudioSource(soundFx[52], 1, 1);
                     statusText.text = "Adjust Health";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2336,7 +2332,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.VitalityMax:
                 {
-                    audioSrc.PlayOneShot(soundFx[53]);
+                    AudioSystem.PlayAudioSource(soundFx[53], 1, 1);
                     statusText.text = "Full Vitality";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2347,7 +2343,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.SetVitality:
                 {
-                    audioSrc.PlayOneShot(soundFx[54]);
+                    AudioSystem.PlayAudioSource(soundFx[54], 1, 1);
                     statusText.text = "Adjust Vitality";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2358,7 +2354,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.GoldMax:
                 {
-                    audioSrc.PlayOneShot(soundFx[55]);
+                    AudioSystem.PlayAudioSource(soundFx[55], 1, 1);
                     statusText.text = "Full Gold";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2369,7 +2365,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.AirMax:
                 {
-                    audioSrc.PlayOneShot(soundFx[81]);
+                    AudioSystem.PlayAudioSource(soundFx[81], 1, 1);
                     statusText.text = "Air Tank";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2380,7 +2376,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.SetGold:
                 {
-                    audioSrc.PlayOneShot(soundFx[56]);
+                    AudioSystem.PlayAudioSource(soundFx[56], 1, 1);
                     statusText.text = "Adjust Gold";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2391,7 +2387,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.CameraOn:
                 {
-                    audioSrc.PlayOneShot(soundFx[57]);
+                    AudioSystem.PlayAudioSource(soundFx[57], 1, 1);
                     cameraMode = true;
                     GameObject playerArms = GameObject.Find("Core/Player/PlayerController/Head/PlayerCamera/Recoil");
                     GameObject playerCanvas = GameObject.Find("Core/Player/PlayerCanvas/GameUI");
@@ -2401,7 +2397,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.CameraOff:
                 {
-                    audioSrc.PlayOneShot(soundFx[58]);
+                    AudioSystem.PlayAudioSource(soundFx[58], 1, 1);
                     cameraMode = false;
                     GameObject playerArms = GameObject.Find("Core/Player/PlayerController/Head/PlayerCamera/Recoil");
                     GameObject playerCanvas = GameObject.Find("Core/Player/PlayerCanvas/GameUI");
@@ -2411,14 +2407,14 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.SwimmingOn:
                 {
-                    audioSrc.PlayOneShot(soundFx[83]);
+                    AudioSystem.PlayAudioSource(soundFx[83], 1, 1);
                     swimmingMode = true;
                     underWaterSystem.DebugSwimming(true);
                     break;
                 }
             case Code.SwimmingOff:
                 {
-                    audioSrc.PlayOneShot(soundFx[92]);
+                    AudioSystem.PlayAudioSource(soundFx[92], 1, 1);
                     swimmingMode = false;
                     underWaterSystem.DebugSwimming(false);
                     underWaterSystem.ResetAir();
@@ -2426,7 +2422,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.Kill:
                 {
-                    audioSrc.PlayOneShot(soundFx[59]);
+                    AudioSystem.PlayAudioSource(soundFx[59], 1, 1);
                     statusText.text = "Player Dead";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2437,7 +2433,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.SavePos:
                 {
-                    audioSrc.PlayOneShot(soundFx[60]);
+                    AudioSystem.PlayAudioSource(soundFx[60], 1, 1);
                     statusText.text = "Position Saved";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2448,7 +2444,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.LoadPos:
                 {
-                    audioSrc.PlayOneShot(soundFx[61]);
+                    AudioSystem.PlayAudioSource(soundFx[61], 1, 1);
                     statusText.text = "Position Loaded";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2458,13 +2454,12 @@ public class DebugSystem : MonoBehaviour
                     characterSystem.SetPosition();
                     sceneSystem.EnablePlayer(false);
                     playerSystem.LoadPosition();
-                   
                     break;
                 }
             //-------------------------------Shop----------------------------------//
             case Code.ShopDuskCliff:
                 {
-                    audioSrc.PlayOneShot(soundFx[62]);
+                    AudioSystem.PlayAudioSource(soundFx[62], 1, 1);
                     statusText.text = "Buy From DuskCliff";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2476,7 +2471,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.ShopWindAcre:
                 {
-                    audioSrc.PlayOneShot(soundFx[63]);
+                    AudioSystem.PlayAudioSource(soundFx[63], 1, 1);
                     statusText.text = "Buy From WindAcre";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2488,7 +2483,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.ShopSkulkcove:
                 {
-                    audioSrc.PlayOneShot(soundFx[64]);
+                    AudioSystem.PlayAudioSource(soundFx[64], 1, 1);
                     statusText.text = "Skulkcove Not Available";
                     if (statusRoutine != null)
                         StopCoroutine(statusRoutine);
@@ -2501,7 +2496,7 @@ public class DebugSystem : MonoBehaviour
             //-------------------------------Scene----------------------------------//
             case Code.Title:
                 {
-                    audioSrc.PlayOneShot(soundFx[65]);
+                    AudioSystem.PlayAudioSource(soundFx[65], 1, 1);
                     GameObject enemyUIObjs = GameObject.Find("Core/Player/PopUpCanvas/EnemyUIStorage");
                     foreach (Transform child in enemyUIObjs.transform)
                     {
@@ -2511,13 +2506,11 @@ public class DebugSystem : MonoBehaviour
                     sceneSystem.gameUI.SetActive(false);
                     IEnumerator blackScreen = sceneSystem.FadeIn(1.0f, 2.0f, sceneSystem.blackScreenGame, true);
                     StartCoroutine(blackScreen);
-
-                    AudioSource musicAudioSrc = GameObject.Find("Core/GameMusic&Sound/GameMusic").GetComponent<AudioSource>();
-                    if (musicAudioSrc.isPlaying)
+                    if (M_audioSrc.isPlaying)
                     {
                         if (audioRoutine != null)
                             StopCoroutine(audioRoutine);
-                        audioRoutine = AudioFadeOut(musicAudioSrc);
+                        audioRoutine = AudioFadeOut(M_audioSrc);
                         StartCoroutine(audioRoutine);
                     }
                     statusText.text = "Loading Main Menu";
@@ -2530,7 +2523,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.Intro:
                 {
-                    audioSrc.PlayOneShot(soundFx[66]);
+                    AudioSystem.PlayAudioSource(soundFx[66], 1, 1);
                     GameObject enemyUIObjs = GameObject.Find("Core/Player/PopUpCanvas/EnemyUIStorage");
                     foreach (Transform child in enemyUIObjs.transform)
                     {
@@ -2541,12 +2534,12 @@ public class DebugSystem : MonoBehaviour
                     IEnumerator blackScreen = sceneSystem.FadeIn(1.0f, 2.0f, sceneSystem.blackScreenGame, true);
                     StartCoroutine(blackScreen);
 
-                    AudioSource musicAudioSrc = GameObject.Find("Core/GameMusic&Sound/GameMusic").GetComponent<AudioSource>();
-                    if (musicAudioSrc.isPlaying)
+                    
+                    if (M_audioSrc.isPlaying)
                     {
                         if (audioRoutine != null)
                             StopCoroutine(audioRoutine);
-                        audioRoutine = AudioFadeOut(musicAudioSrc);
+                        audioRoutine = AudioFadeOut(M_audioSrc);
                         StartCoroutine(audioRoutine);
                     }
                     statusText.text = "Loading Rafter's Bargain";
@@ -2559,7 +2552,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.Over:
                 {
-                    audioSrc.PlayOneShot(soundFx[67]);
+                    AudioSystem.PlayAudioSource(soundFx[67], 1, 1);
                     GameObject enemyUIObjs = GameObject.Find("Core/Player/PopUpCanvas/EnemyUIStorage");
                     foreach (Transform child in enemyUIObjs.transform)
                     {
@@ -2570,12 +2563,12 @@ public class DebugSystem : MonoBehaviour
                     IEnumerator blackScreen = sceneSystem.FadeIn(1.0f, 2.0f, sceneSystem.blackScreenGame, true);
                     StartCoroutine(blackScreen);
 
-                    AudioSource musicAudioSrc = GameObject.Find("Core/GameMusic&Sound/GameMusic").GetComponent<AudioSource>();
-                    if (musicAudioSrc.isPlaying)
+                    
+                    if (M_audioSrc.isPlaying)
                     {
                         if (audioRoutine != null)
                             StopCoroutine(audioRoutine);
-                        audioRoutine = AudioFadeOut(musicAudioSrc);
+                        audioRoutine = AudioFadeOut(M_audioSrc);
                         StartCoroutine(audioRoutine);
                     }
                     statusText.text = "Loading Conquest Island";
@@ -2588,7 +2581,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.Dungeon1:
                 {
-                    audioSrc.PlayOneShot(soundFx[68]);
+                    AudioSystem.PlayAudioSource(soundFx[68], 1, 1);
                     GameObject enemyUIObjs = GameObject.Find("Core/Player/PopUpCanvas/EnemyUIStorage");
                     foreach (Transform child in enemyUIObjs.transform)
                     {
@@ -2599,12 +2592,12 @@ public class DebugSystem : MonoBehaviour
                     IEnumerator blackScreen = sceneSystem.FadeIn(1.0f, 2.0f, sceneSystem.blackScreenGame, true);
                     StartCoroutine(blackScreen);
 
-                    AudioSource musicAudioSrc = GameObject.Find("Core/GameMusic&Sound/GameMusic").GetComponent<AudioSource>();
-                    if (musicAudioSrc.isPlaying)
+                    
+                    if (M_audioSrc.isPlaying)
                     {
                         if (audioRoutine != null)
                             StopCoroutine(audioRoutine);
-                        audioRoutine = AudioFadeOut(musicAudioSrc);
+                        audioRoutine = AudioFadeOut(M_audioSrc);
                         StartCoroutine(audioRoutine);
                     }
                     statusText.text = "Loading Riverfall Shrine";
@@ -2617,7 +2610,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.Dungeon2:
                 {
-                    audioSrc.PlayOneShot(soundFx[69]);
+                    AudioSystem.PlayAudioSource(soundFx[69], 1, 1);
                     GameObject enemyUIObjs = GameObject.Find("Core/Player/PopUpCanvas/EnemyUIStorage");
                     foreach (Transform child in enemyUIObjs.transform)
                     {
@@ -2628,12 +2621,12 @@ public class DebugSystem : MonoBehaviour
                     IEnumerator blackScreen = sceneSystem.FadeIn(1.0f, 2.0f, sceneSystem.blackScreenGame, true);
                     StartCoroutine(blackScreen);
 
-                    AudioSource musicAudioSrc = GameObject.Find("Core/GameMusic&Sound/GameMusic").GetComponent<AudioSource>();
-                    if (musicAudioSrc.isPlaying)
+                    
+                    if (M_audioSrc.isPlaying)
                     {
                         if (audioRoutine != null)
                             StopCoroutine(audioRoutine);
-                        audioRoutine = AudioFadeOut(musicAudioSrc);
+                        audioRoutine = AudioFadeOut(M_audioSrc);
                         StartCoroutine(audioRoutine);
                     }
                     statusText.text = "Loading Abandoned Ruins";
@@ -2646,7 +2639,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.Dungeon3:
                 {
-                    audioSrc.PlayOneShot(soundFx[90]);
+                    AudioSystem.PlayAudioSource(soundFx[90], 1, 1);
                     GameObject enemyUIObjs = GameObject.Find("Core/Player/PopUpCanvas/EnemyUIStorage");
                     foreach (Transform child in enemyUIObjs.transform)
                     {
@@ -2657,12 +2650,12 @@ public class DebugSystem : MonoBehaviour
                     IEnumerator blackScreen = sceneSystem.FadeIn(1.0f, 2.0f, sceneSystem.blackScreenGame, true);
                     StartCoroutine(blackScreen);
 
-                    AudioSource musicAudioSrc = GameObject.Find("Core/GameMusic&Sound/GameMusic").GetComponent<AudioSource>();
-                    if (musicAudioSrc.isPlaying)
+                    
+                    if (M_audioSrc.isPlaying)
                     {
                         if (audioRoutine != null)
                             StopCoroutine(audioRoutine);
-                        audioRoutine = AudioFadeOut(musicAudioSrc);
+                        audioRoutine = AudioFadeOut(M_audioSrc);
                         StartCoroutine(audioRoutine);
                     }
                     statusText.text = "Loading Well Pathway";
@@ -2675,7 +2668,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.DwellingTimber:
                 {
-                    audioSrc.PlayOneShot(soundFx[77]);
+                    AudioSystem.PlayAudioSource(soundFx[77], 1, 1);
                     GameObject enemyUIObjs = GameObject.Find("Core/Player/PopUpCanvas/EnemyUIStorage");
                     foreach (Transform child in enemyUIObjs.transform)
                     {
@@ -2686,12 +2679,12 @@ public class DebugSystem : MonoBehaviour
                     IEnumerator blackScreen = sceneSystem.FadeIn(1.0f, 2.0f, sceneSystem.blackScreenGame, true);
                     StartCoroutine(blackScreen);
 
-                    AudioSource musicAudioSrc = GameObject.Find("Core/GameMusic&Sound/GameMusic").GetComponent<AudioSource>();
-                    if (musicAudioSrc.isPlaying)
+                    
+                    if (M_audioSrc.isPlaying)
                     {
                         if (audioRoutine != null)
                             StopCoroutine(audioRoutine);
-                        audioRoutine = AudioFadeOut(musicAudioSrc);
+                        audioRoutine = AudioFadeOut(M_audioSrc);
                         StartCoroutine(audioRoutine);
                     }
                     statusText.text = "Loading Dwelling Timber";
@@ -2704,7 +2697,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.GhostShip:
                 {
-                    audioSrc.PlayOneShot(soundFx[70]);
+                    AudioSystem.PlayAudioSource(soundFx[70], 1, 1);
                     GameObject enemyUIObjs = GameObject.Find("Core/Player/PopUpCanvas/EnemyUIStorage");
                     foreach (Transform child in enemyUIObjs.transform)
                     {
@@ -2715,12 +2708,12 @@ public class DebugSystem : MonoBehaviour
                     IEnumerator blackScreen = sceneSystem.FadeIn(1.0f, 2.0f, sceneSystem.blackScreenGame, true);
                     StartCoroutine(blackScreen);
 
-                    AudioSource musicAudioSrc = GameObject.Find("Core/GameMusic&Sound/GameMusic").GetComponent<AudioSource>();
-                    if (musicAudioSrc.isPlaying)
+                    
+                    if (M_audioSrc.isPlaying)
                     {
                         if (audioRoutine != null)
                             StopCoroutine(audioRoutine);
-                        audioRoutine = AudioFadeOut(musicAudioSrc);
+                        audioRoutine = AudioFadeOut(M_audioSrc);
                         StartCoroutine(audioRoutine);
                     }
                     statusText.text = "Loading The Cursed Grail";
@@ -2733,7 +2726,7 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.Temple1:
                 {
-                    audioSrc.PlayOneShot(soundFx[71]);
+                    AudioSystem.PlayAudioSource(soundFx[71], 1, 1);
                     GameObject enemyUIObjs = GameObject.Find("Core/Player/PopUpCanvas/EnemyUIStorage");
                     foreach (Transform child in enemyUIObjs.transform)
                     {
@@ -2743,13 +2736,11 @@ public class DebugSystem : MonoBehaviour
                     sceneSystem.gameUI.SetActive(false);
                     IEnumerator blackScreen = sceneSystem.FadeIn(1.0f, 2.0f, sceneSystem.blackScreenGame, true);
                     StartCoroutine(blackScreen);
-
-                    AudioSource musicAudioSrc = GameObject.Find("Core/GameMusic&Sound/GameMusic").GetComponent<AudioSource>();
-                    if (musicAudioSrc.isPlaying)
+                    if (M_audioSrc.isPlaying)
                     {
                         if (audioRoutine != null)
                             StopCoroutine(audioRoutine);
-                        audioRoutine = AudioFadeOut(musicAudioSrc);
+                        audioRoutine = AudioFadeOut(M_audioSrc);
                         StartCoroutine(audioRoutine);
                     }
                     statusText.text = "Loading Temple of Reign";
@@ -2762,18 +2753,16 @@ public class DebugSystem : MonoBehaviour
                 }
             case Code.Prototype:
                 {
-                    audioSrc.PlayOneShot(soundFx[72]);
+                    AudioSystem.PlayAudioSource(soundFx[72], 1, 1);
                     characterSystem.SelectAnimation(CharacterSystem.PlayerAnimation.Rebind, true);
                     sceneSystem.gameUI.SetActive(false);
                     IEnumerator blackScreen = sceneSystem.FadeIn(1.0f, 2.0f, sceneSystem.blackScreenGame, true);
                     StartCoroutine(blackScreen);
-
-                    AudioSource musicAudioSrc = GameObject.Find("Core/GameMusic&Sound/GameMusic").GetComponent<AudioSource>();
-                    if (musicAudioSrc.isPlaying)
+                    if (M_audioSrc.isPlaying)
                     {
                         if (audioRoutine != null)
                             StopCoroutine(audioRoutine);
-                        audioRoutine = AudioFadeOut(musicAudioSrc);
+                        audioRoutine = AudioFadeOut(M_audioSrc);
                         StartCoroutine(audioRoutine);
                     }
                     statusText.text = "Loading N163LPH03N1X's Army";

@@ -8,7 +8,7 @@ public enum SwordActive { mythril, flare, lightning, frost, terra}
 public class SwordSystem : MonoBehaviour
 {
     public SwordActive swordActive;
-
+    OptSystem optSystem = new OptSystem();
 
     public SwordUI swordUI;
     CharacterSystem Character;
@@ -173,7 +173,7 @@ public class SwordSystem : MonoBehaviour
             isAttacking = false;
         else if (anim.GetCurrentAnimatorStateInfo(0).IsName("Run"))
             isAttacking = false;
-        if (Input.GetButtonDown("Attack") && !CharacterSystem.isClimbing && !CharacterSystem.isCarrying && 
+        if (optSystem.Input.GetButtonDown("Attack") && !CharacterSystem.isClimbing && !CharacterSystem.isCarrying && 
             !UnderWaterSystem.isSwimming && !PauseGame.isPaused && !WeakAttacked && !isAttacking && 
             !SceneSystem.isDisabled && !UnArmed && !isSilenced && !CharacterSystem.isParalyzed && 
             !ShopSystem.isShop && !JewelSystem.isJewelEnabled && !PlayerSystem.isDead)
@@ -184,7 +184,7 @@ public class SwordSystem : MonoBehaviour
         }
         else
             WeakAttacked = false;
-        if (Input.GetButton("Sheath") && !CharacterSystem.isJumping && !CharacterSystem.isClimbing && !CharacterSystem.isCarrying && 
+        if (optSystem.Input.GetButton("Sheath") && !CharacterSystem.isJumping && !CharacterSystem.isClimbing && !CharacterSystem.isCarrying && 
             !UnderWaterSystem.isSwimming && !PauseGame.isPaused && !ShopSystem.isShop && !WeakAttacked && 
             !isAttacking && !SceneSystem.isDisabled && !isSilenced && !CharacterSystem.isParalyzed && 
             !PlayerSystem.isDead)
@@ -217,7 +217,7 @@ public class SwordSystem : MonoBehaviour
                 putAwayTime = 0;
             }
         }
-        else if (Input.GetButtonUp("Sheath"))
+        else if (optSystem.Input.GetButtonUp("Sheath"))
             putAwayTime = putAwayTimer;
         handler();
         SwordParticleEmissions();

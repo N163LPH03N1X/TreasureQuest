@@ -7,6 +7,7 @@ public enum JewelActive {none, red, blue, green, yellow, purple }
 
 public class JewelSystem : MonoBehaviour
 {
+    OptSystem optSystem = new OptSystem();
     public AudioSource audioSrc;
     public AudioClip shockwaveFx;
     CharacterSystem charSys;
@@ -110,9 +111,9 @@ public class JewelSystem : MonoBehaviour
      
         if (hasJewel && isJewelEnabled && !initJewelPower && !isJewelActive && !SelectionalSystem.isSelecting && !PlayerSystem.isDead)
         {
-            if(Input.GetAxisRaw("Power") == 1 && !CharacterSystem.isCarrying && !PauseGame.isPaused && !SwordSystem.isAttacking && !SceneSystem.isDisabled && !SwordSystem.isSilenced && !CharacterSystem.isParalyzed && !ShopSystem.isShop || 
-                Input.GetAxisRaw("Power") == -1 && !CharacterSystem.isCarrying && !PauseGame.isPaused && !SwordSystem.isAttacking && !SceneSystem.isDisabled && !SwordSystem.isSilenced && !CharacterSystem.isParalyzed && !ShopSystem.isShop ||
-                     Input.GetButton("Power") && !CharacterSystem.isCarrying && !PauseGame.isPaused && !SwordSystem.isAttacking && !SceneSystem.isDisabled && !SwordSystem.isSilenced && !CharacterSystem.isParalyzed && !ShopSystem.isShop)
+            if(optSystem.Input.GetAxisRaw("Power") == 1 && !CharacterSystem.isCarrying && !PauseGame.isPaused && !SwordSystem.isAttacking && !SceneSystem.isDisabled && !SwordSystem.isSilenced && !CharacterSystem.isParalyzed && !ShopSystem.isShop ||
+                optSystem.Input.GetAxisRaw("Power") == -1 && !CharacterSystem.isCarrying && !PauseGame.isPaused && !SwordSystem.isAttacking && !SceneSystem.isDisabled && !SwordSystem.isSilenced && !CharacterSystem.isParalyzed && !ShopSystem.isShop ||
+                     optSystem.Input.GetButton("Power") && !CharacterSystem.isCarrying && !PauseGame.isPaused && !SwordSystem.isAttacking && !SceneSystem.isDisabled && !SwordSystem.isSilenced && !CharacterSystem.isParalyzed && !ShopSystem.isShop)
             {
                 charSys.SelectAnimation(CharacterSystem.PlayerAnimation.JewelActivated, true);
                 initJewelPower = true;
@@ -120,7 +121,7 @@ public class JewelSystem : MonoBehaviour
         }
         else if(SelectionalSystem.isSelecting)
             initJewelPower = false;
-        if (hasJewel && Input.GetButton("Engage") && !PlayerSystem.isDead && !CharacterSystem.isCarrying && !PauseGame.isPaused && !SwordSystem.isAttacking && !SceneSystem.isDisabled && !SwordSystem.isSilenced && !CharacterSystem.isParalyzed && !ShopSystem.isShop) 
+        if (hasJewel && optSystem.Input.GetButton("Engage") && !PlayerSystem.isDead && !CharacterSystem.isCarrying && !PauseGame.isPaused && !SwordSystem.isAttacking && !SceneSystem.isDisabled && !SwordSystem.isSilenced && !CharacterSystem.isParalyzed && !ShopSystem.isShop) 
         {
             if (putAwayTime > 0)
                 putAwayTime -= Time.unscaledDeltaTime;
@@ -133,7 +134,7 @@ public class JewelSystem : MonoBehaviour
                 putAwayTime = 0;
             }
         }
-        else if (Input.GetButtonUp("Engage"))
+        else if (optSystem.Input.GetButtonUp("Engage"))
             putAwayTime = putAwayTimer;
        
 

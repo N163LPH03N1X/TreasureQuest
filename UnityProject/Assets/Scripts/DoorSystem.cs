@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class DoorSystem : MonoBehaviour
 {
+    OptSystem optSystem = new OptSystem();
     public int currentDoor;
     AudioSource audioSrc;
     Animator anim;
@@ -78,7 +79,7 @@ public class DoorSystem : MonoBehaviour
         {
             playerController = GameObject.FindGameObjectWithTag("Player");
             InteractionSystem interaction = playerController.GetComponent<InteractionSystem>();
-            if (Input.GetButtonDown("Submit") && !PauseGame.isPaused && !ShopSystem.isShop && !dialogueActive && !CharacterSystem.isCarrying)
+            if (optSystem.Input.GetButtonDown("Submit") && !PauseGame.isPaused && !ShopSystem.isShop && !dialogueActive && !CharacterSystem.isCarrying)
             {
                 if (isLocked)
                 {
@@ -98,7 +99,7 @@ public class DoorSystem : MonoBehaviour
                     needsToOpen = true;
                 }
             }
-            else if (Input.GetButtonDown("Submit") && dialogueActive && !CharacterSystem.isCarrying)
+            else if (optSystem.Input.GetButtonDown("Submit") && dialogueActive && !CharacterSystem.isCarrying)
             {
 
                 interaction.DialogueInteraction(false, null);

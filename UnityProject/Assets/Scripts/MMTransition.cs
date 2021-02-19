@@ -5,7 +5,7 @@ using System;
 
 public class MMTransition : MonoBehaviour
 {
-
+    OptSystem optSystem = new OptSystem();
     public Intro introMsg;
     public Material orgSky;
     string selectedMessage;
@@ -94,8 +94,8 @@ public class MMTransition : MonoBehaviour
             DynamicGI.UpdateEnvironment();
         }
 
-            if (Input.GetButtonDown("Pause") && !isStarted && pressStart.activeInHierarchy 
-            || Input.GetButtonDown("Submit") && !isStarted && pressStart.activeInHierarchy 
+            if (optSystem.Input.GetButtonDown("Pause") && !isStarted && pressStart.activeInHierarchy 
+            || optSystem.Input.GetButtonDown("Submit") && !isStarted && pressStart.activeInHierarchy 
             || Input.GetMouseButtonDown(0) && !isStarted && pressStart.activeInHierarchy
             || Input.GetMouseButtonDown(1) && !isStarted && pressStart.activeInHierarchy
             || Input.GetKeyDown(KeyCode.Space) && !isStarted && pressStart.activeInHierarchy)
@@ -111,8 +111,8 @@ public class MMTransition : MonoBehaviour
             soundAudioSrc.PlayOneShot(startEffect);
             isStarted = true;
         }
-        else if (Input.GetButtonDown("Pause") && isIntro
-            || Input.GetButtonDown("Submit") && isIntro
+        else if (optSystem.Input.GetButtonDown("Pause") && isIntro
+            || optSystem.Input.GetButtonDown("Submit") && isIntro
             || Input.GetMouseButtonDown(0) && isIntro
             || Input.GetMouseButtonDown(1) && isIntro
             || Input.GetKeyDown(KeyCode.Space) && isIntro)
@@ -144,7 +144,7 @@ public class MMTransition : MonoBehaviour
 
         for(int fo = 0; fo < 4; fo++)
         {
-            if (fileOpen[fo] && Input.GetButtonDown("Cancel"))
+            if (fileOpen[fo] && optSystem.Input.GetButtonDown("Cancel"))
                 DeselectFileAnimation(fo);
         }
     }

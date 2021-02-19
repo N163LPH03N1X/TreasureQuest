@@ -1,6 +1,5 @@
 ﻿using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections.Generic;
-using System.Collections;
 using UnityEngine;
 using Rewired;
 

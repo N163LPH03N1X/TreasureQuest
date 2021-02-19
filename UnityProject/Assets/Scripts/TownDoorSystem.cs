@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public enum CurShop { DuskCliff, WindAcre }
 public class TownDoorSystem : MonoBehaviour
 {
+    OptSystem optSystem = new OptSystem();
     public bool isShopDoor;
     public CurShop currentShop;
     Transform OutsideOfShopPos;
@@ -63,7 +64,7 @@ public class TownDoorSystem : MonoBehaviour
             }
             else if(!shopTrigger.GetComponent<ShopTrigger>().EnteredShop && !TimeSystem.isShophours)
                 anim.SetBool("Open", false);
-            else if(Input.GetButtonDown("Submit") && shopTrigger.GetComponent<ShopTrigger>().EnteredShop && !TimeSystem.isShophours && dialogueActive)
+            else if(optSystem.Input.GetButtonDown("Submit") && shopTrigger.GetComponent<ShopTrigger>().EnteredShop && !TimeSystem.isShophours && dialogueActive)
             {
                 SceneSystem sceneSys = GameObject.Find("Player").GetComponent<SceneSystem>();
                 sceneSys.EnablePlayer(false);
@@ -76,7 +77,7 @@ public class TownDoorSystem : MonoBehaviour
 
         if (inRange )
         {
-            if (Input.GetButtonDown("Submit") && !PauseGame.isPaused && !ShopSystem.isShop && !isOpen && !dialogueActive)
+            if (optSystem.Input.GetButtonDown("Submit") && !PauseGame.isPaused && !ShopSystem.isShop && !isOpen && !dialogueActive)
             {
                 if (!isShopDoor)
                 {
@@ -100,7 +101,7 @@ public class TownDoorSystem : MonoBehaviour
                     }
                 }
             }
-            else if (Input.GetButtonDown("Submit") && dialogueActive)
+            else if (optSystem.Input.GetButtonDown("Submit") && dialogueActive)
             {
                 GameObject playerController = GameObject.FindGameObjectWithTag("Player");
                 InteractionSystem interaction = playerController.GetComponent<InteractionSystem>();
@@ -108,7 +109,7 @@ public class TownDoorSystem : MonoBehaviour
                 dialogueActive = false;
 
             }
-            else if (Input.GetButtonDown("Submit") && isOpen)
+            else if (optSystem.Input.GetButtonDown("Submit") && isOpen)
                 anim.SetBool("Open", false);
         }
     }

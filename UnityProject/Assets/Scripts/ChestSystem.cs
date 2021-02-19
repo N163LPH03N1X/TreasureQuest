@@ -12,7 +12,7 @@ public enum Item
 
 public class ChestSystem : MonoBehaviour
 {
-
+    OptSystem optSystem = new OptSystem();
     public Item item;
     public int currentChest;
     public int itemAmount = 1;
@@ -48,7 +48,7 @@ public class ChestSystem : MonoBehaviour
             newInteraction.transform.position = statusPos;
             newInteraction.transform.localScale = new Vector3(1, 1, 1);
         }
-        if(Input.GetButtonDown("Submit") && Quit)
+        if(optSystem.Input.GetButtonDown("Submit") && Quit)
         {
             InteractionSystem interaction = GameObject.FindGameObjectWithTag("Player").GetComponent<InteractionSystem>();
             interaction.DialogueInteraction(false, null);
@@ -56,13 +56,13 @@ public class ChestSystem : MonoBehaviour
             sceneSys.QuitTheGame();
             Quit = false;
         }
-        else if(Input.GetButtonDown("Submit") && close)
+        else if(optSystem.Input.GetButtonDown("Submit") && close)
         {
             InteractionSystem interaction = GameObject.FindGameObjectWithTag("Player").GetComponent<InteractionSystem>();
             interaction.DialogueInteraction(false, null);
             close = false;
         }
-        else if (Input.GetButtonDown("Submit") && preview)
+        else if (optSystem.Input.GetButtonDown("Submit") && preview)
         {
             playerController = GameObject.FindGameObjectWithTag("Player");
             InteractionSystem interaction = playerController.GetComponent<InteractionSystem>();
@@ -74,7 +74,7 @@ public class ChestSystem : MonoBehaviour
         }
         if (inTerritory)
         {
-            if (Input.GetButtonDown("Submit") && !isOpen && !PauseGame.isPaused && !ShopSystem.isShop && !CharacterSystem.isCarrying && !CharacterSystem.isClimbing)
+            if (optSystem.Input.GetButtonDown("Submit") && !isOpen && !PauseGame.isPaused && !ShopSystem.isShop && !CharacterSystem.isCarrying && !CharacterSystem.isClimbing)
             {
                 isOpen = true;
                 playerController = GameObject.FindGameObjectWithTag("Player");
