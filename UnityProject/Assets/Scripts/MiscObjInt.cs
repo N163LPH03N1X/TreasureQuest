@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,8 +10,7 @@ public class MiscObjInt : MonoBehaviour
     public StoryType story;
     public int currentStory;
     public string buttonText;
-    GameObject popupCanvas;
-    GameObject newInteraction;
+
     Text intText;
     bool interactionActive;
     public GameObject interactionObj;
@@ -28,8 +26,13 @@ public class MiscObjInt : MonoBehaviour
     public int eventNum;
     public GameObject eventObject;
     bool isChecked = false;
-
     IEnumerator effectRoutine = null;
+    InteractionSystem interaction;
+    StorySystem storySystem;
+    CharacterSystem characterSystem;
+    Transform popupCanvas;
+    GameObject newInteraction;
+    SwordSystem swordSystem;
     public enum StoryType { fisherman, plaque1, plaque2, plaque3, plaque4, plaque5, plaque6, sign1, sign2, sign3, sign4, code1, code2, ghostShip }
 
     public void SelectStory(StoryType story)
@@ -109,6 +112,8 @@ public class MiscObjInt : MonoBehaviour
                 }
         }
     }
+
+
     void Update()
     {
         if (interactionActive && newInteraction != null)
@@ -123,13 +128,11 @@ public class MiscObjInt : MonoBehaviour
             {
                 if (optSystem.Input.GetButtonDown("Submit") && !PauseGame.isPaused && !active)
                 {
-                    CharacterSystem characterSystem = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterSystem>();
+                    characterSystem = PlayerSystem.playerTransform.GetComponent<CharacterSystem>();
                     characterSystem.SelectAnimation(CharacterSystem.PlayerAnimation.Rebind, true);
                     if (OpenStory && !StorySystem.isReading)
                     {
-                        GameObject playerController = GameObject.FindGameObjectWithTag("Player");
                         SelectStory(story);
-                        StorySystem storySystem = playerController.GetComponent<StorySystem>();
                         storySystem.StartStory(true);
 
                     }
@@ -137,44 +140,32 @@ public class MiscObjInt : MonoBehaviour
                     {
                         if (addDialogue)
                         {
-                            GameObject playerController = GameObject.FindGameObjectWithTag("Player");
-                            InteractionSystem interaction = playerController.GetComponent<InteractionSystem>();
+                            interaction = PlayerSystem.playerTransform.GetComponent<InteractionSystem>();
                             interaction.DialogueInteraction(true, message);
-                            if (useInstant)
-                                interaction.DialogueFill();
+                            if (useInstant) interaction.DialogueFill();
                         }
-
                     }
                     active = true;
                     SetupPopupCanvas(false, null);
                 }
                 else if (optSystem.Input.GetButtonDown("Submit") && !PauseGame.isPaused && active && !OpenStory)
                 {
-                   
-                    if (addDialogue)
-                    {
-                        GameObject playerController = GameObject.FindGameObjectWithTag("Player");
-                        InteractionSystem interaction = playerController.GetComponent<InteractionSystem>();
-                        interaction.DialogueInteraction(false, null);
-                    }
-                    if (useEvent)
-                        TriggerEvent(eventNum);
+                    interaction = PlayerSystem.playerTransform.GetComponent<InteractionSystem>();
+                    if (addDialogue) interaction.DialogueInteraction(false, null);
+                    if (useEvent) TriggerEvent(eventNum);
                     SetupPopupCanvas(false, null);
                     active = false;
                 }
                 else if (optSystem.Input.GetButtonUp("Submit") && OpenStory && active && !StorySystem.isReading && StorySystem.isBook)
                 {
-                    if (useEvent)
-                        TriggerEvent(eventNum);
+                    if (useEvent) TriggerEvent(eventNum);
                     active = false;
                     SetupPopupCanvas(true, buttonText);
                 }
                 else if(optSystem.Input.GetButtonDown("Submit") && OpenStory && active && StorySystem.isReading && !StorySystem.isBook)
                 {
-                    if (useEvent)
-                        TriggerEvent(eventNum);
-                    GameObject playerController = GameObject.FindGameObjectWithTag("Player");
-                    StorySystem storySystem = playerController.GetComponent<StorySystem>();
+                    storySystem = PlayerSystem.playerTransform.GetComponent<StorySystem>();
+                    if (useEvent) TriggerEvent(eventNum);
                     storySystem.StartStory(false);
                     active = false;
                     SetupPopupCanvas(true, buttonText);
@@ -186,31 +177,23 @@ public class MiscObjInt : MonoBehaviour
                 {
                     if (addDialogue)
                     {
-                        GameObject playerController = GameObject.FindGameObjectWithTag("Player");
-                        InteractionSystem interaction = playerController.GetComponent<InteractionSystem>();
+                        interaction = PlayerSystem.playerTransform.GetComponent<InteractionSystem>();
                         interaction.DialogueInteraction(true, message);
-                        if (useInstant)
-                            interaction.DialogueFill();
+                        if (useInstant) interaction.DialogueFill();
                     }
                     SetupPopupCanvas(false, null);
                     active = true;
                 }
                 else if (optSystem.Input.GetButtonDown("Cancel") && !PauseGame.isPaused && active)
                 {
-                    if (addDialogue)
-                    {
-                        GameObject playerController = GameObject.FindGameObjectWithTag("Player");
-                        InteractionSystem interaction = playerController.GetComponent<InteractionSystem>();
-                        interaction.DialogueInteraction(false, null);
-                    }
-                    if (useEvent)
-                        TriggerEvent(eventNum);
+                    interaction = PlayerSystem.playerTransform.GetComponent<InteractionSystem>();
+                    if (addDialogue) interaction.DialogueInteraction(false, null);
+                    if (useEvent) TriggerEvent(eventNum);
                     SetupPopupCanvas(false, null);
                     active = false;
                 }
             }
             CheckStorySystem(currentStory);
-
         }
     }
     public void TriggerEvent(int num)
@@ -220,7 +203,7 @@ public class MiscObjInt : MonoBehaviour
             EventActionSystem EAS = eventObject.GetComponent<EventActionSystem>();
             if (num == 1 && !ObjectSystem.event1)
             {
-                SwordSystem swordSystem = GameObject.FindGameObjectWithTag("Player").GetComponent<SwordSystem>();
+                swordSystem = PlayerSystem.playerTransform.GetComponent<SwordSystem>();
                 effectRoutine = swordSystem.QuakeEffect(8);
                 StartCoroutine(effectRoutine);
             }
@@ -235,7 +218,7 @@ public class MiscObjInt : MonoBehaviour
         {
             if (newInteraction != null)
                 Destroy(newInteraction.gameObject);
-            popupCanvas = GameObject.Find("Core/Player/PopUpCanvas/PlayerUIStorage");
+            popupCanvas = PlayerSystem.playerTransform.parent.GetChild(1).GetChild(1);
             newInteraction = Instantiate(statusPrefab, transform.position, Quaternion.identity);
             newInteraction.transform.SetParent(popupCanvas.transform);
             Transform interactionObj = newInteraction.GetComponentInChildren<Transform>().Find("InteractionText");
@@ -278,66 +261,16 @@ public class MiscObjInt : MonoBehaviour
     }
     public void CheckStorySystem(int story)
     {
-        StorySystem storySystem = GameObject.FindGameObjectWithTag("Player").GetComponent<StorySystem>();
-
+        storySystem = PlayerSystem.playerTransform.GetComponent<StorySystem>();
         if (!isChecked && OpenStory)
         {
-            if (story == 1)
-            {
-                if (ObjectSystem.entry1)
-                {
-                    storySystem.SetupEntryUI(StorySystem.Story.fisherman);
-                    isChecked = true;
-                }
-            }
-            else if (story == 2)
-            {
-                if (ObjectSystem.entry2)
-                {
-                    storySystem.SetupEntryUI(StorySystem.Story.Plaque1);
-                    isChecked = true;
-                }
-            }
-            else if (story == 3)
-            {
-                if (ObjectSystem.entry3)
-                {
-                    storySystem.SetupEntryUI(StorySystem.Story.Plaque2);
-                    isChecked = true;
-                }
-            }
-            else if (story == 4)
-            {
-                if (ObjectSystem.entry4)
-                {
-                    storySystem.SetupEntryUI(StorySystem.Story.Plaque3);
-                    isChecked = true;
-                }
-            }
-            else if (story == 5)
-            {
-                if (ObjectSystem.entry5)
-                {
-                    storySystem.SetupEntryUI(StorySystem.Story.Plaque4);
-                    isChecked = true;
-                }
-            }
-            else if (story == 6)
-            {
-                if (ObjectSystem.entry6)
-                {
-                    storySystem.SetupEntryUI(StorySystem.Story.Plaque5);
-                    isChecked = true;
-                }
-            }
-            else if (story == 7)
-            {
-                if (ObjectSystem.entry7)
-                {
-                    storySystem.SetupEntryUI(StorySystem.Story.Plaque6);
-                    isChecked = true;
-                }
-            }
+            if (story == 1) if (ObjectSystem.entry1) storySystem.SetupEntryUI(StorySystem.Story.fisherman);
+            else if (story == 2) if (ObjectSystem.entry2) storySystem.SetupEntryUI(StorySystem.Story.Plaque1);
+            else if (story == 3) if (ObjectSystem.entry3) storySystem.SetupEntryUI(StorySystem.Story.Plaque2);
+            else if (story == 4) if (ObjectSystem.entry4) storySystem.SetupEntryUI(StorySystem.Story.Plaque3); 
+            else if (story == 5) if (ObjectSystem.entry5) storySystem.SetupEntryUI(StorySystem.Story.Plaque4);
+            else if (story == 6) if (ObjectSystem.entry6) storySystem.SetupEntryUI(StorySystem.Story.Plaque5);
+            else if (story == 7) if (ObjectSystem.entry7) storySystem.SetupEntryUI(StorySystem.Story.Plaque6);
             //else if (story == 8)
             //{
             //    if (ObjectSystem.entry8)

@@ -9,3 +9,4 @@ UnityProject/Assets/Scenes/MainMenu/OcclusionCullingData.asset filter=lfs diff=l
 UnityProject/Assets/Scenes/Temple1/LightingData.asset filter=lfs diff=lfs merge=lfs -text
 UnityProject/Assets/Scenes/Temple1.unity filter=lfs diff=lfs merge=lfs -text
 UnityProject/Assets/Scenes/ProtoType.unity filter=lfs diff=lfs merge=lfs -text
+UnityProject/Assets/Scenes/GhostShip.unity filter=lfs diff=lfs merge=lfs -text

@@ -47,7 +47,7 @@ public class AnimateText : MonoBehaviour
         int index = 0;
         if (!fileDeletion) index = 0;
         else if (fileDeletion) index = 1;
-        for (int m = 0; m < 4; m++) if (m == num) message = "Would you like to " + subject[index] + "File " + (m + 1) + "?";
+        for (int m = 0; m < 4; m++) if (m == num) message = "Would you like to " + subject[index] + " File " + (m + 1) + "?";
         if (routine != null)
             StopCoroutine(routine);
         routine = Animate();
@@ -73,7 +73,7 @@ public class AnimateText : MonoBehaviour
             {
                 if (num == ng)
                 {
-                    if (!CoreObject.newGame[ng]) message = "File " + (ng + 1) + "has been deleted...";
+                    if (!CoreObject.newGame[ng]) message = "File " + (ng + 1) + " has been deleted...";
                     else if (CoreObject.newGame[ng]) message = "No file found...";
                 }
             }

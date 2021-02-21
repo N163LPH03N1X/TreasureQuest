@@ -22,8 +22,8 @@ public class TiltWeapon : MonoBehaviour
         {
             if (!PauseGame.isPaused && !ShopSystem.isShop && !CharacterSystem.isParalyzed && !CharacterSystem.isClimbing && !SelectionalSystem.isSelecting && !DialogueSystem.isDialogueActive && !PlayerSystem.isDead)
             {
-                MoveOnX = optSystem.Input.GetAxis("Mouse X") * Time.deltaTime * MoveAmount;
-                MoveOnY = optSystem.Input.GetAxis("Mouse Y") * Time.deltaTime * MoveAmount;
+                MoveOnX = optSystem.Input.GetAxis("MouseX") * Time.deltaTime * MoveAmount;
+                MoveOnY = optSystem.Input.GetAxis("MouseY") * Time.deltaTime * MoveAmount;
 
                 if (ONOFF == true)
                 {

@@ -24,11 +24,6 @@ public class MykesHeadBobbing : MonoBehaviour {
     bool isPetrified;
     bool isClimbing;
 
-    private void FixedUpdate()
-    {
-        
-    }
-
     void Update()
     {
         isMoving = CharacterSystem.isMoving;

@@ -3,28 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using Rewired;
 
-public class OptSystem : MonoBehaviour
+public class OptSystem
 {
     //New Player -> Rewireds InputSystem
     private Player _Input;
-    //New Save File
-    private BinaryFormatter _BinaryFormatter = new BinaryFormatter();
     //New Color
-    private Color _Color = new Color();
+    private Color _Color;
     //new 3D Vector
-    private Vector3 _Vector3 = new Vector3();
+    private Vector3 _Vector3;
     //new 2D Vector
-    private Vector2 _Vector2 = new Vector2();
+    private Vector2 _Vector2;
     //new Rotation
-    private Quaternion _Quaternion = new Quaternion();
+    private Quaternion _Quaternion;
     //new Wait for Seconds -> TimeScale Controlled
-    private Dictionary<float, WaitForSeconds> _TimeInterval = new Dictionary<float, WaitForSeconds>(100);
+    private Dictionary<float, WaitForSeconds> _TimeInterval;
     //new Wait for Seconds -> TimeScale UnControlled
-    private Dictionary<float, WaitForSecondsRealtime> _RealTimeInterval = new Dictionary<float, WaitForSecondsRealtime>(100);
+    private Dictionary<float, WaitForSecondsRealtime> _RealTimeInterval;
     //new Wait for Frame End
-    public WaitForEndOfFrame _EndOfFrame = new WaitForEndOfFrame();
+    public WaitForEndOfFrame _EndOfFrame;
     //new Wait for Fixed Updated
-    public WaitForFixedUpdate _FixedUpdate = new WaitForFixedUpdate();
+    public WaitForFixedUpdate _FixedUpdate;
 
     //Awake, Start Update Menthods
 
@@ -44,10 +42,7 @@ public class OptSystem : MonoBehaviour
             _RealTimeInterval.Add(seconds, new WaitForSecondsRealtime(seconds));
         return _RealTimeInterval[seconds];
     }
-    public BinaryFormatter ChangeBinaryFormatter
-    {
-        get { return _BinaryFormatter; }
-    }
+  
     public Color Color(float r, float g, float b, float a)
     {
         _Color.r = r;

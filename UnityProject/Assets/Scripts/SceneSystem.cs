@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneSystem : MonoBehaviour
 {
+
     public GameObject rainSystem;
     ParticleSystem rainPart;
     LoadingSystem loadingSystem;
@@ -77,7 +78,7 @@ public class SceneSystem : MonoBehaviour
     bool ghostShipEntered = false;
     bool introSceneEntered = true;
     bool dwellingTimberEntered = false;
-    bool protoTypeEntered = false;
+    //bool 
 
     public static bool overWorldEntered = false;
     public static bool isDisabled = false;
@@ -626,7 +627,7 @@ public class SceneSystem : MonoBehaviour
                     dungeon2Entered = false;
                     Temple1Entered = false;
                     ghostShipEntered = false;
-                    protoTypeEntered = false;
+                    
                     dwellingTimberEntered = false;
                     dungeon3Entered = false;
                     PlayerSystem playSys = playerController.GetComponent<PlayerSystem>();
@@ -688,7 +689,6 @@ public class SceneSystem : MonoBehaviour
                         dungeon2Entered = false;
                         Temple1Entered = false;
                         ghostShipEntered = false;
-                        protoTypeEntered = false;
                         dwellingTimberEntered = false;
                         dungeon3Entered = false;
                         MainMenu.SetActive(false);
@@ -715,7 +715,7 @@ public class SceneSystem : MonoBehaviour
                         dungeon2Entered = false;
                         Temple1Entered = false;
                         ghostShipEntered = false;
-                        protoTypeEntered = false;
+                        
                         dwellingTimberEntered = false;
                         dungeon3Entered = false;
                         MainMenu.SetActive(false);
@@ -753,7 +753,7 @@ public class SceneSystem : MonoBehaviour
                         dungeon2Entered = false;
                         Temple1Entered = false;
                         ghostShipEntered = false;
-                        protoTypeEntered = false;
+                        
                         dwellingTimberEntered = false;
                         dungeon3Entered = false;
                         MainMenu.SetActive(false);
@@ -794,7 +794,7 @@ public class SceneSystem : MonoBehaviour
                             Temple1Entered = false;
                             overWorldEntered = true;
                             ghostShipEntered = false;
-                            protoTypeEntered = false;
+                            
                             dwellingTimberEntered = false;
                             dungeon3Entered = false;
                         }
@@ -807,7 +807,7 @@ public class SceneSystem : MonoBehaviour
                             Temple1Entered = false;
                             overWorldEntered = true;
                             ghostShipEntered = false;
-                            protoTypeEntered = false;
+                            
                             dwellingTimberEntered = false;
                             dungeon3Entered = false;
                         }
@@ -826,7 +826,7 @@ public class SceneSystem : MonoBehaviour
                             Temple1Entered = false;
                             overWorldEntered = true;
                             ghostShipEntered = false;
-                            protoTypeEntered = false;
+                            
                             dwellingTimberEntered = false;
                             dungeon3Entered = false;
                         }
@@ -850,7 +850,7 @@ public class SceneSystem : MonoBehaviour
                             Temple1Entered = false;
                             overWorldEntered = true;
                             ghostShipEntered = false;
-                            protoTypeEntered = false;
+                            
                             dwellingTimberEntered = false;
                             dungeon3Entered = false;
                         }
@@ -863,7 +863,7 @@ public class SceneSystem : MonoBehaviour
                             Temple1Entered = false;
                             overWorldEntered = true;
                             ghostShipEntered = false;
-                            protoTypeEntered = false;
+                            
                             dwellingTimberEntered = false;
                             dungeon3Entered = false;
                         }
@@ -877,7 +877,7 @@ public class SceneSystem : MonoBehaviour
                             Temple1Entered = false;
                             ghostShipEntered = false;
                             overWorldEntered = true;
-                            protoTypeEntered = false;
+                            
                             dwellingTimberEntered = false;
                             dungeon3Entered = false;
                         }
@@ -890,7 +890,7 @@ public class SceneSystem : MonoBehaviour
                             Temple1Entered = false;
                             ghostShipEntered = false;
                             overWorldEntered = true;
-                            protoTypeEntered = false;
+                            
                             dwellingTimberEntered = false;
                             dungeon3Entered = false;
                         }
@@ -931,7 +931,7 @@ public class SceneSystem : MonoBehaviour
                         dungeon1Entered = true;
                         dungeon2Entered = false;
                         Temple1Entered = false;
-                        protoTypeEntered = false;
+                        
                         dwellingTimberEntered = false;
                         dungeon3Entered = false;
                         MainMenu.SetActive(false);
@@ -956,7 +956,7 @@ public class SceneSystem : MonoBehaviour
                         dungeon1Entered = true;
                         dungeon2Entered = false;
                         Temple1Entered = false;
-                        protoTypeEntered = false;
+                        
                         dwellingTimberEntered = false;
                         dungeon3Entered = false;
                         loadingGame.SetActive(false);
@@ -995,7 +995,7 @@ public class SceneSystem : MonoBehaviour
                         dungeon1Entered = false;
                         dungeon2Entered = true;
                         Temple1Entered = false;
-                        protoTypeEntered = false;
+                        
                         dwellingTimberEntered = false;
                         dungeon3Entered = false;
                         MainMenu.SetActive(false);
@@ -1020,7 +1020,7 @@ public class SceneSystem : MonoBehaviour
                         ghostShipEntered = false;
                         dungeon1Entered = false;
                         Temple1Entered = false;
-                        protoTypeEntered = false;
+                        
                         dwellingTimberEntered = false;
                         dungeon3Entered = false;
                         loadingGame.SetActive(false);
@@ -1066,7 +1066,7 @@ public class SceneSystem : MonoBehaviour
                         dungeon1Entered = false;
                         dungeon2Entered = false;
                         Temple1Entered = false;
-                        protoTypeEntered = false;
+                        
                         dwellingTimberEntered = false;
                         dungeon3Entered = true;
                         MainMenu.SetActive(false);
@@ -1092,7 +1092,7 @@ public class SceneSystem : MonoBehaviour
                         dungeon1Entered = false;
                         dungeon2Entered = false;
                         Temple1Entered = false;
-                        protoTypeEntered = false;
+                        
                         dwellingTimberEntered = false;
                         loadingGame.SetActive(false);
                         if (screenBlack != null)
@@ -1141,7 +1141,7 @@ public class SceneSystem : MonoBehaviour
                         ghostShipEntered = false;
                         dungeon1Entered = false;
                         dungeon2Entered = false;
-                        protoTypeEntered = false;
+                        
                         dwellingTimberEntered = false;
                         dungeon3Entered = false;
                         MainMenu.SetActive(false);
@@ -1166,7 +1166,7 @@ public class SceneSystem : MonoBehaviour
                         ghostShipEntered = false;
                         dungeon1Entered = false;
                         dungeon2Entered = false;
-                        protoTypeEntered = false;
+                        
                         dwellingTimberEntered = false;
                         dungeon3Entered = false;
                         loadingGame.SetActive(false);
@@ -1206,7 +1206,7 @@ public class SceneSystem : MonoBehaviour
                         dungeon1Entered = false;
                         dungeon2Entered = false;
                         Temple1Entered = false;
-                        protoTypeEntered = false;
+                        
                         dwellingTimberEntered = false;
                         dungeon3Entered = false;
                         MainMenu.SetActive(false);
@@ -1231,7 +1231,7 @@ public class SceneSystem : MonoBehaviour
                         dungeon1Entered = false;
                         dungeon2Entered = false;
                         Temple1Entered = false;
-                        protoTypeEntered = false;
+                        
                         dwellingTimberEntered = false;
                         dungeon3Entered = false;
                         loadingGame.SetActive(false);
@@ -1284,7 +1284,7 @@ public class SceneSystem : MonoBehaviour
                         playerController.SetActive(true);
                
                         gameUI.SetActive(true);
-                        protoTypeEntered = true;
+                        //protoTypeEntered = true;
                         PlayerCameraListener.enabled = true;
                         playChar.SetPosition();
                         core.LoadGame();
@@ -1309,7 +1309,7 @@ public class SceneSystem : MonoBehaviour
                         gameUI.SetActive(true);
                         playChar.SetPosition();
                         SetPlayerPosition(Position.Prototype);
-                        protoTypeEntered = true;
+                        //protoTypeEntered = true;
                     }
                     SetPlaceName(Place.prototype, sceneMusic.debugMusic);
                     break;
@@ -1338,7 +1338,7 @@ public class SceneSystem : MonoBehaviour
                         dungeon2Entered = false;
                         Temple1Entered = false;
                         ghostShipEntered = false;
-                        protoTypeEntered = false;
+                        
                         dungeon3Entered = false;
 
                         MainMenu.SetActive(false);
@@ -1364,7 +1364,7 @@ public class SceneSystem : MonoBehaviour
                         dungeon2Entered = false;
                         Temple1Entered = false;
                         ghostShipEntered = false;
-                        protoTypeEntered = false;
+                        
                         dungeon3Entered = false;
                         loadingGame.SetActive(false);
                         if (screenBlack != null)

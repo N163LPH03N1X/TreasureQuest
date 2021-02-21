@@ -37,9 +37,7 @@ public class DoorSystem : MonoBehaviour
     public bool isOpenReverse;
     public bool isDebris;
     bool psActive;
-    bool startDoor = true;
     bool playerInDoor = false;
-    bool isOpen;
 
     private void Awake()
     {
@@ -170,7 +168,6 @@ public class DoorSystem : MonoBehaviour
                             needsToClose = false;
                             audioSrc.Stop();
                             closeTime = closeTimer;
-                            isOpen = true;
                         }
                     }
                 }
@@ -194,7 +191,6 @@ public class DoorSystem : MonoBehaviour
                         doorObj.transform.localPosition = newPosition;
                         if (newPosition.y == maxHeight)
                         {
-                            isOpen = false;
                             if (isDebris)
                             {
                                 if (psActive)
@@ -238,7 +234,6 @@ public class DoorSystem : MonoBehaviour
                         doorObj.transform.localPosition = newPosition;
                         if (newPosition.y == maxHeight)
                         {
-                            isOpen = false;
                             if (isDebris)
                             {
                                 if (psActive)
@@ -275,7 +270,6 @@ public class DoorSystem : MonoBehaviour
                         doorObj.transform.localPosition = newPosition;
                         if (newPosition.y == minHeight)
                         {
-                            isOpen = true;
                             if (isDebris)
                             {
                                 if (psActive)

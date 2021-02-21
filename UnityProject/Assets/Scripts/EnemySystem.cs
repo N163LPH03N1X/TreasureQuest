@@ -12,7 +12,6 @@ public enum EnemyName { GreyBubble, BlueBubble, PinkBubble, RedBubble,
 public class EnemySystem : MonoBehaviour, ISwordHittable
 {
     Animator anim;
-    AudioSource audioSrc;
     AudioClip enemySound;
     GameObject player;
     Text Name;
@@ -241,7 +240,6 @@ public class EnemySystem : MonoBehaviour, ISwordHittable
     {
         anim = AnimatorObj.GetComponent<Animator>();
         flashTime = flashTimer;
-        audioSrc = GameObject.Find("Core/GameMusic&Sound/EnemySound").GetComponent<AudioSource>();
         nav.speed = Speed;
         SwitchSpecialStatus(enemySpecial);
         SetUpEnemy();
@@ -2687,13 +2685,12 @@ public class EnemySystem : MonoBehaviour, ISwordHittable
             enemySound = soundClips.toadLick;
         else
             enemySound = soundClips.bloop;
-        audioSrc.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
-        audioSrc.PlayOneShot(enemySound);
+        PlaySounds();
+      
     }
     public void PlaySounds()
     {
-        audioSrc.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
-        audioSrc.PlayOneShot(enemySound);
+        AudioSystem.PlayAudioSource(enemySound, 0.9f, 1.1f);
     }
     public void SetUpEnemy()
     {
@@ -3763,8 +3760,7 @@ public class EnemySystem : MonoBehaviour, ISwordHittable
             else
                 enemyHealth -= amount;
             flashEnemy = true;
-            audioSrc.pitch = UnityEngine.Random.Range(0.8f, 1.0f);
-            audioSrc.PlayOneShot(soundClips.hit);
+            AudioSystem.PlayAudioSource(soundClips.hit, 0.8f, 1f);
             if (enemyHealth < 1)
             {
                 PlayerSystem playSys = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerSystem>();
@@ -3792,8 +3788,7 @@ public class EnemySystem : MonoBehaviour, ISwordHittable
                 DropPickup();
                 if (isGraveYard)
                     ghostRemoved(true);
-                audioSrc.pitch = UnityEngine.Random.Range(0.8f, 1.0f);
-                audioSrc.PlayOneShot(soundClips.death);
+                AudioSystem.PlayAudioSource(soundClips.death, 0.8f, 1f);
                 if (isMimic)
                 {
                     BoxCollider enemyCol = GetComponent<BoxCollider>();
@@ -3833,8 +3828,7 @@ public class EnemySystem : MonoBehaviour, ISwordHittable
     {
 
         enemySound = soundClips.toadPound;
-        audioSrc.pitch = UnityEngine.Random.Range(0.8f, 1f);
-        audioSrc.PlayOneShot(enemySound);
+        PlaySounds();
         SwordSystem swordSys = GameObject.FindGameObjectWithTag("Player").GetComponent<SwordSystem>();
         if (quake != null)
             StopCoroutine(quake);
@@ -5141,15 +5135,13 @@ public class EnemySystem : MonoBehaviour, ISwordHittable
         if (!isCloaked)
         {
             enemySound = soundClips.toadDemonOn;
-            audioSrc.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
-            audioSrc.PlayOneShot(enemySound);
+            PlaySounds();
             isCloaked = true;
         }
         else
         {
             enemySound = soundClips.toadDemonOff;
-            audioSrc.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
-            audioSrc.PlayOneShot(enemySound);
+            PlaySounds();
             isCloaked = false;
         }
     }

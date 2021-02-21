@@ -8,7 +8,7 @@ public enum BootActive { trail, hover, cinder, storm, medical}
 
 public class PlayerSystem : MonoBehaviour
 {
-
+    public static Vector3 playerTransform;
     public ArmorActive armorActive;
     public BootActive bootActive;
     public HeartCases heartCases;
@@ -19,7 +19,6 @@ public class PlayerSystem : MonoBehaviour
 
     public GameObject dialogueBanner;
     public GameObject player;
-    SceneSystem sceneSystem;
     public AudioSource audioSrc;
     public AudioSource musicAudioSrc;
 
@@ -91,7 +90,6 @@ public class PlayerSystem : MonoBehaviour
     bool isSpiked;
     bool isEnemyDestroyed;
 
-    public Transform playerTransform;
     public static Vector3 lastPosition;
     public static Quaternion lastRotation;
 
@@ -147,6 +145,7 @@ public class PlayerSystem : MonoBehaviour
 
     void Start()
     {
+       
         if (SceneSystem.isNewGame)
         {
             SelectArmor(armorActive);
@@ -942,7 +941,7 @@ public class PlayerSystem : MonoBehaviour
         isDead = false;
         invincibleFlashTime = invincibleFlashTimer;
         isInvincible = true;
-        sceneSystem = player.GetComponent<SceneSystem>();
+        SceneSystem sceneSystem = transform.parent.GetComponent<SceneSystem>();
         sceneSystem.EnablePlayer(true);
         if (fadeAudio != null)
             StopCoroutine(fadeAudio);
@@ -5576,6 +5575,7 @@ public class PlayerSystem : MonoBehaviour
     }
     public void SavePosition()
     {
+        playerTransform = transform.position;
         lastPosition = playerTransform.position;
         lastRotation = playerTransform.rotation;
     }
@@ -5583,6 +5583,7 @@ public class PlayerSystem : MonoBehaviour
     {
         playerTransform.position = lastPosition;
         playerTransform.rotation = lastRotation;
+        transform = playerTransform;
     }
     //=================================================PlayerStats=============================================//
     public enum PlayerEffectStats { poisonMin, poisonMax, confuse, paralyzed, silence, swamped, spiked }

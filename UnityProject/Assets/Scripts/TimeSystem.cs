@@ -31,11 +31,11 @@ public class TimeSystem : MonoBehaviour
     public float SunInitialIntensity;
     public float MoonInitialIntensity;
 
-    float SunCurrentIntensity;
-    float MoonCurrentIntensity;
+    //float SunCurrentIntensity;
+    //float MoonCurrentIntensity;
 
     bool switchDayEvents = false;
-    bool switchNightEvents = true;
+    //bool switchNightEvents = true;
 
     Quaternion orgSunRot;
     Quaternion resetSunRot = new Quaternion(-90, 90, 0, 0);
@@ -371,9 +371,9 @@ public class TimeSystem : MonoBehaviour
             rainSystem = playerRain.GetComponent<ParticleSystem>();
             rainSystem.Stop();
             if (SceneSystem.overWorldEntered)
-                clouds = GameObject.Find("OverWorld/NonStatic/Clouds");
+                clouds = GameObject.Find("OverWorld/Dynamic/Clouds");
             else if (SceneSystem.isIntroScene)
-                clouds = GameObject.Find("IntroScene/NonStatic/Clouds");
+                clouds = GameObject.Find("IntroScene/Dynamic/Clouds");
             if (clouds != null)
             {
                 ParticleSystem ps = clouds.GetComponent<ParticleSystem>();
@@ -490,8 +490,8 @@ public class TimeSystem : MonoBehaviour
         Sun.intensity = SunInitialIntensity * SunIntensityMultiplier;
         Moon.intensity = MoonInitialIntensity - (Sun.intensity * MoonInitialIntensity);
 
-        SunCurrentIntensity = Sun.intensity;
-        MoonCurrentIntensity = Moon.intensity;
+        //SunCurrentIntensity = Sun.intensity;
+        //MoonCurrentIntensity = Moon.intensity;
     }
     public void LoadTimeOfDay(float totalTime, float currentTimeOfDayNum, int timeIntervalNum, int dayNum, int hourNum, int minuteNum, bool night, bool rain, string dayNightDisp)
     {
@@ -527,7 +527,7 @@ public class TimeSystem : MonoBehaviour
         isRain = false;
         isNight = true;
         switchDayEvents = false;
-        switchNightEvents = true;
+        //switchNightEvents = true;
         gameDays = 0;
         gameHours = 0;
         gameMinutes = 0;

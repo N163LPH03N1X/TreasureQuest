@@ -6,11 +6,6 @@ public class WeaponBobbing : MonoBehaviour
     public float bobbingSpeed = 0.2f;
     public float bobbingAmount = 3f;
     float midpoint = 0.0f;
-    bool isJumping;
-    bool isPaused;
-    bool isDisabled;
-    bool isPetrified;
-    bool isClimbing;
     void Update()
     {
         

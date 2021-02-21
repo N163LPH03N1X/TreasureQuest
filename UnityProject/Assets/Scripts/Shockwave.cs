@@ -4,7 +4,6 @@ using System.Collections;
 public class Shockwave : MonoBehaviour
 {
     public AudioClip shockWaveSound;
-    AudioSource audiosrc;
     public ShockType shockType;
     public Level damageLevel;
     bool isPlayer;
@@ -53,8 +52,7 @@ public class Shockwave : MonoBehaviour
         SelectShockType(shockType);
         startShockwave = ScaleOverTime(5);
         StartCoroutine(startShockwave);
-        audiosrc = GameObject.Find("Core/GameMusic&Sound/GameSound").GetComponent<AudioSource>();
-        audiosrc.PlayOneShot(shockWaveSound);
+        AudioSystem.PlayAudioSource(shockWaveSound, 1, 1);
     }
     private void Update()
     {
