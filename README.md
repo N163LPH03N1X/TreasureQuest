@@ -20,7 +20,7 @@ Drake knew of the ancient powers bestowed on the island and wanted to weaponized
 The jewels were then scattered to each end of the island and the two kings vanished forever.
 
 # Game play video
-https://www.youtube.com/watch?v=FvCbl4N8lAw
+https://www.youtube.com/watch?v=mB2kDl2CPFw&t=2086s
 
 ![image](https://static.wixstatic.com/media/0e8e62_72fd7ee5792243fb9718df00eb5b73a2~mv2.png)
 ![image](https://static.wixstatic.com/media/0e8e62_41d630ddbeb240d1ba81361622fae3b0~mv2.png)
