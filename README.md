@@ -3,12 +3,12 @@
 # // TreasureQuest
 > Curse of the black jewel
  
-## || Introduction ||
+## **|| Introduction ||**
 Hey everyone! Treasure Quest is a first person action RPG Dungeon crawler game. You are a warrior set out to explore an island foretold to have hidden gold and riches. This is a personal game I've worked 11 months on and still growing! This is the sequel to my other game called Destiny Venture. Starting off as a first person based RPG dungeon crawler with linear exploration and the mission is the collect a multitude of items and equipment, search for chests, slash through enemies and bosses and gradually build the strength of your character.
 
 > _The full version will not be ready for a long time where this is a personal long term project._ 
 
-#### || Game Story ||
+#### **|| Game Story ||**
 Long ago, on a distant island far into the ocean, there were two kings that ruled over the land. King Grace sought for peace, life, stability and order. While king Drake ravaged for war, death, chaos and destruction.
 
 Conquest Island was at war. The kings raged armies upon each other scorching the island of its resources. Famished, the two kings were interrupted by six holy guardians, one of light, darkness, power, spirit, time and desire.
@@ -19,8 +19,8 @@ Drake knew of the ancient powers bestowed on the island and wanted to weaponized
 
 The jewels were then scattered to each end of the island and the two kings vanished forever.
 
-## || Game Play ||
-https://www.youtube.com/watch?v=mB2kDl2CPFw&t=2086s
+## **|| Game Play ||**
+_https://www.youtube.com/watch?v=mB2kDl2CPFw&t=2086s_
 
 ![image](https://static.wixstatic.com/media/0e8e62_72fd7ee5792243fb9718df00eb5b73a2~mv2.png)
 ![image](https://static.wixstatic.com/media/0e8e62_41d630ddbeb240d1ba81361622fae3b0~mv2.png)
