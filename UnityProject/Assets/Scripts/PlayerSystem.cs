@@ -8,7 +8,17 @@ public enum BootActive { trail, hover, cinder, storm, medical}
 
 public class PlayerSystem : MonoBehaviour
 {
-    public static Vector3 playerTransform;
+    OptSystem optSystem = new OptSystem();
+    public static bool isPoisoned;
+    public static bool isConfused;
+    public static bool isParalyzed;
+    public static bool isSilenced;
+    public static int playerHealth = 5;
+    public static int playerVitality = 5;
+    public static int playerGold = 0;
+    public static bool isDead = false;
+    public static Transform playerTransform;
+
     public ArmorActive armorActive;
     public BootActive bootActive;
     public HeartCases heartCases;
@@ -16,18 +26,18 @@ public class PlayerSystem : MonoBehaviour
     public PlaySounds playSound;
     public ArmorUI armorUI;
     public BootUI bootUI;
+    public GameObject PlayerUI;
+    public SceneSystem sceneSystem;
+    public ObjectSystem objectSystem;
+    public UnderWaterSystem underWaterSys;
+    public TimeSystem timeSys;
+    CharacterSystem characterSystem;
+    SwordSystem swordSyst;
+    DialogueSystem diagSys;
+    public Transform enemyUIObjs;
 
     public GameObject dialogueBanner;
     public GameObject player;
-    public AudioSource audioSrc;
-    public AudioSource musicAudioSrc;
-
-    public static int playerHealth = 5;
-    public static int playerVitality = 5;
-    public static int playerGold = 0;
-    public static bool isDead = false;
-    bool isGameOver;
-
     public Text heartText;
     public Text statusHeartText;
     public Text goldText;
@@ -43,11 +53,6 @@ public class PlayerSystem : MonoBehaviour
     public Image enemyDestroyFlash;
     public Image healFlash;
     public Image blackScreen;
-    CharacterSystem characterCtrl;
-    SwordSystem swordSyst;
-
-    public GameObject PlayerUI;
-    UnderWaterSystem underWaterSys;
 
     float spikeFlashTimer = 1f;
     float spikeFlashTime = 0.1f;
@@ -72,12 +77,7 @@ public class PlayerSystem : MonoBehaviour
     float paralyzedTime;
     float recoveryTimer = 5f;
     float recoveryTime;
-
-    public static bool isPoisoned;
-    public static bool isConfused;
-    public static bool isParalyzed;
-    public static bool isSilenced;
-
+    bool isGameOver;
     bool isInteraction;
     bool isGold;
     bool isItem;
@@ -90,8 +90,8 @@ public class PlayerSystem : MonoBehaviour
     bool isSpiked;
     bool isEnemyDestroyed;
 
-    public static Vector3 lastPosition;
-    public static Quaternion lastRotation;
+    public static Vector3 lastPlayerPosition;
+    public static Quaternion lastPlayerRotation;
 
     bool slot1Used = false;
     bool slot2Used = false;
@@ -117,9 +117,7 @@ public class PlayerSystem : MonoBehaviour
     int assignedSlotCo;
     int assignedSlotSi;
 
-
-    IEnumerator fadeAudio = null;
-    IEnumerator screenBlack = null;
+    IEnumerator fadeRoutine = null;
 
     public static bool denseArmorEnabled = true;
     public static bool helixArmorEnabled = false;
@@ -145,7 +143,8 @@ public class PlayerSystem : MonoBehaviour
 
     void Start()
     {
-       
+        diagSys = GetComponent<DialogueSystem>();
+        swordSyst = GetComponent<SwordSystem>();
         if (SceneSystem.isNewGame)
         {
             SelectArmor(armorActive);
@@ -153,7 +152,7 @@ public class PlayerSystem : MonoBehaviour
         }
         SetupArmorUI();
         SetupBootUI();
-        SavePosition();
+        SaveCoordinates();
         ReEvaluateHearts();
         SetHeartHover();
     }
@@ -161,6 +160,7 @@ public class PlayerSystem : MonoBehaviour
     {
         if (!isDead && !PauseGame.isPaused && !SceneSystem.isDisabled)
         {
+            playerTransform = transform;
             if (!JewelSystem.greenJewelEnabled && !JewelSystem.isJewelActive)
                 Time.timeScale = 1;
         }
@@ -795,9 +795,6 @@ public class PlayerSystem : MonoBehaviour
     //=================================================PlayerHearts=============================================//
     public void PlayerDamage(int amount, bool poisoned)
     {
-        //DialogueSystem dialogueSystem = GetComponent<DialogueSystem>();
-        //dialogueSystem
-
         if (!isInvincible && !invincible && !isDead)
         {
 
@@ -837,7 +834,6 @@ public class PlayerSystem : MonoBehaviour
             else if (denseArmorEnabled)
                 playerHealth -= amount;
 
-            audioSrc.pitch = UnityEngine.Random.Range(0.8f, 1);
             AudioClip clipStore = null;
             int randomNum = UnityEngine.Random.Range(1, 4);
             if (randomNum == 1)
@@ -849,8 +845,7 @@ public class PlayerSystem : MonoBehaviour
             if (randomNum == 4)
                 clipStore = playSound.hurt[3];
 
-            audioSrc.PlayOneShot(clipStore);
-
+            AudioSystem.PlayAudioSource(clipStore, 1, 1);
             if (playerHealth <= 3 && playerHealth > 0 && !isLowHealth)
             {
                 playSound.lowHealthSrc.clip = playSound.healthLow;
@@ -864,31 +859,25 @@ public class PlayerSystem : MonoBehaviour
             }
             else if (playerHealth < 1)
             {
-                underWaterSys = GameObject.FindGameObjectWithTag("Head").GetComponent<UnderWaterSystem>();
                 underWaterSys.AirBannerActive(false);
                 dialogueBanner.SetActive(false);
                 playerHealth = 0;
                 if (ItemSystem.lifeBerryEmpty)
                 {
                     PlayerUI.SetActive(false);
-                    if (fadeAudio != null)
-                        StopCoroutine(fadeAudio);
-                    musicAudioSrc.Stop();
+                    AudioSystem.MusicPlayStop(false);
                 }
                 else if (!ItemSystem.lifeBerryEmpty)
-                {
-                    if (fadeAudio != null)
-                        StopCoroutine(fadeAudio);
-                    fadeAudio = AudioFadeOut(musicAudioSrc);
-                    StartCoroutine(fadeAudio);
-                }
+                    AudioSystem.FadeMusic(false);
                 isDamaged = false;
                 damageFlashTime = damageFlashTimer;
                 isLowHealth = false;
-                if (screenBlack != null)
-                    StopCoroutine(screenBlack);
-                screenBlack = FadeIn(0, .3f, blackScreen, true);
-                StartCoroutine(screenBlack);
+
+                if (fadeRoutine != null)
+                    StopCoroutine(fadeRoutine);
+                fadeRoutine = FadeImage(blackScreen, true);
+                StartCoroutine(fadeRoutine);
+
                 SlotCounter = 4;
                 damageFlash.enabled = false;
                 weakflash.enabled = false;
@@ -900,14 +889,10 @@ public class PlayerSystem : MonoBehaviour
                 ApplyPlayerEffect(PlayerEffectStats.confuse, false);
                 ApplyPlayerEffect(PlayerEffectStats.paralyzed, false);
                 ApplyPlayerEffect(PlayerEffectStats.silence, false);
-                audioSrc.pitch = UnityEngine.Random.Range(0.8f, 1);
-                audioSrc.PlayOneShot(playSound.death);
-                GameObject enemyUIObjs = GameObject.Find("Core/Player/PopUpCanvas/EnemyUIStorage");
-                foreach (Transform child in enemyUIObjs.transform)
-                {
-                    child.gameObject.SetActive(false);
-                }
-                DialogueSystem diagSys = GetComponent<DialogueSystem>();
+                AudioSystem.PlayAudioSource(playSound.death, 1, 1);
+                for (int eUI = 0; eUI <  enemyUIObjs.childCount; eUI++)
+                    enemyUIObjs.GetChild(eUI).gameObject.SetActive(false);
+               
                 diagSys.SetButtonPress(3);
                 PlayerDied(true);
             }
@@ -926,33 +911,25 @@ public class PlayerSystem : MonoBehaviour
     }
     public void PlayerRevived()
     {
-        GameObject enemyUIObjs = GameObject.Find("Core/Player/PopUpCanvas/EnemyUIStorage");
-        foreach (Transform child in enemyUIObjs.transform)
-            child.gameObject.SetActive(true);
-        audioSrc.volume = 1;
-        audioSrc.pitch = 0.8f;
-        audioSrc.PlayOneShot(playSound.revive);
-        if (screenBlack != null)
-            StopCoroutine(screenBlack);
-        screenBlack = FadeOut(0, 0.3f, blackScreen, true);
-        StartCoroutine(screenBlack);
+        for (int eUI = 0; eUI < enemyUIObjs.childCount; eUI++) 
+        { 
+            if (enemyUIObjs.GetChild(eUI).gameObject.activeInHierarchy) 
+                enemyUIObjs.GetChild(eUI).gameObject.SetActive(false); 
+        }
+        AudioSystem.PlayAudioSource(playSound.revive, 0.8f, 1);
+        if (fadeRoutine != null)
+            StopCoroutine(fadeRoutine);
+        fadeRoutine = FadeImage(blackScreen, false);
+        StartCoroutine(fadeRoutine);
         healFlashTime = healFlashTimer;
         isHeal = true;
         isDead = false;
         invincibleFlashTime = invincibleFlashTimer;
         isInvincible = true;
-        SceneSystem sceneSystem = transform.parent.GetComponent<SceneSystem>();
         sceneSystem.EnablePlayer(true);
-        if (fadeAudio != null)
-            StopCoroutine(fadeAudio);
-        fadeAudio = AudioFadeIn(musicAudioSrc);
-        StartCoroutine(fadeAudio);
+        AudioSystem.FadeMusic(true);
         if (UnderWaterSystem.isSwimming)
-        {
-            underWaterSys = GameObject.FindGameObjectWithTag("Head").GetComponent<UnderWaterSystem>();
             underWaterSys.AirBannerActive(true);
-        }
-
     }
     public void PlayerInvincible(bool active)
     {
@@ -961,32 +938,20 @@ public class PlayerSystem : MonoBehaviour
     public void PlayerRecovery(int amount)
     {
         healFlashTime = healFlashTimer;
-        if(!ShopSystem.isSleeping)
-            isHeal = true;
+        if(!ShopSystem.isSleeping) isHeal = true;
         playerHealth += amount;
-        if (playerHealth >= playerVitality)
-            playerHealth = playerVitality;
+        if (playerHealth >= playerVitality) playerHealth = playerVitality;
         SetHeartHover();
         SetHealthHeartRatio();
         ApplyHealthOrVitality();
     }
     public void AddVitality(int amount)
     {
-        bool healPlayer = true;
-
         itemFlashTime = itemFlashTimer;
         isItem = true;
         playerVitality += amount;
-        if (playerVitality > 100)
-        {
-            playerVitality = 100;
-            healPlayer = false;
-        }
-        else if (playerVitality <= 100 && healPlayer)
-        {
-            ReEvaluateHearts();
-            PlayerRecovery(1);
-        }
+        if (playerVitality > 100) playerVitality = 100;
+        else if (playerVitality <= 100) { ReEvaluateHearts(); PlayerRecovery(1); }
         SetHealthHeartRatio();
         ApplyHealthOrVitality();
         SetHeartHover();
@@ -5373,9 +5338,7 @@ public class PlayerSystem : MonoBehaviour
         playerGold += amount;
         if (!DebugSystem.goldMode)
         {
-            audioSrc.volume = 1;
-            audioSrc.pitch = 1;
-            audioSrc.PlayOneShot(playSound.gold);
+            AudioSystem.PlayAudioSource(playSound.gold, 1, 1);
             goldFlashTime = goldFlashTimer;
             isGold = true;
         }
@@ -5400,156 +5363,81 @@ public class PlayerSystem : MonoBehaviour
     {
         isEnemyDestroyed = true;
     }
-    public IEnumerator FadeIn(float aValue, float aTime, Image image, bool imgProperty)
+    public IEnumerator FadeImage(Image image, bool fadeIn)
     {
-        float alpha = image.GetComponent<Image>().color.a;
-        for (float t = 0.0f; t < 1.0f; t += Time.fixedDeltaTime / aTime)
+        float alpha = image.color.a;
+        float inFactor = fadeIn ? 0 : alpha;
+        float outFactor = fadeIn ? alpha : 0;
+        for (float a = 0; a < 1; a += 0.01f)
         {
-            Color newColor = new Color(image.color.r, image.color.g, image.color.b, Mathf.Lerp(alpha, aValue, t));
-            image.GetComponent<Image>().color = newColor;
-            if (t >= 0.9)
-            {
-                if (imgProperty)
-                    newColor = new Color(0, 0, 0, 1);
-                else
-                    newColor = new Color(1, 1, 1, 1);
-                image.GetComponent<Image>().color = newColor;
-
-            }
-            else
-            {
-                image.GetComponent<Image>().enabled = true;
-            }
-
-            yield return null;
+            image.color = optSystem.Color(image.color.r, image.color.g, image.color.b, Mathf.Lerp(inFactor, outFactor, a));
+            if (a > 0.99)
+                image.color = optSystem.Color(image.color.r, image.color.g, image.color.b, outFactor);
+            yield return optSystem.WaitRealtime(0.001f);
         }
-
-    }
-    public IEnumerator FadeOut(float aValue, float aTime, Image image, bool imgProperty)
-    {
-        float alpha = image.GetComponent<Image>().color.a;
-        for (float t = 0.0f; t < 1.0f; t += Time.fixedDeltaTime / aTime)
-        {
-            Color newColor = new Color(image.color.r, image.color.g, image.color.b, Mathf.Lerp(alpha, aValue, t));
-            image.GetComponent<Image>().color = newColor;
-            if (t >= 0.9)
-            {
-                if (imgProperty)
-                    newColor = new Color(0, 0, 0, 0);
-                else
-                    newColor = new Color(1, 1, 1, 0);
-                image.GetComponent<Image>().color = newColor;
-
-
-            }
-            else
-            {
-                image.GetComponent<Image>().enabled = true;
-            }
-            yield return null;
-        }
-
-    }
-    public IEnumerator AudioFadeOut(AudioSource audio)
-    {
-        audio.volume = 1.0f;
-        float MinVol = 0;
-        for (float f = 1f; f > MinVol; f -= 0.05f)
-        {
-            audio.volume = f;
-            yield return new WaitForSecondsRealtime(.1f);
-            if (f <= 0.1)
-            {
-
-                audio.Pause();
-                audio.volume = MinVol;
-                break;
-            }
-        }
-    }
-    public IEnumerator AudioFadeIn(AudioSource audio)
-    {
-        audio.volume = 0.0f;
-        float MaxVol = 1;
-        if (!audio.isPlaying)
-            audio.Play();
-        else
-            audio.UnPause();
-        for (float f = 0f; f < MaxVol; f += 0.05f)
-        {
-            audio.volume = f;
-            yield return new WaitForSecondsRealtime(.1f);
-            if (f >= 0.9)
-            {
-                audio.volume = MaxVol;
-                break;
-            }
-        }
+        yield break;
     }
     public void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Darkness"))
         {
-            StartCoroutine(FadeIn(1, 0.1f, blackScreen, true));
-            audioSrc.volume = 1;
-            audioSrc.pitch = 1;
-            audioSrc.PlayOneShot(playSound.nextArea);
+            //fade the blackscreen UI in
+            if (fadeRoutine != null)
+                StopCoroutine(fadeRoutine);
+            fadeRoutine = FadeImage(blackScreen, true);
+            StartCoroutine(fadeRoutine);
+            //Play next Area Sound
+            AudioSystem.PlayAudioSource(playSound.nextArea, 1, 1);
         }
-        if (other.gameObject.CompareTag("Vitality"))
+        else if (other.gameObject.CompareTag("Vitality"))
         {
             AddVitality(1);
             PlayerRecovery(1);
             Destroy(other.gameObject);
         }
-        if (other.gameObject.CompareTag("Damage"))
-        {
+        else if (other.gameObject.CompareTag("Damage"))
             PlayerDamage(18, false);
-        }
-        if (other.gameObject.CompareTag("Recovery"))
-        {
+        else if (other.gameObject.CompareTag("Recovery"))
             PlayerRecovery(100);
-        }
-        if (other.gameObject.CompareTag("Gold"))
+        else if (other.gameObject.CompareTag("Gold"))
         {
             AddGold(1);
             Destroy(other.gameObject);
         }
-        if (other.gameObject.CompareTag("Heal"))
+        else if (other.gameObject.CompareTag("Heal"))
         {
             PlayerRecovery(100);
-            audioSrc.PlayOneShot(playSound.revive);
+            AudioSystem.PlayAudioSource(playSound.revive, 1, 1);
         }
-        if (other.gameObject.CompareTag("CheckPoint"))
+        else if (other.gameObject.CompareTag("CheckPoint"))
+            SaveCoordinates();
+        else if (other.gameObject.CompareTag("Helix"))
         {
-            SavePosition();
-        }
-        if (other.gameObject.CompareTag("Helix"))
-        {
-            audioSrc.PlayOneShot(playSound.pickup);
+            AudioSystem.PlayAudioSource(playSound.pickup, 1, 1);
             helixArmorPickedUp = true;
             Destroy(other.gameObject);
         }
-        if (other.gameObject.CompareTag("Apex"))
+        else if (other.gameObject.CompareTag("Apex"))
         {
-            audioSrc.PlayOneShot(playSound.pickup);
+            AudioSystem.PlayAudioSource(playSound.pickup, 1, 1);
             apexArmorPickedUp = true;
             Destroy(other.gameObject);
         }
-        if (other.gameObject.CompareTag("Mythic"))
+        else if (other.gameObject.CompareTag("Mythic"))
         {
-            audioSrc.PlayOneShot(playSound.pickup);
+            AudioSystem.PlayAudioSource(playSound.pickup, 1, 1);
             mythicArmorPickedUp = true;
             Destroy(other.gameObject);
         }
-        if (other.gameObject.CompareTag("Legendary"))
+        else if (other.gameObject.CompareTag("Legendary"))
         {
-            audioSrc.PlayOneShot(playSound.pickup);
+            AudioSystem.PlayAudioSource(playSound.pickup, 1, 1);
             legendaryArmorPickedUp = true;
             Destroy(other.gameObject);
         }
-        if (other.gameObject.CompareTag("Storms"))
+        else if (other.gameObject.CompareTag("Storms"))
         {
-            audioSrc.PlayOneShot(playSound.pickup);
+            AudioSystem.PlayAudioSource(playSound.pickup, 1, 1);
             stormBootPickedUp = true;
             Destroy(other.gameObject);
         }
@@ -5558,7 +5446,12 @@ public class PlayerSystem : MonoBehaviour
     public void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Darkness"))
-            StartCoroutine(FadeOut(0, 0.5f, blackScreen, true));
+        {
+            if (fadeRoutine != null)
+                StopCoroutine(fadeRoutine);
+            fadeRoutine = FadeImage(blackScreen, false);
+            StartCoroutine(fadeRoutine);
+        }
     }
     public void LoadPlayerSystem(int health, int vitality, int gold, Vector3 position, Quaternion rotation)
     {
@@ -5573,17 +5466,15 @@ public class PlayerSystem : MonoBehaviour
         ApplyHealthOrVitality();
         SetHeartHover();
     }
-    public void SavePosition()
+    public void SaveCoordinates()
     {
-        playerTransform = transform.position;
-        lastPosition = playerTransform.position;
-        lastRotation = playerTransform.rotation;
+        lastPlayerPosition = transform.position;
+        lastPlayerRotation = transform.rotation;
     }
-    public void LoadPosition()
+    public void LoadCoordinates()
     {
-        playerTransform.position = lastPosition;
-        playerTransform.rotation = lastRotation;
-        transform = playerTransform;
+        transform.position = playerTransform.position;
+        transform.rotation = playerTransform.rotation;
     }
     //=================================================PlayerStats=============================================//
     public enum PlayerEffectStats { poisonMin, poisonMax, confuse, paralyzed, silence, swamped, spiked }
@@ -5616,8 +5507,8 @@ public class PlayerSystem : MonoBehaviour
                     {
                         if (!isConfused)
                         {
-                            characterCtrl = GetComponent<CharacterSystem>();
-                            characterCtrl.ConfusePlayer(true);
+                            characterSystem = GetComponent<CharacterSystem>();
+                            characterSystem.ConfusePlayer(true);
                             isConfused = true;
                         }
                         break;
@@ -5626,8 +5517,8 @@ public class PlayerSystem : MonoBehaviour
                     {
                         if (!isParalyzed)
                         {
-                            characterCtrl = GetComponent<CharacterSystem>();
-                            characterCtrl.ParalyzedPlayer(true);
+                            characterSystem = GetComponent<CharacterSystem>();
+                            characterSystem.ParalyzedPlayer(true);
                             isParalyzed = true;
                         }
                         break;
@@ -5689,8 +5580,8 @@ public class PlayerSystem : MonoBehaviour
                         {
                             isConfused = false;
                             confusedFlash.enabled = false;
-                            characterCtrl = GetComponent<CharacterSystem>();
-                            characterCtrl.ConfusePlayer(false);
+                            characterSystem = GetComponent<CharacterSystem>();
+                            characterSystem.ConfusePlayer(false);
                         }
                         break;
                     }
@@ -5700,8 +5591,8 @@ public class PlayerSystem : MonoBehaviour
                         {
                             isParalyzed = false;
                             paralyzedFlash.enabled = false;
-                            characterCtrl = GetComponent<CharacterSystem>();
-                            characterCtrl.ParalyzedPlayer(false);
+                            characterSystem = GetComponent<CharacterSystem>();
+                            characterSystem.ParalyzedPlayer(false);
                             paralyzedTime = paralyzedTimer;
                         }
                         break;
@@ -5745,9 +5636,7 @@ public class PlayerSystem : MonoBehaviour
     }
     public void ResetPlayer()
     {
-        ObjectSystem objectSystem = GameObject.Find("Core").GetComponent<ObjectSystem>();
         objectSystem.UnBeatTheGame();
-        TimeSystem timeSys = GameObject.Find("Core/TimeSystem/System").GetComponent<TimeSystem>();
         timeSys.resetTimeSystem();
         ItemSystem items = GetComponent<ItemSystem>();
         items.resetItems();

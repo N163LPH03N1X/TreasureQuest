@@ -6,12 +6,22 @@ using UnityEngine.SceneManagement;
 
 public class SceneSystem : MonoBehaviour
 {
-
+    public Transform enemyUIObjs;
+    public Transform playerUIObjs;
+    public UnderWaterSystem underWaterSystem;
+    public Animator mainMenuCamAnim;
+    public MMTransition mainMenutrans;
+    public CoreObject coreObject;
+    public TimeSystem timeSystem;
+    public PlayerSystem playerSystem;
+    public CharacterSystem characterSystem;
+    public AudioListener playerCameraListener;
+    public DebugSystem debugSystem;
     public GameObject rainSystem;
-    ParticleSystem rainPart;
-    LoadingSystem loadingSystem;
     public GameObject loadingSysObj;
     AudioSource rainAmbience;
+    ParticleSystem rainPart;
+    LoadingSystem loadingSystem;
     public Vector3 setNewPosition;
     public Quaternion setNewRotation;
     public ScenePositions scenePosition;
@@ -20,23 +30,16 @@ public class SceneSystem : MonoBehaviour
     public GameObject MainMenu;
     public GameObject titleMode;
     public GameObject titleMenu;
-    public GameObject playerController;
-    public GameObject Player;
     public GameObject loadingGame;
     public GameObject gameMenu;
     public GameObject gameUI;
-    public GameObject dialogueBanner;
-    public GameObject timeSysObj;
-    TimeSystem timeSys;
     public Text buttonText;
     public Image aButton;
     Image loadFillAmount;
     Transform newPosition;
-    CharacterSystem playChar;
     public Image blackScreenGame;
     Vector3 textOrgPos;
-    IEnumerator fadeAudio = null;
-    IEnumerator screenBlack = null;
+    IEnumerator screenRoutine = null;
     IEnumerator sceneLoad = null;
     IEnumerator townPlaceRoutine;
 
@@ -300,21 +303,16 @@ public class SceneSystem : MonoBehaviour
     public void StartScene(Level level)
     {
         if (CharacterSystem.isCarrying)
-        {
-            CharacterSystem character = playerController.GetComponent<CharacterSystem>();
-            character.PlayerPickUpCarryObj(0);
-        }
+            characterSystem.PlayerPickUpCarryObj(0);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         inTransition = true;
         loadingSystem = loadingSysObj.GetComponent<LoadingSystem>();
-        timeSys = timeSysObj.GetComponent<TimeSystem>();
-        timeSys.isGameTimeRunning(false);
+        timeSystem.isGameTimeRunning(false);
         EnablePlayer(false);
-        GameObject enemyUIObjs = GameObject.Find("Core/Player/PopUpCanvas/EnemyUIStorage");
         foreach (Transform child in enemyUIObjs.transform)
             Destroy(child.gameObject);
-        GameObject playerUIObjs = GameObject.Find("Core/Player/PopUpCanvas/PlayerUIStorage");
+
         foreach (Transform child in playerUIObjs.transform)
             Destroy(child.gameObject);
         switch (level)
@@ -334,10 +332,10 @@ public class SceneSystem : MonoBehaviour
                     prototypeActive = false;
                     dwellingTimberActive = false;
                     dungeonThreeActive = false;
-                    if (screenBlack != null)
-                        StopCoroutine(screenBlack);
-                    screenBlack = FadeIn(1.0f, 4.0f, blackScreenGame, true);
-                    StartCoroutine(screenBlack);
+                    if (screenRoutine != null)
+                        StopCoroutine(screenRoutine);
+                    screenRoutine = FadeIn(1.0f, 4.0f, blackScreenGame, true);
+                    StartCoroutine(screenRoutine);
                     scene = 0;
        
                     break;
@@ -607,17 +605,12 @@ public class SceneSystem : MonoBehaviour
     public void LoadScene(Level level)
     {
         inTransition = false;
-        PlayerSystem playerSystem = playerController.GetComponent<PlayerSystem>();
-        AudioListener PlayerCameraListener = GameObject.Find("Core/Player/PlayerController/Head/PlayerCamera").GetComponent<AudioListener>();
-        playChar = playerController.GetComponent<CharacterSystem>();
-        CoreObject core = GameObject.Find("Core").GetComponent<CoreObject>();
         playerSystem.TurnOffSpikeDamage();
-        playChar.PlayerInteraction(false);
+        characterSystem.PlayerInteraction(false);
         switch (level)
         {
             case Level.Title:
                 {
-                    DebugSystem debugSystem = playerController.GetComponent<DebugSystem>();
                     if(DebugSystem.isDebugMode)
                         debugSystem.ShutOffDebugMode();
                     isQuit = true;
@@ -627,59 +620,48 @@ public class SceneSystem : MonoBehaviour
                     dungeon2Entered = false;
                     Temple1Entered = false;
                     ghostShipEntered = false;
-                    
                     dwellingTimberEntered = false;
                     dungeon3Entered = false;
-                    PlayerSystem playSys = playerController.GetComponent<PlayerSystem>();
                     rainPart = rainSystem.GetComponent<ParticleSystem>();
                     rainPart.Stop();
                     rainAmbience = rainSystem.GetComponent<AudioSource>();
                     rainAmbience.Stop();
                     sceneMusic.gameAmbience.Stop();
                     sceneMusic.gameAmbience.clip = null;
-                    playSys.ResetPlayer();
-                    timeSys = timeSysObj.GetComponent<TimeSystem>();
-                    timeSysObj.SetActive(false);
-                    core.ResetActiveFiles();
-                    PlayerCameraListener.enabled = false;
+                    playerSystem.ResetPlayer();
+                    timeSystem.gameObject.SetActive(false);
+                    coreObject.ResetActiveFiles();
+                    playerCameraListener.enabled = false;
                     loadingGame.SetActive(false);
                     gameUI.SetActive(false);
                     gameMenu.SetActive(false);
-                    playerController.SetActive(false);
+                    playerSystem.gameObject.SetActive(false);
                     MainMenu.SetActive(true);
                     titleMode.SetActive(true);
                     setNewRotation = new Quaternion(0, 0, 0, 0);
                     setNewPosition = Vector3.zero;
-                    playerController.transform.position = setNewPosition;
-                    playerController.transform.rotation = setNewRotation;
+                    playerSystem.transform.position = setNewPosition;
+                    playerSystem.transform.rotation = setNewRotation;
                     sceneMusic.gameMusic.clip = sceneMusic.introMusic;
-                    fadeAudio = AudioFadeIn(sceneMusic.gameMusic);
-                    StartCoroutine(fadeAudio);
+                    AudioSystem.FadeMusic(true);
                     SetPlayerPosition(Position.Title);
-                   
-                    MMTransition mainMenutrans = GameObject.Find("Core/MainMenu").GetComponent<MMTransition>();
-                   
-                    if (screenBlack != null)
-                        StopCoroutine(screenBlack);
-                    screenBlack = mainMenutrans.FadeOut(0.0f, 1f, mainMenutrans.blackScreen, true);
-                    StartCoroutine(screenBlack);
-            
+                    if (screenRoutine != null)
+                        StopCoroutine(screenRoutine);
+                    screenRoutine = mainMenutrans.FadeOut(0.0f, 1f, mainMenutrans.blackScreen, true);
+                    StartCoroutine(screenRoutine);
                     mainMenutrans.StartTitleIntro();
                     titleMode.SetActive(true);
-                    GameObject animObj = GameObject.Find("Core/MainMenu/Center/MainMenuCamera");
-                    Animator anim = animObj.GetComponent<Animator>();
-                    anim.Rebind();
+                    mainMenuCamAnim.Rebind();
                     break;
                 }
             case Level.Intro:
                 {
-                    timeSysObj.SetActive(true);
-                    timeSys = timeSysObj.GetComponent<TimeSystem>();
-                    timeSys.PermaRain(true);
-                    timeSys.isGameTimeRunning(true);
-                    timeSys.GamePlayTimeActive(true);
-                    timeSys.SetSkybox(1);
-                    GameObject activeSunMoon = timeSysObj.transform.GetChild(0).gameObject;
+                    timeSystem.gameObject.SetActive(true);
+                    timeSystem.PermaRain(true);
+                    timeSystem.isGameTimeRunning(true);
+                    timeSystem.GamePlayTimeActive(true);
+                    timeSystem.SetSkybox(1);
+                    GameObject activeSunMoon = timeSystem.transform.GetChild(0).gameObject;
                     activeSunMoon.SetActive(false);
                     if (CoreObject.isLoaded)
                     {
@@ -693,17 +675,16 @@ public class SceneSystem : MonoBehaviour
                         dungeon3Entered = false;
                         MainMenu.SetActive(false);
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
-                        playerController.SetActive(true);
-                       
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
+                        playerSystem.gameObject.SetActive(true);
                         gameUI.SetActive(true);
-                        PlayerCameraListener.enabled = true;
-                        playChar.SetPosition();
-                        core.LoadGame();
-                        core.Loading(false);
+                        playerCameraListener.enabled = true;
+                        characterSystem.SetPosition();
+                        coreObject.LoadGame();
+                        coreObject.Loading(false);
                         SetPlaceName(Place.intro, sceneMusic.introSceneMusic);
 
                     }
@@ -720,14 +701,13 @@ public class SceneSystem : MonoBehaviour
                         dungeon3Entered = false;
                         MainMenu.SetActive(false);
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
-                        playerController.SetActive(true);
-                   
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
+                        playerSystem.gameObject.SetActive(true);
                         gameUI.SetActive(true);
-                        PlayerCameraListener.enabled = true;
+                        playerCameraListener.enabled = true;
                         SetPlayerPosition(Position.Intro);
                         sceneMusic.gameAmbience.Play();
                     
@@ -738,12 +718,11 @@ public class SceneSystem : MonoBehaviour
                 }
             case Level.OverWorld:
                 {
-                    timeSysObj.SetActive(true);
-                    timeSys = timeSysObj.GetComponent<TimeSystem>();
-                    timeSys.PermaRain(false);
-                    timeSys.isGameTimeRunning(true);
-                    timeSys.GamePlayTimeActive(true);
-                    GameObject activeSunMoon = timeSysObj.transform.GetChild(0).gameObject;
+                    timeSystem.gameObject.SetActive(true);
+                    timeSystem.PermaRain(false);
+                    timeSystem.isGameTimeRunning(true);
+                    timeSystem.GamePlayTimeActive(true);
+                    GameObject activeSunMoon = timeSystem.transform.GetChild(0).gameObject;
                     activeSunMoon.SetActive(true);
                     if (CoreObject.isLoaded)
                     {
@@ -758,32 +737,30 @@ public class SceneSystem : MonoBehaviour
                         dungeon3Entered = false;
                         MainMenu.SetActive(false);
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
-                        playerController.SetActive(true);
-             
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
+                        playerSystem.gameObject.SetActive(true);
                         gameUI.SetActive(true);
-                        PlayerCameraListener.enabled = true;
-                        playChar.SetPosition();
-                        core.LoadGame();
-                        core.Loading(false);
+                        playerCameraListener.enabled = true;
+                        characterSystem.SetPosition();
+                        coreObject.LoadGame();
+                        coreObject.Loading(false);
                         SetPlaceName(Place.overworld, sceneMusic.overWorldMusic);
                     }
                     else
                     {
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
                
                         gameUI.SetActive(true);
                         sceneMusic.gameMusic.clip = sceneMusic.overWorldMusic;
-                        fadeAudio = AudioFadeIn(sceneMusic.gameMusic);
-                        StartCoroutine(fadeAudio);
-                        playChar.SetPosition();
+                        AudioSystem.FadeMusic(true);
+                        characterSystem.SetPosition();
 
                         if (introSceneEntered)
                         {
@@ -897,26 +874,19 @@ public class SceneSystem : MonoBehaviour
                     }
                     SetPlaceName(Place.overworld, sceneMusic.overWorldMusic);
                     if (CharacterSystem.isClimbing)
-                    {
-                        CharacterSystem characterSystem = playerController.GetComponent<CharacterSystem>();
                         characterSystem.setClimbing(false);
-                    }
                     if (UnderWaterSystem.isSwimming)
-                    {
-                        UnderWaterSystem underWaterSystem = GameObject.FindGameObjectWithTag("Head").GetComponent<UnderWaterSystem>();
                         underWaterSystem.ResetAir();
-                    }
+                    
                     break;
                 }
             case Level.DungeonOne:
                 {
-                    timeSysObj.SetActive(true);
-                    timeSys = timeSysObj.GetComponent<TimeSystem>();
-                    timeSys.isGameTimeRunning(true);
-                    timeSys.GamePlayTimeActive(true);
-                    GameObject activeSunMoon = timeSysObj.transform.GetChild(0).gameObject;
+                    timeSystem.gameObject.SetActive(true);
+                    timeSystem.isGameTimeRunning(true);
+                    timeSystem.GamePlayTimeActive(true);
+                    GameObject activeSunMoon = timeSystem.transform.GetChild(0).gameObject;
                     activeSunMoon.SetActive(false);
-                    PlayerSystem playSys = playerController.GetComponent<PlayerSystem>();
                     rainPart = rainSystem.GetComponent<ParticleSystem>();
                     rainPart.Stop();
                     rainAmbience = rainSystem.GetComponent<AudioSource>();
@@ -936,17 +906,16 @@ public class SceneSystem : MonoBehaviour
                         dungeon3Entered = false;
                         MainMenu.SetActive(false);
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
-                        playerController.SetActive(true);
-               
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
+                        playerSystem.gameObject.SetActive(true);
                         gameUI.SetActive(true);
-                        PlayerCameraListener.enabled = true;
-                        playChar.SetPosition();
-                        core.LoadGame();
-                        core.Loading(false);
+                        playerCameraListener.enabled = true;
+                        characterSystem.SetPosition();
+                        coreObject.LoadGame();
+                        coreObject.Loading(false);
                     }
                     else
                     {
@@ -956,17 +925,15 @@ public class SceneSystem : MonoBehaviour
                         dungeon1Entered = true;
                         dungeon2Entered = false;
                         Temple1Entered = false;
-                        
                         dwellingTimberEntered = false;
                         dungeon3Entered = false;
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
-                
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
                         gameUI.SetActive(true);
-                        playChar.SetPosition();
+                        characterSystem.SetPosition();
                         SetPlayerPosition(Position.Dungeon1In);
                     }
                     SetPlaceName(Place.dungeon1, sceneMusic.dungeonOneMusic);
@@ -974,13 +941,11 @@ public class SceneSystem : MonoBehaviour
                 }
             case Level.DungeonTwo:
                 {
-                    timeSysObj.SetActive(true);
-                    timeSys = timeSysObj.GetComponent<TimeSystem>();
-                    timeSys.isGameTimeRunning(true);
-                    timeSys.GamePlayTimeActive(true);
-                    GameObject activeSunMoon = timeSysObj.transform.GetChild(0).gameObject;
+                    timeSystem.gameObject.SetActive(true);
+                    timeSystem.isGameTimeRunning(true);
+                    timeSystem.GamePlayTimeActive(true);
+                    GameObject activeSunMoon = timeSystem.transform.GetChild(0).gameObject;
                     activeSunMoon.SetActive(false);
-                    PlayerSystem playSys = playerController.GetComponent<PlayerSystem>();
                     rainPart = rainSystem.GetComponent<ParticleSystem>();
                     rainPart.Stop();
                     rainAmbience = rainSystem.GetComponent<AudioSource>();
@@ -1000,18 +965,16 @@ public class SceneSystem : MonoBehaviour
                         dungeon3Entered = false;
                         MainMenu.SetActive(false);
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
-                        playerController.SetActive(true);
-              
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
+                        playerSystem.gameObject.SetActive(true);
                         gameUI.SetActive(true);
-                       
-                        PlayerCameraListener.enabled = true;
-                        playChar.SetPosition();
-                        core.LoadGame();
-                        core.Loading(false);
+                        playerCameraListener.enabled = true;
+                        characterSystem.SetPosition();
+                        coreObject.LoadGame();
+                        coreObject.Loading(false);
                     }
                     else
                     {
@@ -1020,17 +983,15 @@ public class SceneSystem : MonoBehaviour
                         ghostShipEntered = false;
                         dungeon1Entered = false;
                         Temple1Entered = false;
-                        
                         dwellingTimberEntered = false;
                         dungeon3Entered = false;
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
-              
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
                         gameUI.SetActive(true);
-                        playChar.SetPosition();
+                        characterSystem.SetPosition();
                         if (dungeon2AltEntrance)
                         {
                             SetPlayerPosition(Position.Dungeon2AltIn);
@@ -1045,13 +1006,11 @@ public class SceneSystem : MonoBehaviour
                 }
             case Level.DungeonThree:
                 {
-                    timeSysObj.SetActive(true);
-                    timeSys = timeSysObj.GetComponent<TimeSystem>();
-                    timeSys.isGameTimeRunning(true);
-                    timeSys.GamePlayTimeActive(true);
-                    GameObject activeSunMoon = timeSysObj.transform.GetChild(0).gameObject;
+                    timeSystem.gameObject.SetActive(true);
+                    timeSystem.isGameTimeRunning(true);
+                    timeSystem.GamePlayTimeActive(true);
+                    GameObject activeSunMoon = timeSystem.transform.GetChild(0).gameObject;
                     activeSunMoon.SetActive(false);
-                    PlayerSystem playSys = playerController.GetComponent<PlayerSystem>();
                     rainPart = rainSystem.GetComponent<ParticleSystem>();
                     rainPart.Stop();
                     rainAmbience = rainSystem.GetComponent<AudioSource>();
@@ -1071,18 +1030,16 @@ public class SceneSystem : MonoBehaviour
                         dungeon3Entered = true;
                         MainMenu.SetActive(false);
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
-                        playerController.SetActive(true);
-              
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
+                        playerSystem.gameObject.SetActive(true);
                         gameUI.SetActive(true);
-
-                        PlayerCameraListener.enabled = true;
-                        playChar.SetPosition();
-                        core.LoadGame();
-                        core.Loading(false);
+                        playerCameraListener.enabled = true;
+                        characterSystem.SetPosition();
+                        coreObject.LoadGame();
+                        coreObject.Loading(false);
                     }
                     else
                     {
@@ -1092,16 +1049,14 @@ public class SceneSystem : MonoBehaviour
                         dungeon1Entered = false;
                         dungeon2Entered = false;
                         Temple1Entered = false;
-                        
                         dwellingTimberEntered = false;
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
-                   
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
                         gameUI.SetActive(true);
-                        playChar.SetPosition();
+                        characterSystem.SetPosition();
                         if (dungeon3AltEntrance)
                         {
                             SetPlayerPosition(Position.Dungeon3AltIn);
@@ -1121,13 +1076,11 @@ public class SceneSystem : MonoBehaviour
                 }
             case Level.TempleOne:
                 {
-                    timeSysObj.SetActive(true);
-                    timeSys = timeSysObj.GetComponent<TimeSystem>();
-                    timeSys.isGameTimeRunning(true);
-                    timeSys.GamePlayTimeActive(true);
-                    GameObject activeSunMoon = timeSysObj.transform.GetChild(0).gameObject;
+                    timeSystem.gameObject.SetActive(true);
+                    timeSystem.isGameTimeRunning(true);
+                    timeSystem.GamePlayTimeActive(true);
+                    GameObject activeSunMoon = timeSystem.transform.GetChild(0).gameObject;
                     activeSunMoon.SetActive(false);
-                    PlayerSystem playSys = playerController.GetComponent<PlayerSystem>();
                     rainPart = rainSystem.GetComponent<ParticleSystem>();
                     rainPart.Stop();
                     rainAmbience = rainSystem.GetComponent<AudioSource>();
@@ -1146,18 +1099,17 @@ public class SceneSystem : MonoBehaviour
                         dungeon3Entered = false;
                         MainMenu.SetActive(false);
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
-                        playerController.SetActive(true);
-                 
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
+                        playerSystem.gameObject.SetActive(true);
                         gameUI.SetActive(true);
                         Temple1Entered = true;
-                        PlayerCameraListener.enabled = true;
-                        playChar.SetPosition();
-                        core.LoadGame();
-                        core.Loading(false);
+                        playerCameraListener.enabled = true;
+                        characterSystem.SetPosition();
+                        coreObject.LoadGame();
+                        coreObject.Loading(false);
                     }
                     else
                     {
@@ -1166,17 +1118,15 @@ public class SceneSystem : MonoBehaviour
                         ghostShipEntered = false;
                         dungeon1Entered = false;
                         dungeon2Entered = false;
-                        
                         dwellingTimberEntered = false;
                         dungeon3Entered = false;
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
-                   
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
                         gameUI.SetActive(true);
-                        playChar.SetPosition();
+                        characterSystem.SetPosition();
                         SetPlayerPosition(Position.Temple1In);
                         Temple1Entered = true;
                     }
@@ -1185,14 +1135,12 @@ public class SceneSystem : MonoBehaviour
                 }
             case Level.GhostShip:
                 {
-                    timeSysObj.SetActive(true);
-                    timeSys = timeSysObj.GetComponent<TimeSystem>();
-                    timeSys.isGameTimeRunning(true);
-                    timeSys.GamePlayTimeActive(true);
-                    timeSys.SetSkybox(1);
-                    GameObject activeSunMoon = timeSysObj.transform.GetChild(0).gameObject;
+                    timeSystem.gameObject.SetActive(true);
+                    timeSystem.isGameTimeRunning(true);
+                    timeSystem.GamePlayTimeActive(true);
+                    timeSystem.SetSkybox(1);
+                    GameObject activeSunMoon = timeSystem.transform.GetChild(0).gameObject;
                     activeSunMoon.SetActive(false);
-                    PlayerSystem playSys = playerController.GetComponent<PlayerSystem>();
                     rainPart = rainSystem.GetComponent<ParticleSystem>();
                     rainPart.Stop();
                     rainAmbience = rainSystem.GetComponent<AudioSource>();
@@ -1211,18 +1159,17 @@ public class SceneSystem : MonoBehaviour
                         dungeon3Entered = false;
                         MainMenu.SetActive(false);
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
-                        playerController.SetActive(true);
-         
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
+                        playerSystem.gameObject.SetActive(true);
                         gameUI.SetActive(true);
                         ghostShipEntered = true;
-                        PlayerCameraListener.enabled = true;
-                        playChar.SetPosition();
-                        core.LoadGame();
-                        core.Loading(false);
+                        playerCameraListener.enabled = true;
+                        characterSystem.SetPosition();
+                        coreObject.LoadGame();
+                        coreObject.Loading(false);
                     }
                     else
                     {
@@ -1231,17 +1178,15 @@ public class SceneSystem : MonoBehaviour
                         dungeon1Entered = false;
                         dungeon2Entered = false;
                         Temple1Entered = false;
-                        
                         dwellingTimberEntered = false;
                         dungeon3Entered = false;
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
-             
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
                         gameUI.SetActive(true);
-                        playChar.SetPosition();
+                        characterSystem.SetPosition();
                         SetPlayerPosition(Position.GhostShipIn);
                         ghostShipEntered = true;
                     }
@@ -1250,15 +1195,13 @@ public class SceneSystem : MonoBehaviour
                 }
             case Level.Prototype:
                 {
-                    timeSysObj.SetActive(true);
-                    timeSys = timeSysObj.GetComponent<TimeSystem>();
-                    timeSys.PermaRain(true);
-                    timeSys.isGameTimeRunning(true);
-                    timeSys.GamePlayTimeActive(true);
-                    timeSys.SetSkybox(1);
-                    GameObject activeSunMoon = timeSysObj.transform.GetChild(0).gameObject;
+                    timeSystem.gameObject.SetActive(true);
+                    timeSystem.PermaRain(true);
+                    timeSystem.isGameTimeRunning(true);
+                    timeSystem.GamePlayTimeActive(true);
+                    timeSystem.SetSkybox(1);
+                    GameObject activeSunMoon = timeSystem.transform.GetChild(0).gameObject;
                     activeSunMoon.SetActive(false);
-                    PlayerSystem playSys = playerController.GetComponent<PlayerSystem>();
                     rainPart = rainSystem.GetComponent<ParticleSystem>();
                     rainPart.Stop();
                     rainAmbience = rainSystem.GetComponent<AudioSource>();
@@ -1277,18 +1220,17 @@ public class SceneSystem : MonoBehaviour
                         dungeon3Entered = false;
                         MainMenu.SetActive(false);
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
-                        playerController.SetActive(true);
-               
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
+                        playerSystem.gameObject.SetActive(true);
                         gameUI.SetActive(true);
                         //protoTypeEntered = true;
-                        PlayerCameraListener.enabled = true;
-                        playChar.SetPosition();
-                        core.LoadGame();
-                        core.Loading(false);
+                        playerCameraListener.enabled = true;
+                        characterSystem.SetPosition();
+                        coreObject.LoadGame();
+                        coreObject.Loading(false);
                     }
                     else
                     {
@@ -1301,13 +1243,12 @@ public class SceneSystem : MonoBehaviour
                         dwellingTimberEntered = false;
                         dungeon3Entered = false;
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
-               
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
                         gameUI.SetActive(true);
-                        playChar.SetPosition();
+                        characterSystem.SetPosition();
                         SetPlayerPosition(Position.Prototype);
                         //protoTypeEntered = true;
                     }
@@ -1316,14 +1257,12 @@ public class SceneSystem : MonoBehaviour
                 }
             case Level.DwellingTimber:
                 {
-                    timeSysObj.SetActive(true);
-                    timeSys = timeSysObj.GetComponent<TimeSystem>();
-                    timeSys.isGameTimeRunning(true);
-                    timeSys.GamePlayTimeActive(true);
-                    timeSys.SetSkybox(1);
-                    GameObject activeSunMoon = timeSysObj.transform.GetChild(0).gameObject;
+                    timeSystem.gameObject.SetActive(true);
+                    timeSystem.isGameTimeRunning(true);
+                    timeSystem.GamePlayTimeActive(true);
+                    timeSystem.SetSkybox(1);
+                    GameObject activeSunMoon = timeSystem.transform.GetChild(0).gameObject;
                     activeSunMoon.SetActive(false);
-                    PlayerSystem playSys = playerController.GetComponent<PlayerSystem>();
                     rainPart = rainSystem.GetComponent<ParticleSystem>();
                     rainPart.Stop();
                     rainAmbience = rainSystem.GetComponent<AudioSource>();
@@ -1343,18 +1282,17 @@ public class SceneSystem : MonoBehaviour
 
                         MainMenu.SetActive(false);
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
-                        playerController.SetActive(true);
-               
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
+                        playerSystem.gameObject.SetActive(true);
                         gameUI.SetActive(true);
                         dwellingTimberEntered = true;
-                        PlayerCameraListener.enabled = true;
-                        playChar.SetPosition();
-                        core.LoadGame();
-                        core.Loading(false);
+                        playerCameraListener.enabled = true;
+                        characterSystem.SetPosition();
+                        coreObject.LoadGame();
+                        coreObject.Loading(false);
                     }
                     else
                     {
@@ -1367,13 +1305,12 @@ public class SceneSystem : MonoBehaviour
                         
                         dungeon3Entered = false;
                         loadingGame.SetActive(false);
-                        if (screenBlack != null)
-                            StopCoroutine(screenBlack);
-                        screenBlack = FadeOut(0.0f, 4.0f, blackScreenGame, true);
-                        StartCoroutine(screenBlack);
-           
+                        if (screenRoutine != null)
+                            StopCoroutine(screenRoutine);
+                        screenRoutine = FadeOut(0.0f, 4.0f, blackScreenGame, true);
+                        StartCoroutine(screenRoutine);
                         gameUI.SetActive(true);
-                        playChar.SetPosition();
+                        characterSystem.SetPosition();
                         SetPlayerPosition(Position.DwellingTimberIn);
                         dwellingTimberEntered = true;
                     }
@@ -1476,36 +1413,6 @@ public class SceneSystem : MonoBehaviour
             yield return null;
         }
 
-    }
-    IEnumerator AudioFadeOut(AudioSource audio)
-    {
-        audio.volume = 1.0f;
-        float MinVol = 0;
-        for (float f = 1f; f > MinVol; f -= 0.05f)
-        {
-            audio.volume = f;
-            yield return new WaitForSecondsRealtime(.1f);
-            if (f <= 0.1)
-            {
-                audio.Stop();
-                audio.volume = MinVol;
-            }
-        }
-    }
-    IEnumerator AudioFadeIn(AudioSource audio)
-    {
-        audio.volume = 0.0f;
-        float MaxVol = 1;
-        audio.Play();
-        for (float f = 0f; f < MaxVol; f += 0.05f)
-        {
-            audio.volume = f;
-            yield return new WaitForSecondsRealtime(.1f);
-            if (f >= 0.9)
-            {
-                audio.volume = MaxVol;
-            }
-        }
     }
     private float Map(float value, float inMin, float inMax, float outMin, float outMax)
     {
@@ -1681,125 +1588,94 @@ public class SceneSystem : MonoBehaviour
                 }
         }
 
-        playerController.transform.position = setNewPosition;
-        playerController.transform.rotation = setNewRotation;
+        playerSystem.transform.position = setNewPosition;
+        playerSystem.transform.rotation = setNewRotation;
     }
     public enum Place { debug, prototype, intro, overworld, dungeon1, dungeon2, Temple1, ghostShip, duskCliff, duskCliffShop, windAcre, windacreShop, windAcreDock, fishersTrawl, dwellingTimber, dungeon3, abandonedBog, skulkCove, skulkCoveShop, shadowedBog }
     public void SetPlaceName(Place name, AudioClip clip)
     {
         switch (name)
         {
-            case Place.debug:
+            case Place.debug: 
                 {
                     townPlaceName.text = "Debug Mode";
-                    break;
-                }
-            case Place.prototype:
-                {
-                    townPlaceName.text = "NIGELPHOENIX's Army";
-                    if (fadeAudio != null)
-                        StopCoroutine(fadeAudio);
                     sceneMusic.gameMusic.clip = clip;
-                    fadeAudio = AudioFadeIn(sceneMusic.gameMusic);
-                    StartCoroutine(fadeAudio);
-                    break;
+                    AudioSystem.FadeMusic(true);
+                    break; 
+                }
+            case Place.prototype: 
+                { 
+                    townPlaceName.text = "NIGELPHOENIX's Army";
+                    sceneMusic.gameMusic.clip = clip;
+                    AudioSystem.FadeMusic(true);
+                    break; 
                 }
             case Place.overworld:
                 {
                     townPlaceName.text = "Conquest Island";
-                    if (fadeAudio != null)
-                        StopCoroutine(fadeAudio);
                     if (sceneMusic.gameMusic.clip != sceneMusic.overWorldMusic)
                     {
                         sceneMusic.gameMusic.clip = clip;
-                        fadeAudio = AudioFadeIn(sceneMusic.gameMusic);
-                        StartCoroutine(fadeAudio);
+                        AudioSystem.FadeMusic(true);
                     }
-                    else if(sceneMusic.gameMusic.clip == sceneMusic.overWorldMusic && sceneMusic.gameMusic.volume < 1)
-                    {
-                        fadeAudio = AudioFadeIn(sceneMusic.gameMusic);
-                        StartCoroutine(fadeAudio);
-                    }
+                    else if (sceneMusic.gameMusic.clip == sceneMusic.overWorldMusic && sceneMusic.gameMusic.volume < 1)
+                        AudioSystem.FadeMusic(true);
                     break;
                 }
             case Place.intro:
                 {
                     townPlaceName.text = "Rafter's Bargain";
-                    if (fadeAudio != null)
-                        StopCoroutine(fadeAudio);
                     sceneMusic.gameMusic.clip = clip;
-                    fadeAudio = AudioFadeIn(sceneMusic.gameMusic);
-                    StartCoroutine(fadeAudio);
+                    AudioSystem.FadeMusic(true);
                     break;
                 }
             case Place.dungeon1:
                 {
                     townPlaceName.text = "Riverfall Shrine";
-                    if (fadeAudio != null)
-                        StopCoroutine(fadeAudio);
                     sceneMusic.gameMusic.clip = clip;
-                    fadeAudio = AudioFadeIn(sceneMusic.gameMusic);
-                    StartCoroutine(fadeAudio);
+                    AudioSystem.FadeMusic(true);
                     break;
                 }
             case Place.dungeon2:
                 {
                     townPlaceName.text = "Abandoned Ruins";
-                    if (fadeAudio != null)
-                        StopCoroutine(fadeAudio);
                     sceneMusic.gameMusic.clip = clip;
-                    fadeAudio = AudioFadeIn(sceneMusic.gameMusic);
-                    StartCoroutine(fadeAudio);
+                    AudioSystem.FadeMusic(true);
                     break;
                 }
             case Place.Temple1:
                 {
                     townPlaceName.text = "Temple of Reign";
-                    if (fadeAudio != null)
-                        StopCoroutine(fadeAudio);
                     sceneMusic.gameMusic.clip = clip;
-                    fadeAudio = AudioFadeIn(sceneMusic.gameMusic);
-                    StartCoroutine(fadeAudio);
+                    AudioSystem.FadeMusic(true);
                     break;
                 }
             case Place.ghostShip:
                 {
                     townPlaceName.text = "The Cursed Grail";
-                    if (fadeAudio != null)
-                        StopCoroutine(fadeAudio);
                     sceneMusic.gameMusic.clip = clip;
-                    fadeAudio = AudioFadeIn(sceneMusic.gameMusic);
-                    StartCoroutine(fadeAudio);
+                    AudioSystem.FadeMusic(true);
                     break;
                 }
             case Place.duskCliff:
                 {
                     townPlaceName.text = "Duskcliff";
-                    if (fadeAudio != null)
-                        StopCoroutine(fadeAudio);
                     sceneMusic.gameMusic.clip = clip;
-                    fadeAudio = AudioFadeIn(sceneMusic.gameMusic);
-                    StartCoroutine(fadeAudio);
+                    AudioSystem.FadeMusic(true);
                     break;
                 }
             case Place.windAcre:
                 {
                     townPlaceName.text = "Windacre";
-                    if (fadeAudio != null)
-                        StopCoroutine(fadeAudio);
                     sceneMusic.gameMusic.clip = clip;
-                    fadeAudio = AudioFadeIn(sceneMusic.gameMusic);
-                    StartCoroutine(fadeAudio);
+                    AudioSystem.FadeMusic(true);
                     break;
                 }
             case Place.skulkCove:
                 {
                     townPlaceName.text = "Skulk Cove";
-                    if (fadeAudio != null)
-                        StopCoroutine(fadeAudio);
                     sceneMusic.gameMusic.clip = clip;
-                    fadeAudio = AudioFadeIn(sceneMusic.gameMusic);
-                    StartCoroutine(fadeAudio);
+                    AudioSystem.FadeMusic(true);
                     break;
                 }
             case Place.windAcreDock:
@@ -1840,21 +1716,15 @@ public class SceneSystem : MonoBehaviour
             case Place.dwellingTimber:
                 {
                     townPlaceName.text = "Dwelling Timber";
-                    if (fadeAudio != null)
-                        StopCoroutine(fadeAudio);
                     sceneMusic.gameMusic.clip = clip;
-                    fadeAudio = AudioFadeIn(sceneMusic.gameMusic);
-                    StartCoroutine(fadeAudio);
+                    AudioSystem.FadeMusic(true);
                     break;
                 }
             case Place.dungeon3:
                 {
                     townPlaceName.text = "Well Pathway";
-                    if (fadeAudio != null)
-                        StopCoroutine(fadeAudio);
                     sceneMusic.gameMusic.clip = clip;
-                    fadeAudio = AudioFadeIn(sceneMusic.gameMusic);
-                    StartCoroutine(fadeAudio);
+                    AudioSystem.FadeMusic(true);
                     break;
                 }
         }
@@ -1877,28 +1747,19 @@ public class SceneSystem : MonoBehaviour
     }
     public void QuitTheGame()
     {
-        CharacterSystem characterSystem = playerController.GetComponent<CharacterSystem>();
         characterSystem.SelectAnimation(CharacterSystem.PlayerAnimation.Rebind, true);
-        PauseGame pause = playerController.GetComponent<PauseGame>();
+        PauseGame pause = playerSystem.GetComponent<PauseGame>();
         if(PauseGame.isPaused)
             pause.PauseTheGame();
         isDisabled = true;
         Debug.Log(isDisabled);
-        GameObject enemyUIObjs = GameObject.Find("Core/Player/PopUpCanvas/EnemyUIStorage");
-        foreach (Transform child in enemyUIObjs.transform)
-            Destroy(child.gameObject);
-        GameObject playerUIObjs = GameObject.Find("Core/Player/PopUpCanvas/PlayerUIStorage");
-        foreach (Transform child in playerUIObjs.transform)
-            Destroy(child.gameObject);
-        AudioSource musicAudioSrc = GameObject.Find("Core/GameMusic&Sound/GameMusic").GetComponent<AudioSource>();
-        if (fadeAudio != null)
-            StopCoroutine(fadeAudio);
-        fadeAudio = AudioFadeOut(musicAudioSrc);
-        StartCoroutine(fadeAudio);
-        CharacterSystem player = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterSystem>();
-        player.SelectAnimation(CharacterSystem.PlayerAnimation.Rebind, true);
+        for(int c = 0; c < enemyUIObjs.childCount; c++)
+            Destroy(enemyUIObjs.GetChild(c).gameObject);
+        for (int c = 0; c < playerUIObjs.childCount; c++)
+            Destroy(playerUIObjs.GetChild(c).gameObject);
+        AudioSystem.FadeMusic(false);
+        characterSystem.SelectAnimation(CharacterSystem.PlayerAnimation.Rebind, true);
         StartScene(Level.Title);
-
     }
 }
 [Serializable]

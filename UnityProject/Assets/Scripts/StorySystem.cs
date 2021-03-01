@@ -138,11 +138,11 @@ public class StorySystem : MonoBehaviour
                                   "The cave was completely submerged under water so without the proper equipment I knew no one would find it.";
                     page[3] = "Fishing Contest. [END OF ENTRY]";
 
-                    if (!ObjectSystem.entry1)
+                    if (!ObjectSystem.gameEntry[0])
                     {
                         journalEntry++;
                         journalStatus.SetActive(true);
-                        objectSystem.SetJournalActive(1);
+                        objectSystem.SetActiveObject(0, ObjectSystem.gameEntry);
                         SetupEntryUI(Story.fisherman);
                     }
                     break;
@@ -178,11 +178,11 @@ public class StorySystem : MonoBehaviour
                         "I have left my house in search of these ancient artifacts and more history about this secret discovery.";
                     page[3] = "Ship Sightings. [END OF ENTRY]";
 
-                    if (!ObjectSystem.entry10)
+                    if (!ObjectSystem.gameEntry[9])
                     {
                         journalEntry++;
                         journalStatus.SetActive(true);
-                        objectSystem.SetJournalActive(10);
+                        objectSystem.SetActiveObject(9, ObjectSystem.gameEntry);
                         SetupEntryUI(Story.ghostShip);
                     }
                     break;
@@ -205,11 +205,11 @@ public class StorySystem : MonoBehaviour
                               "Not only did they carelessly put themselves in creatures bane, " +
                               "they look puzzled as if the unsolved would be locked away for eternity.";
 
-                    if (!ObjectSystem.entry2)
+                    if (!ObjectSystem.gameEntry[1])
                     {
                         journalEntry++;
                         journalStatus.SetActive(true);
-                        objectSystem.SetJournalActive(2);
+                        objectSystem.SetActiveObject(1, ObjectSystem.gameEntry);
                         SetupEntryUI(Story.Plaque1);
                     }
 
@@ -230,11 +230,11 @@ public class StorySystem : MonoBehaviour
                     page[0] = "The Healers have brought whispers of light and hope for those who are worn, " +
                               "That light may bring magic that can be understood as life itself, not only was it resourceful, " +
                               "but it could allow one to be completely impervious from damage.";
-                    if (!ObjectSystem.entry3)
+                    if (!ObjectSystem.gameEntry[2])
                     {
                         journalEntry++;
                         journalStatus.SetActive(true);
-                        objectSystem.SetJournalActive(3);
+                        objectSystem.SetActiveObject(2, ObjectSystem.gameEntry);
                         SetupEntryUI(Story.Plaque2);
                     }
                     break;
@@ -256,11 +256,11 @@ public class StorySystem : MonoBehaviour
                               "loosing all hope to the wreckless bounty." +
                               "There may be hope if desired to conquer ones inner struggle, " +
                               "shall they be rewarded with absolute power.";
-                    if (!ObjectSystem.entry4)
+                    if (!ObjectSystem.gameEntry[3])
                     {
                         journalEntry++;
                         journalStatus.SetActive(true);
-                        objectSystem.SetJournalActive(4);
+                        objectSystem.SetActiveObject(3, ObjectSystem.gameEntry);
                         SetupEntryUI(Story.Plaque3);
                     }
                     break;
@@ -281,11 +281,11 @@ public class StorySystem : MonoBehaviour
                               "Where time itself can change, the dark ones may reveal what once was." +
                               "Choosing to wear the demons possession, the wearer can see deep into the darkness, " +
                               "and will travel among space and time itself, completely shrouded in veil.";
-                    if (!ObjectSystem.entry5)
+                    if (!ObjectSystem.gameEntry[4])
                     {
                         journalEntry++;
                         journalStatus.SetActive(true);
-                        objectSystem.SetJournalActive(5);
+                        objectSystem.SetActiveObject(4, ObjectSystem.gameEntry);
                         SetupEntryUI(Story.Plaque4);
                     }
                     break;
@@ -306,11 +306,11 @@ public class StorySystem : MonoBehaviour
                               "conjoined would shed light to any brave foe who has the courage to overcome death itself. " +
                               "If the task was completed, it would ignite the path and guide ones courage within. " +
                               "To conquer the next role in judgement, where there was once light, the Dark Ones can aid what once was.";
-                    if (!ObjectSystem.entry6)
+                    if (!ObjectSystem.gameEntry[5])
                     {
                         journalEntry++;
                         journalStatus.SetActive(true);
-                        objectSystem.SetJournalActive(6);
+                        objectSystem.SetActiveObject(5, ObjectSystem.gameEntry);
                         SetupEntryUI(Story.Plaque5);
                     }
                     break;
@@ -331,11 +331,11 @@ public class StorySystem : MonoBehaviour
                               "Using the perplexed souls of the sacred mask they could shroud themselves and transform living material from time and space, " +
                               "completely unseen to the eyes of the originals. " +
                               "If the originals seeked for evil, the barriers will be forever unobtainable";
-                    if (!ObjectSystem.entry7)
+                    if (!ObjectSystem.gameEntry[6])
                     {
                         journalEntry++;
                         journalStatus.SetActive(true);
-                        objectSystem.SetJournalActive(7);
+                        objectSystem.SetActiveObject(6, ObjectSystem.gameEntry);
                         SetupEntryUI(Story.Plaque6);
                     }
                     break;
@@ -409,11 +409,11 @@ public class StorySystem : MonoBehaviour
                     codeBook.SetActive(true);
                     codeNum = 0;
                     background.sprite = backgroundImages[3];
-                    if (!ObjectSystem.entry8)
+                    if (!ObjectSystem.gameEntry[7])
                     {
                         journalEntry++;
                         journalStatus.SetActive(true);
-                        objectSystem.SetJournalActive(8);
+                        objectSystem.SetActiveObject(7, ObjectSystem.gameEntry);
                         SetupEntryUI(Story.codeBook1);
                     }
                     break;
@@ -430,11 +430,11 @@ public class StorySystem : MonoBehaviour
                     codeBook.SetActive(true);
                     codeNum = 1;
                     background.sprite = backgroundImages[3];
-                    if (!ObjectSystem.entry9)
+                    if (!ObjectSystem.gameEntry[8])
                     {
                         journalEntry++;
                         journalStatus.SetActive(true);
-                        objectSystem.SetJournalActive(9);
+                        objectSystem.SetActiveObject(8, ObjectSystem.gameEntry);
                         SetupEntryUI(Story.codeBook2);
                     }
                     break;
@@ -595,7 +595,7 @@ public class StorySystem : MonoBehaviour
         {
             case Story.fisherman:
                 {
-                    if (ObjectSystem.entry1)
+                    if (ObjectSystem.gameEntry[0])
                     {
                         ancientDiscoveryIcons[0].enabled = true;
                         ancientDiscoveryBooks[0].interactable = true;
@@ -612,7 +612,7 @@ public class StorySystem : MonoBehaviour
                 }
             case Story.ghostShip:
                 {
-                    if (ObjectSystem.entry10)
+                    if (ObjectSystem.gameEntry[9])
                     {
                         ancientDiscoveryIcons[1].enabled = true;
                         ancientDiscoveryBooks[1].interactable = true;
@@ -629,7 +629,7 @@ public class StorySystem : MonoBehaviour
                 }
             case Story.Plaque1:
                 {
-                    if (ObjectSystem.entry2)
+                    if (ObjectSystem.gameEntry[1])
                     {
                         islandHistoryIcons[0].enabled = true;
                         islandHistoryBooks[0].interactable = true;
@@ -646,7 +646,7 @@ public class StorySystem : MonoBehaviour
                 }
             case Story.Plaque2:
                 {
-                    if (ObjectSystem.entry3)
+                    if (ObjectSystem.gameEntry[2])
                     {
                         islandHistoryIcons[1].enabled = true;
                         islandHistoryBooks[1].interactable = true;
@@ -663,7 +663,7 @@ public class StorySystem : MonoBehaviour
                 }
             case Story.Plaque3:
                 {
-                    if (ObjectSystem.entry4)
+                    if (ObjectSystem.gameEntry[3])
                     {
                         islandHistoryIcons[2].enabled = true;
                         islandHistoryBooks[2].interactable = true;
@@ -680,7 +680,7 @@ public class StorySystem : MonoBehaviour
                 }
             case Story.Plaque4:
                 {
-                    if (ObjectSystem.entry5)
+                    if (ObjectSystem.gameEntry[4])
                     {
                         islandHistoryIcons[3].enabled = true;
                         islandHistoryBooks[3].interactable = true;
@@ -697,7 +697,7 @@ public class StorySystem : MonoBehaviour
                 }
             case Story.Plaque5:
                 {
-                    if (ObjectSystem.entry6)
+                    if (ObjectSystem.gameEntry[5])
                     {
                         islandHistoryIcons[4].enabled = true;
                         islandHistoryBooks[4].interactable = true;
@@ -714,7 +714,7 @@ public class StorySystem : MonoBehaviour
                 }
             case Story.Plaque6:
                 {
-                    if (ObjectSystem.entry7)
+                    if (ObjectSystem.gameEntry[6])
                     {
                         islandHistoryIcons[5].enabled = true;
                         islandHistoryBooks[5].interactable = true;
@@ -731,7 +731,7 @@ public class StorySystem : MonoBehaviour
                 }
             case Story.codeBook1:
                 {
-                    if (ObjectSystem.entry8)
+                    if (ObjectSystem.gameEntry[7])
                     {
                         decodedScriptIcons[0].enabled = true;
                         decodedScriptBooks[0].interactable = true;
@@ -748,7 +748,7 @@ public class StorySystem : MonoBehaviour
                 }
             case Story.codeBook2:
                 {
-                    if (ObjectSystem.entry9)
+                    if (ObjectSystem.gameEntry[8])
                     {
                         decodedScriptIcons[1].enabled = true;
                         decodedScriptBooks[1].interactable = true;
@@ -769,7 +769,7 @@ public class StorySystem : MonoBehaviour
     public void giveJournal(int num)
     {
         objectSystem = GameObject.Find("Core").GetComponent<ObjectSystem>();
-        objectSystem.SetJournalActive(num);
+        objectSystem.SetActiveObject(num, ObjectSystem.gameEntry);
         LoadPreviousEntries();
         journalEntry++;
         journalEntryText.text = journalEntry + "/10".ToString();
@@ -780,16 +780,8 @@ public class StorySystem : MonoBehaviour
         objectSystem = GameObject.Find("Core").GetComponent<ObjectSystem>();
         if (on)
         {
-            objectSystem.SetJournalActive(1);
-            objectSystem.SetJournalActive(2);
-            objectSystem.SetJournalActive(3);
-            objectSystem.SetJournalActive(4);
-            objectSystem.SetJournalActive(5);
-            objectSystem.SetJournalActive(6);
-            objectSystem.SetJournalActive(7);
-            objectSystem.SetJournalActive(8);
-            objectSystem.SetJournalActive(9);
-            objectSystem.SetJournalActive(10);
+            for(int en = 0; en < ObjectSystem.gameEntry.Length; en++)
+                objectSystem.SetActiveObject(en, ObjectSystem.gameEntry);
             LoadPreviousEntries();
             journalEntry = 10;
             journalEntryText.text = journalEntry + "/10".ToString();
@@ -797,16 +789,8 @@ public class StorySystem : MonoBehaviour
         }
         else
         {
-            objectSystem.LoadJournals(1, false);
-            objectSystem.LoadJournals(2, false);
-            objectSystem.LoadJournals(3, false);
-            objectSystem.LoadJournals(4, false);
-            objectSystem.LoadJournals(5, false);
-            objectSystem.LoadJournals(6, false);
-            objectSystem.LoadJournals(7, false);
-            objectSystem.LoadJournals(8, false);
-            objectSystem.LoadJournals(9, false);
-            objectSystem.LoadJournals(10, false);
+            for (int en = 0; en < ObjectSystem.gameEntry.Length; en++)
+                objectSystem.SetDeActiveObject(en, ObjectSystem.gameEntry);
             LoadPreviousEntries();
             journalEntry = 0;
             journalEntryText.text = journalEntry + "/10".ToString();

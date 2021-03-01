@@ -170,6 +170,20 @@ public class MMTransition : MonoBehaviour
             yield return null;
         }
     }
+    public IEnumerator FadeImage(Image image, bool fadeIn)
+    {
+        float alpha = image.color.a;
+        float inFactor = fadeIn ? 0 : alpha;
+        float outFactor = fadeIn ? alpha : 0;
+        for (float a = 0; a < 1; a += 0.01f)
+        {
+            image.color = optSystem.Color(image.color.r, image.color.g, image.color.b, Mathf.Lerp(inFactor, outFactor, a));
+            if (a > 0.99)
+                image.color = optSystem.Color(image.color.r, image.color.g, image.color.b, outFactor);
+            yield return optSystem.WaitRealtime(0.001f);
+        }
+        yield break;
+    }
     public IEnumerator FadeIn(float aValue, float aTime, Image image, bool imgProperty, int num)
     {
         float alpha = image.GetComponent<Image>().color.a;
@@ -186,7 +200,7 @@ public class MMTransition : MonoBehaviour
                 image.GetComponent<Image>().color = newColor;
                 
                 if (num == 0)
-                {
+                {d
                     StopCoroutine(screenBlack);
                     screenBlack = FadeIn(1.0f, 0.5f, titleBottom, false, 1);
                     StartCoroutine(screenBlack);
@@ -382,8 +396,8 @@ public class MMTransition : MonoBehaviour
             StopCoroutine(fadeAudio);
         }
        
-        titleBottom.GetComponent<Image>().color = returnColor;
-        subTitle.GetComponent<Image>().color = returnColor;
+        titleBottom.color = returnColor;
+        subTitle.color = returnColor;
         pressStart.SetActive(false);
         flashScreenTimer = flashScreenTime;
         scrolling = ScrollTitle(2.8f);
@@ -401,12 +415,7 @@ public class MMTransition : MonoBehaviour
         {
            
             fileMenu.SetActive(false);
-            if (fadeAudio != null)
-            {
-                StopCoroutine(fadeAudio);
-            }
-            fadeAudio = AudioFadeOut(audioSrc);
-            StartCoroutine(fadeAudio);
+            AudioSystem.FadeMusic(false);
 
             screenBlack = FadeIn(1.0f, 4.0f, blackScreen, true, 4);
             StartCoroutine(screenBlack);

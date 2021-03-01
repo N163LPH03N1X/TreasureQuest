@@ -201,7 +201,7 @@ public class MiscObjInt : MonoBehaviour
         if (eventObject != null && num != 0)
         {
             EventActionSystem EAS = eventObject.GetComponent<EventActionSystem>();
-            if (num == 1 && !ObjectSystem.event1)
+            if (num == 1 && !ObjectSystem.gameEvent[0])
             {
                 swordSystem = PlayerSystem.playerTransform.GetComponent<SwordSystem>();
                 effectRoutine = swordSystem.QuakeEffect(8);
@@ -264,46 +264,13 @@ public class MiscObjInt : MonoBehaviour
         storySystem = PlayerSystem.playerTransform.GetComponent<StorySystem>();
         if (!isChecked && OpenStory)
         {
-            if (story == 1) if (ObjectSystem.entry1) storySystem.SetupEntryUI(StorySystem.Story.fisherman);
-            else if (story == 2) if (ObjectSystem.entry2) storySystem.SetupEntryUI(StorySystem.Story.Plaque1);
-            else if (story == 3) if (ObjectSystem.entry3) storySystem.SetupEntryUI(StorySystem.Story.Plaque2);
-            else if (story == 4) if (ObjectSystem.entry4) storySystem.SetupEntryUI(StorySystem.Story.Plaque3); 
-            else if (story == 5) if (ObjectSystem.entry5) storySystem.SetupEntryUI(StorySystem.Story.Plaque4);
-            else if (story == 6) if (ObjectSystem.entry6) storySystem.SetupEntryUI(StorySystem.Story.Plaque5);
-            else if (story == 7) if (ObjectSystem.entry7) storySystem.SetupEntryUI(StorySystem.Story.Plaque6);
-            //else if (story == 8)
-            //{
-            //    if (ObjectSystem.entry8)
-            //    {
-            //        storySystem.SetupEntryUI(StorySystem.Story.fisherman);
-            //        isChecked = true;
-            //    }
-            //}
-            //else if (story == 9)
-            //{
-            //    if (ObjectSystem.entry9)
-            //    {
-            //        storySystem.SetupEntryUI(StorySystem.Story.fisherman);
-            //        isChecked = true;
-            //    }
-            //}
-            //else if (story == 10)
-            //{
-            //    if (ObjectSystem.entry10)
-            //    {
-            //        storySystem.SetupEntryUI(StorySystem.Story.fisherman);
-            //        isChecked = true;
-            //    }
-            //}
-            //else if (story == 11)
-            //{
-            //    if (ObjectSystem.entry11)
-            //    {
-            //        storySystem.SetupEntryUI(StorySystem.Story.fisherman);
-            //        isChecked = true;
-            //    }
-            //}
-
+            if (story == 0) if (ObjectSystem.gameEntry[0]) storySystem.SetupEntryUI(StorySystem.Story.fisherman);
+            else if (story == 1) if (ObjectSystem.gameEntry[1]) storySystem.SetupEntryUI(StorySystem.Story.Plaque1);
+            else if (story == 2) if (ObjectSystem.gameEntry[2]) storySystem.SetupEntryUI(StorySystem.Story.Plaque2);
+            else if (story == 3) if (ObjectSystem.gameEntry[3]) storySystem.SetupEntryUI(StorySystem.Story.Plaque3); 
+            else if (story == 4) if (ObjectSystem.gameEntry[4]) storySystem.SetupEntryUI(StorySystem.Story.Plaque4);
+            else if (story == 5) if (ObjectSystem.gameEntry[5]) storySystem.SetupEntryUI(StorySystem.Story.Plaque5);
+            else if (story == 6) if (ObjectSystem.gameEntry[6]) storySystem.SetupEntryUI(StorySystem.Story.Plaque6);
         }
     }
 }

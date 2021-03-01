@@ -214,7 +214,7 @@ public class UnderWaterSystem : MonoBehaviour
                 playerSystem.PlayerDamage(500, false);
                 Char = playerController.GetComponent<CharacterSystem>();
                 Char.SetPosition();
-                playerSystem.LoadPosition();
+                playerSystem.LoadCoordinates();
                 isSwimming = false;
                 aboveWater = false;
             }
@@ -259,7 +259,7 @@ public class UnderWaterSystem : MonoBehaviour
                 playerSystem.PlayerDamage(100, false);
                 Char = playerController.GetComponent<CharacterSystem>();
                 Char.SetPosition();
-                playerSystem.LoadPosition();
+                playerSystem.LoadCoordinates();
                 isSwimming = false;
             }
         }

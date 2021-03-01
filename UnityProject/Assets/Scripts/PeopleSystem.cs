@@ -197,31 +197,31 @@ public class PeopleSystem : MonoBehaviour
         {
             case EventType.Event1:
                 {
-                    if (ObjectSystem.event1)
+                    if (ObjectSystem.gameEvent[0])
                         ChangeConversation();
                     break;
                 }
             case EventType.Event2:
                 {
-                    if (ObjectSystem.event2)
+                    if (ObjectSystem.gameEvent[1])
                         ChangeConversation();
                     break;
                 }
             case EventType.Event3:
                 {
-                    if (ObjectSystem.event3)
+                    if (ObjectSystem.gameEvent[2])
                         ChangeConversation();
                     break;
                 }
             case EventType.Event4:
                 {
-                    if (ObjectSystem.event4)
+                    if (ObjectSystem.gameEvent[3])
                         ChangeConversation();
                     break;
                 }
             case EventType.Event5:
                 {
-                    if (ObjectSystem.event5)
+                    if (ObjectSystem.gameEvent[4])
                         ChangeConversation();
                     break;
                 }
@@ -318,7 +318,7 @@ public class PeopleSystem : MonoBehaviour
             {
                 if (duskcliffActive)
                 {
-                    if (ShopSystem.vitality1Bought)
+                    if (ShopSystem.vitalityBought[0])
                     {
                         if (!shopMessageFinished && dayConvo.shopDMessageVitality != "")
                         {
@@ -333,7 +333,7 @@ public class PeopleSystem : MonoBehaviour
                             ResetPerson();
                         }
                     }
-                    else if (!ShopSystem.vitality1Bought)
+                    else if (!ShopSystem.vitalityBought[0])
                     {
                         if (!shopMessageFinished && dayConvo.shopDMessage != "")
                         {
@@ -351,7 +351,7 @@ public class PeopleSystem : MonoBehaviour
                 }
                 else if (windacreActive)
                 {
-                    if (ShopSystem.vitality2Bought)
+                    if (ShopSystem.vitalityBought[1])
                     {
                         if (!shopMessageFinished && dayConvo.shopWMessageVitality != "")
                         {
@@ -366,7 +366,7 @@ public class PeopleSystem : MonoBehaviour
                             ResetPerson();
                         }
                     }
-                    else if (!ShopSystem.vitality2Bought)
+                    else if (!ShopSystem.vitalityBought[1])
                     {
                         if (!shopMessageFinished && dayConvo.shopWMessage != "")
                         {

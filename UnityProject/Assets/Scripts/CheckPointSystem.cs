@@ -32,7 +32,7 @@ public class CheckPointSystem : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playSys = other.gameObject.GetComponent<PlayerSystem>();
-            playSys.SavePosition();
+            playSys.SaveCoordinates();
             sceneSys = GameObject.Find("Core/Player").GetComponent<SceneSystem>();
             if (isDuskCliff)
                 sceneSys.SetPlaceName(SceneSystem.Place.duskCliff, checkMusic.duskMusic);
@@ -64,7 +64,7 @@ public class CheckPointSystem : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playSys = other.gameObject.GetComponent<PlayerSystem>();
-            playSys.SavePosition();
+            playSys.SaveCoordinates();
             sceneSys = GameObject.Find("Core/Player").GetComponent<SceneSystem>();
             if(isWindAcre)
                 sceneSys.SetPlaceName(SceneSystem.Place.overworld, checkMusic.overMusic);

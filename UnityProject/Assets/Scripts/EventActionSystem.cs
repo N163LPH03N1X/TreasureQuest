@@ -4,24 +4,17 @@ using System.Collections;
 public class EventActionSystem : MonoBehaviour
 {
     public int currentEvent;
+    public bool[] triggerEvent = new bool[5];
     [Header ("Pedastal - Event 1")]
     public int maxDistance;
-    public bool triggerEvent1 = false;
     [Space]
     [Header("Open Wood Wall - Event 2")]
-    public bool triggerEvent2 = false;
     Vector3 newEvent2Position = new Vector3(303f, 84.5f, 1908f);
     [Space]
-    [Header("Raise Spiral Stairs - Event 3")]
-    public bool triggerEvent3 = false;
-    [Space]
-    [Header("Raise Totem Boss Temple 1 - Event 4")]
-    public bool triggerEvent4 = false;
-    [Space]
     [Header("Open Well Entrance - Event 5")]
-    public bool triggerEvent5 = false;
     public GameObject[] event5ObjectsOn;
     public GameObject[] event5ObjectsOff;
+    [Space]
     IEnumerator quake;
     bool isChecked;
     ObjectSystem objectSystem;
@@ -49,10 +42,10 @@ public class EventActionSystem : MonoBehaviour
     }
     void Update()
     {
-
-        if (triggerEvent1)
+        if (triggerEvent[0])
         {
-            transform.Translate(Vector3.right * Time.deltaTime * 1);
+            if(currentEvent == 0)
+                transform.Translate(Vector3.right * Time.deltaTime * 1);
             if (transform.localPosition.x > maxDistance)
             {
                 Vector3 newPosition = transform.localPosition;
@@ -61,66 +54,63 @@ public class EventActionSystem : MonoBehaviour
                 if (newPosition.x == maxDistance)
                 {
                     objectSystem = GameObject.Find("Core").GetComponent<ObjectSystem>();
-                    if (currentEvent != 0)
-                        objectSystem.SetEventActive(currentEvent);
+                    objectSystem.SetActiveObject(currentEvent, ObjectSystem.gameEvent);
                     isChecked = true;
-                    triggerEvent1 = false;
+                    triggerEvent[0] = false;
                 }
             }
         }
-        else if (triggerEvent2)
+        else if (triggerEvent[1])
         {
-            transform.position = newEvent2Position;
-            BoxCollider box = GetComponent<BoxCollider>();
-            box.enabled = false;
-            objectSystem = GameObject.Find("Core").GetComponent<ObjectSystem>();
-            if (currentEvent != 0)
-                objectSystem.SetEventActive(currentEvent);
-            isChecked = true;
-            triggerEvent2 = false;
-        }
-        else if (triggerEvent3)
-        {
-            ObjectEventSystem raiseStairs = GetComponent<ObjectEventSystem>();
-            raiseStairs.StartEvent();
-            objectSystem = GameObject.Find("Core").GetComponent<ObjectSystem>();
-            if (currentEvent != 0)
-                objectSystem.SetEventActive(currentEvent);
-            isChecked = true;
-            triggerEvent3 = false;
-        }
-        else if (triggerEvent4)
-        {
-            ObjectEventSystem raiseTotem = transform.GetChild(4).GetComponent<ObjectEventSystem>();
-            raiseTotem.StartEvent();
-            objectSystem = GameObject.Find("Core").GetComponent<ObjectSystem>();
-            if (currentEvent != 0)
-                objectSystem.SetEventActive(currentEvent);
-            QuakePlayer(5);
-            isChecked = true;
-            triggerEvent4 = false;
-        }
-        else if (triggerEvent5)
-        {
-            if (event5ObjectsOn.Length != 0)
+            if (currentEvent == 1)
             {
-                foreach (GameObject obj in event5ObjectsOn)
-                {
-                    obj.SetActive(true);
-                }
+                transform.position = newEvent2Position;
+                BoxCollider box = GetComponent<BoxCollider>();
+                box.enabled = false;
+                objectSystem = GameObject.Find("Core").GetComponent<ObjectSystem>();
+                objectSystem.SetActiveObject(currentEvent, ObjectSystem.gameEvent);
+                isChecked = true;
+                triggerEvent[1] = false;
             }
-            if (event5ObjectsOff.Length != 0)
+        }
+        else if (triggerEvent[2])
+        {
+            if (currentEvent == 2)
             {
-                foreach (GameObject obj in event5ObjectsOff)
-                {
-                    obj.SetActive(false);
-                }
+                ObjectEventSystem raiseStairs = GetComponent<ObjectEventSystem>();
+                raiseStairs.StartEvent();
+                objectSystem = GameObject.Find("Core").GetComponent<ObjectSystem>();
+                objectSystem.SetActiveObject(currentEvent, ObjectSystem.gameEvent);
+                isChecked = true;
+                triggerEvent[2] = false;
             }
-            objectSystem = GameObject.Find("Core").GetComponent<ObjectSystem>();
-            if (currentEvent != 0)
-                objectSystem.SetEventActive(currentEvent);
-            isChecked = true;
-            triggerEvent5 = false;
+        }
+        else if (triggerEvent[3])
+        {
+            if (currentEvent == 3)
+            {
+                ObjectEventSystem raiseTotem = transform.GetChild(4).GetComponent<ObjectEventSystem>();
+                raiseTotem.StartEvent();
+                objectSystem = GameObject.Find("Core").GetComponent<ObjectSystem>();
+                objectSystem.SetActiveObject(currentEvent, ObjectSystem.gameEvent);
+                QuakePlayer(5);
+                isChecked = true;
+                triggerEvent[3] = false;
+            }
+        }
+        else if (triggerEvent[4])
+        {
+            if (currentEvent == 4)
+            {
+                for (int eOb = 0; eOb < event5ObjectsOn.Length; eOb++)
+                    event5ObjectsOn[eOb].SetActive(true);
+                for (int eOb = 0; eOb < event5ObjectsOff.Length; eOb++)
+                    event5ObjectsOff[eOb].SetActive(true);
+                objectSystem = GameObject.Find("Core").GetComponent<ObjectSystem>();
+                objectSystem.SetActiveObject(currentEvent, ObjectSystem.gameEvent);
+                isChecked = true;
+                triggerEvent[4] = false;
+            }
         }
         if (!isChecked)
             CheckEventSystem(currentEvent);
@@ -135,59 +125,12 @@ public class EventActionSystem : MonoBehaviour
     }
     public void CheckEventSystem(int num)
     {
-        if(num == 1)
-        {
-            if (ObjectSystem.event1)
-            {
-                TriggerEvent(1);
-                isChecked = true;
-            }
-        }
-        else if (num == 2)
-        {
-            if (ObjectSystem.event2)
-            {
-                TriggerEvent(2);
-                isChecked = true;
-            }
-        }
-        else if (num == 3)
-        {
-            if (ObjectSystem.event3)
-            {
-                TriggerEvent(3);
-                isChecked = true;
-            }
-        }
-        else if (num == 4)
-        {
-            if (ObjectSystem.event4)
-            {
-                TriggerEvent(4);
-                isChecked = true;
-            }
-        }
-        else if (num == 5)
-        {
-            if (ObjectSystem.event5)
-            {
-                TriggerEvent(5);
-                isChecked = true;
-            }
-        }
-       
+        for (int s = 0; s < ObjectSystem.gameEvent.Length; s++)
+            if (s == num)
+                if (ObjectSystem.gameEvent[s]) { TriggerEvent(s); isChecked = true; }
     }
     public void TriggerEvent(int num)
     {
-        if(num == 1)
-            triggerEvent1 = true;
-        else if (num == 2)
-            triggerEvent2 = true;
-        else if (num == 3)
-            triggerEvent3 = true;
-        else if (num == 4)
-            triggerEvent4 = true;
-        else if (num == 5)
-            triggerEvent5 = true;
+        triggerEvent[num] = true;
     }
 }

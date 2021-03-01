@@ -329,151 +329,29 @@ public class DoorSystem : MonoBehaviour
     public void UnlockDoorAuto()
     {
         ObjectSystem objectSystem = GameObject.Find("Core").GetComponent<ObjectSystem>();
-        objectSystem.SetDoorActive(currentDoor);
+        objectSystem.SetActiveObject(currentDoor, ObjectSystem.gameDoor);
         needsToOpen = true;
     }
     public void UnlockDoor()
     {
         ObjectSystem objectSystem = GameObject.Find("Core").GetComponent<ObjectSystem>();
-        objectSystem.SetDoorActive(currentDoor);
+        objectSystem.SetActiveObject(currentDoor, ObjectSystem.gameDoor);
     }
     public void CheckDoorSystem(int door)
     {
         if (!isChecked)
         {
-            if (door == 1)
+            for (int d = 0; d < ObjectSystem.gameDoor.Length; d++)
             {
-                if (ObjectSystem.door1)
+                if (d == door)
                 {
-                    isChecked = true;
-                    DoorStatus(false);
-                    UnlockDoor();
-                }
-            }
-            else if (door == 2)
-            {
-                if (ObjectSystem.door2)
-                {
-                    isChecked = true;
-                    DoorStatus(false);
-                    UnlockDoor();
-                }
-            }
-            else if (door == 3)
-            {
-                if (ObjectSystem.door3)
-                {
-                    isChecked = true;
-                    DoorStatus(false);
-                    UnlockDoor();
-                }
-            }
-            else if (door == 4)
-            {
-                if (ObjectSystem.door4)
-                {
-                    isChecked = true;
-                    DoorStatus(false);
-                    UnlockDoor();
-                }
-            }
-            else if (door == 5)
-            {
-                if (ObjectSystem.door5)
-                {
-                    isChecked = true;
-                    DoorStatus(false);
-                    UnlockDoor();
-                }
-            }
-            else if (door == 6)
-            {
-                if (ObjectSystem.door6)
-                {
-                    isChecked = true;
-                    DoorStatus(false);
-                    UnlockDoor();
-                }
-            }
-            else if (door == 7)
-            {
-                if (ObjectSystem.door7)
-                {
-                    isChecked = true;
-                    DoorStatus(false);
-                    UnlockDoor();
-                }
-            }
-            else if (door == 8)
-            {
-                if (ObjectSystem.door8)
-                {
-                    isChecked = true;
-                    DoorStatus(false);
-                    UnlockDoor();
-                }
-            }
-            else if (door == 9)
-            {
-                if (ObjectSystem.door9)
-                {
-                    isChecked = true;
-                    DoorStatus(false);
-                    UnlockDoor();
-                }
-            }
-            else if (door == 10)
-            {
-                if (ObjectSystem.door10)
-                {
-                    isChecked = true;
-                    DoorStatus(false);
-                    UnlockDoor();
-                }
-            }
-            else if (door == 11)
-            {
-                if (ObjectSystem.door11)
-                {
-                    isChecked = true;
-                    DoorStatus(false);
-                    UnlockDoor();
-                }
-            }
-            else if (door == 12)
-            {
-                if (ObjectSystem.door12)
-                {
-                    isChecked = true;
-                    DoorStatus(false);
-                    UnlockDoor();
-                }
-            }
-            else if (door == 13)
-            {
-                if (ObjectSystem.door13)
-                {
-                    isChecked = true;
-                    DoorStatus(false);
-                    UnlockDoor();
-                }
-            }
-            else if (door == 14)
-            {
-                if (ObjectSystem.door14)
-                {
-                    isChecked = true;
-                    DoorStatus(false);
-                    UnlockDoor();
-                }
-            }
-            else if (door == 15)
-            {
-                if (ObjectSystem.door15)
-                {
-                    isChecked = true;
-                    DoorStatus(false);
-                    UnlockDoor();
+                    if (ObjectSystem.gameDoor[d])
+                    {
+                        isChecked = true;
+                        DoorStatus(false);
+                        UnlockDoor();
+                        break;
+                    }
                 }
             }
         }

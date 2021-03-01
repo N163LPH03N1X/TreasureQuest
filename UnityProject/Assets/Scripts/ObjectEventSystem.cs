@@ -62,7 +62,7 @@ public class ObjectEventSystem : MonoBehaviour
         {
             if (isTemple1MainDoor)
             {
-                if (ObjectSystem.switch9)
+                if (ObjectSystem.gameSwitch[8])
                 {
                     StartSilentEvent();
                     isCheckStatus = true;
@@ -70,7 +70,7 @@ public class ObjectEventSystem : MonoBehaviour
             }
             else if (isTemple1BossDoor)
             {
-                if (ObjectSystem.switch16)
+                if (ObjectSystem.gameSwitch[15])
                 {
                     StartSilentEvent();
                     isCheckStatus = true;
@@ -78,7 +78,7 @@ public class ObjectEventSystem : MonoBehaviour
             }
             else if (isTemple1Stairs)
             {
-                if (ObjectSystem.switch13 && ObjectSystem.switch14)
+                if (ObjectSystem.gameSwitch[12] && ObjectSystem.gameSwitch[13])
                 {
                     StartSilentEvent();
                     isCheckStatus = true;
@@ -86,7 +86,7 @@ public class ObjectEventSystem : MonoBehaviour
             }
             else if (isTemple1Totem)
             {
-                if (ObjectSystem.switch15)
+                if (ObjectSystem.gameSwitch[14])
                 {
                     StartSilentEvent();
                     isCheckStatus = true;

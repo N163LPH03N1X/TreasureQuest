@@ -31,9 +31,7 @@ public class ShopSystem : MonoBehaviour
     public Button[] purchaseButtons;
     public GameObject[] inventorySlots;
 
-    public static bool vitality1Bought = false;
-    public static bool vitality2Bought = false;
-    public static bool vitality3Bought = false;
+    public static bool[] vitalityBought = new bool[3];
 
     public Text confirmText;
     string confirmMessage;
@@ -358,7 +356,7 @@ public class ShopSystem : MonoBehaviour
                     besideBedPos = GameObject.Find("Core/Positions/DuskSleepPos").transform;
 
                     shopName.text = "Dusk Cliff Shop";
-                    if (vitality1Bought)
+                    if (vitalityBought[0])
                     {
                         SelectItem(Items.Vitality1, 0, 150, 0, false, false, 0);
                         SelectItem(Items.InnTicket, 1, 20, 0, false, false, 0);
@@ -385,7 +383,7 @@ public class ShopSystem : MonoBehaviour
                     besideBedPos = GameObject.Find("Core/Positions/WindSleepPos").transform;
 
                     shopName.text = "Wind Acre Shop";
-                    if (vitality2Bought)
+                    if (vitalityBought[1])
                     {
                         SelectItem(Items.Vitality2, 0, 300, 0, false, false, 0);
                         SelectItem(Items.InnTicket, 1, 20, 0, false, false, 0);
@@ -411,7 +409,7 @@ public class ShopSystem : MonoBehaviour
                     //besideBedPos = GameObject.Find("Core/Positions/SkulkSleepPos").transform;
 
                     shopName.text = "Skulk Cove Shop";
-                    if (vitality3Bought)
+                    if (vitalityBought[2])
                     {
                         SelectItem(Items.Vitality3, 0, 350, 0, false, false, 0);
                         SelectItem(Items.InnTicket, 1, 20, 0, false, false, 0);
@@ -476,12 +474,12 @@ public class ShopSystem : MonoBehaviour
                         if (PlayerSystem.playerGold < 0)
                         {
                             PlayerSystem.playerGold = orgGold;
-                            if (!vitality1Bought)
+                            if (!vitalityBought[0])
                                 confirmMessage = "You don't have enough gold!";
                             else
                                 confirmMessage = "Item is out of stock!";
                         }
-                        else if (vitality1Bought)
+                        else if (vitalityBought[0])
                         {
                             PlayerSystem.playerGold = orgGold;
                             confirmMessage = "Item is out of stock!";
@@ -496,7 +494,7 @@ public class ShopSystem : MonoBehaviour
                         {
                             audioSrc.PlayOneShot(purchaseSfx);
                             SetStockValue(slotNum, 0);
-                            vitality1Bought = true;
+                            vitalityBought[0] = true;
                             confirmMessage = "Thank you!";
                             playSys.AddVitality(1);
                         }
@@ -514,12 +512,12 @@ public class ShopSystem : MonoBehaviour
                         if (PlayerSystem.playerGold < 0)
                         {
                             PlayerSystem.playerGold = orgGold;
-                            if (!vitality2Bought)
+                            if (!vitalityBought[1])
                                 confirmMessage = "You don't have enough gold!";
                             else
                                 confirmMessage = "Item is out of stock!";
                         }
-                        else if (vitality2Bought)
+                        else if (vitalityBought[1])
                         {
                             PlayerSystem.playerGold = orgGold;
                             confirmMessage = "Item is out of stock!";
@@ -534,7 +532,7 @@ public class ShopSystem : MonoBehaviour
                         {
                             audioSrc.PlayOneShot(purchaseSfx);
                             SetStockValue(slotNum, 0);
-                            vitality2Bought = true;
+                            vitalityBought[1] = true;
                             confirmMessage = "Thank you!";
                             playSys.AddVitality(1);
                         }
@@ -552,12 +550,12 @@ public class ShopSystem : MonoBehaviour
                         if (PlayerSystem.playerGold < 0)
                         {
                             PlayerSystem.playerGold = orgGold;
-                            if (!vitality3Bought)
+                            if (!vitalityBought[2])
                                 confirmMessage = "You don't have enough gold!";
                             else
                                 confirmMessage = "Item is out of stock!";
                         }
-                        else if (vitality3Bought)
+                        else if (vitalityBought[2])
                         {
                             PlayerSystem.playerGold = orgGold;
                             confirmMessage = "Item is out of stock!";
@@ -572,7 +570,7 @@ public class ShopSystem : MonoBehaviour
                         {
                             audioSrc.PlayOneShot(purchaseSfx);
                             SetStockValue(slotNum, 0);
-                            vitality2Bought = true;
+                            vitalityBought[2] = true;
                             confirmMessage = "Thank you!";
                             playSys.AddVitality(1);
                         }
@@ -1097,11 +1095,9 @@ public class ShopSystem : MonoBehaviour
         if (other.gameObject.CompareTag("Person"))
             peopleSys = other.gameObject.GetComponent<PeopleSystem>();
     }
-   public void LoadVitalityBought(bool vitality1, bool vitality2, bool vitality3)
+    public void LoadVitalityBought(bool[] vitality)
     {
-        vitality1Bought = vitality1;
-        vitality2Bought = vitality2;
-        vitality3Bought = vitality3;
+        vitalityBought = vitality;
     }
 }
 [Serializable]

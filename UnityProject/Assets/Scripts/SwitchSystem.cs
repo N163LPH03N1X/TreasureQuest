@@ -160,8 +160,7 @@ public class SwitchSystem : MonoBehaviour
                    
                 }
         }
-        if(currentSwitch != 0)
-            objectSystem.SetSwitchActive(currentSwitch);
+        objectSystem.SetActiveObject(currentSwitch, ObjectSystem.gameSwitch);
     }
     public enum SwitchEventType { Dungeon1Water, ActivateEnemies, OverWorldWoodWall, ActivateTorch, OverWorldWindWell }
 
@@ -197,7 +196,7 @@ public class SwitchSystem : MonoBehaviour
                 }
             case SwitchEventType.OverWorldWoodWall:
                 {
-                    objectSystem.SetEventActive(2);
+                    objectSystem.SetActiveObject(2, ObjectSystem.gameEvent);
                     active = true;
                     break;
                 }
@@ -218,7 +217,7 @@ public class SwitchSystem : MonoBehaviour
                 {
                     ObjectEventSystem oEvent = objPrefab.GetComponent<ObjectEventSystem>();
                     oEvent.StartEvent();
-                    objectSystem.SetEventActive(5);
+                    objectSystem.SetActiveObject(5, ObjectSystem.gameEvent);
                     foreach (GameObject gameObj in turnOnObjs)
                     {
                         if (gameObj != null)
@@ -277,180 +276,16 @@ public class SwitchSystem : MonoBehaviour
     {
         if (!isChecked)
         {
-            if (switchNum == 1)
+            for(int s = 0; s < ObjectSystem.gameSwitch.Length; s++)
             {
-                if (ObjectSystem.switch1)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 2)
-            {
-                if (ObjectSystem.switch2)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 3)
-            {
-                if (ObjectSystem.switch3)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 4)
-            {
-                if (ObjectSystem.switch4)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 5)
-            {
-                if (ObjectSystem.switch5)
-                    TurnOnSwitch(false);
-            }
-            if (switchNum == 6)
-            {
-                if (ObjectSystem.switch6)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 7)
-            {
-                if (ObjectSystem.switch7)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 8)
-            {
-                if (ObjectSystem.switch8)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 9)
-            {
-                if (ObjectSystem.switch9)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 10)
-            {
-                if (ObjectSystem.switch10)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 11)
-            {
-                if (ObjectSystem.switch11)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 12)
-            {
-                if (ObjectSystem.switch12)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 13)
-            {
-                if (ObjectSystem.switch13)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 14)
-            {
-                if (ObjectSystem.switch14)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 15)
-            {
-                if (ObjectSystem.switch15)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 16)
-            {
-                if (ObjectSystem.switch16)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 17)
-            {
-                if (ObjectSystem.switch17)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 18)
-            {
-                if (ObjectSystem.switch18)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 19)
-            {
-                if (ObjectSystem.switch19)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 20)
-            {
-                if (ObjectSystem.switch20)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 21)
-            {
-                if (ObjectSystem.switch21)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 22)
-            {
-                if (ObjectSystem.switch22)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 23)
-            {
-                if (ObjectSystem.switch23)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 24)
-            {
-                if (ObjectSystem.switch24)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 25)
-            {
-                if (ObjectSystem.switch25)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 26)
-            {
-                if (ObjectSystem.switch26)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 27)
-            {
-                if (ObjectSystem.switch27)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 28)
-            {
-                if (ObjectSystem.switch28)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 29)
-            {
-                if (ObjectSystem.switch29)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 30)
-            {
-                if (ObjectSystem.switch30)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 31)
-            {
-                if (ObjectSystem.switch31)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 32)
-            {
-                if (ObjectSystem.switch32)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 33)
-            {
-                if (ObjectSystem.switch33)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 34)
-            {
-                if (ObjectSystem.switch34)
-                    TurnOnSwitch(false);
-            }
-            else if (switchNum == 35)
-            {
-                if (ObjectSystem.switch35)
-                    TurnOnSwitch(false);
+                if (s == switchNum)
+                {
+                    if (ObjectSystem.gameSwitch[s])
+                    {
+                        TurnOnSwitch(false);
+                        break;
+                    }
+                }
             }
         }
     }

@@ -7,20 +7,9 @@ public class EventCounterActivate : MonoBehaviour
     public int setCount;
     public CurrentEvent curEvent;
     bool eventFinished;
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
-       
-        if (count >= setCount && !eventFinished)
-        {
-            SelectCurrentEvent(curEvent);
-            eventFinished = true;
-        }
+        if (count >= setCount && !eventFinished) { SelectCurrentEvent(curEvent); eventFinished = true; }
     }
     public enum CurrentEvent { SpiralStairs }
     public void SelectCurrentEvent(CurrentEvent eventCur)
@@ -29,14 +18,13 @@ public class EventCounterActivate : MonoBehaviour
         {
             case CurrentEvent.SpiralStairs:
                 {
-
-                    if (!ObjectSystem.event3)
+                    if (!ObjectSystem.gameEvent[2])
                     {
                         SwordSystem swordSys = GameObject.FindGameObjectWithTag("Player").GetComponent<SwordSystem>();
                         IEnumerator routine = swordSys.QuakeEffect(5.5f);
                         StartCoroutine(routine);
                     }
-                    else if (ObjectSystem.event3)
+                    else if (ObjectSystem.gameEvent[2])
                     {
                         AudioSource audioSrc = GetComponent<AudioSource>();
                         audioSrc.mute = true;

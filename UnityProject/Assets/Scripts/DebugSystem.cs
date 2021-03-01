@@ -2439,7 +2439,7 @@ public class DebugSystem : MonoBehaviour
                         StopCoroutine(statusRoutine);
                     statusRoutine = FadeTextOut(3, statusText);
                     StartCoroutine(statusRoutine);
-                    playerSystem.SavePosition();
+                    playerSystem.SaveCoordinates();
                     break;
                 }
             case Code.LoadPos:
@@ -2453,7 +2453,7 @@ public class DebugSystem : MonoBehaviour
                     characterSystem = GetComponent<CharacterSystem>();
                     characterSystem.SetPosition();
                     sceneSystem.EnablePlayer(false);
-                    playerSystem.LoadPosition();
+                    playerSystem.LoadCoordinates();
                     break;
                 }
             //-------------------------------Shop----------------------------------//

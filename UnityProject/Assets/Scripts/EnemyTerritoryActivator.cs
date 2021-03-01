@@ -29,15 +29,12 @@ public class EnemyTerritoryActivator : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            ObjectSystem objectSystem = GameObject.Find("Core").GetComponent<ObjectSystem>();
             isOn = true;
             if (!enemiesActive)
             {
-                    foreach (GameObject section in sections.prefabs)
-                    {
-                        TurnOnEnemies();
-                        ObjectSystem objectSystem = GameObject.Find("Core").GetComponent<ObjectSystem>();
-                        objectSystem.SetEnemySectionActive(currentSection);
-                    }
+                TurnOnEnemies();
+                objectSystem.SetActiveObject(currentSection, ObjectSystem.gameEnemySection);
             }
 
             else if (enemiesActive)
@@ -72,9 +69,9 @@ public class EnemyTerritoryActivator : MonoBehaviour
 
     public void TurnOnEnemies()
     {
-        foreach (GameObject section in sections.prefabs)
+        for(int e = 0; e <  sections.prefabs.Length; e++)
         {
-            enemySection = Instantiate(section, transform.position, transform.rotation) as GameObject;
+            enemySection = Instantiate(sections.prefabs[e], transform.position, transform.rotation);
             enemySection.transform.parent = transform;
             numOfEnemies = enemySection.transform.childCount;
             enemiesActive = true;
@@ -84,166 +81,17 @@ public class EnemyTerritoryActivator : MonoBehaviour
     {
         if (!isChecked)
         {
-            if (section == 1)
+            for (int s = 0; s < ObjectSystem.gameEnemySection.Length; s++)
             {
-                if (ObjectSystem.enemySection1)
+                if (s == section)
                 {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
-                }
-            }
-            else if (section == 2)
-            {
-                if (ObjectSystem.enemySection2)
-                {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
-                }
-            }
-            else if (section == 3)
-            {
-                if (ObjectSystem.enemySection3)
-                {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
-                }
-            }
-            else if (section == 4)
-            {
-                if (ObjectSystem.enemySection4)
-                {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
-                }
-            }
-            else if (section == 5)
-            {
-                if (ObjectSystem.enemySection5)
-                {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
-                }
-            }
-            else if (section == 6)
-            {
-                if (ObjectSystem.enemySection6)
-                {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
-                }
-            }
-            else if (section == 7)
-            {
-                if (ObjectSystem.enemySection7)
-                {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
-                }
-            }
-            else if (section == 8)
-            {
-                if (ObjectSystem.enemySection8)
-                {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
-                }
-            }
-            else if (section == 9)
-            {
-                if (ObjectSystem.enemySection9)
-                {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
-                }
-            }
-            else if (section == 10)
-            {
-                if (ObjectSystem.enemySection10)
-                {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
-                }
-            }
-            else if (section == 11)
-            {
-                if (ObjectSystem.enemySection11)
-                {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
-                }
-            }
-            else if (section == 12)
-            {
-                if (ObjectSystem.enemySection12)
-                {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
-                }
-            }
-            else if (section == 13)
-            {
-                if (ObjectSystem.enemySection13)
-                {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
-                }
-            }
-            else if (section == 14)
-            {
-                if (ObjectSystem.enemySection14)
-                {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
-                }
-            }
-            else if (section == 15)
-            {
-                if (ObjectSystem.enemySection15)
-                {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
-                }
-            }
-            else if (section == 16)
-            {
-                if (ObjectSystem.enemySection16)
-                {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
-                }
-            }
-            else if (section == 17)
-            {
-                if (ObjectSystem.enemySection17)
-                {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
-                }
-            }
-            else if (section == 18)
-            {
-                if (ObjectSystem.enemySection18)
-                {
-                    TurnOnEnemies();
-                    isChecked = true;
-                    isOn = true;
+                    if (ObjectSystem.gameEnemySection[s])
+                    {
+                        TurnOnEnemies();
+                        isChecked = true;
+                        isOn = true;
+                        break;
+                    }
                 }
             }
         }

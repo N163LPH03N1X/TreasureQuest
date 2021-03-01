@@ -155,9 +155,8 @@ public class ChestSystem : MonoBehaviour
         {
             case Item.Demo:
                 {
-                    currentChest = 0;
                     money.SetActive(false);
-                    playSys.musicAudioSrc.Pause();
+                    AudioSystem.MusicPauseUnPause(true);
                     chestAudioSrc = GetComponent<AudioSource>();
                     chestAudioSrc.volume = 0.8f;
                     chestAudioSrc.pitch = 1f;
@@ -182,7 +181,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -192,7 +191,7 @@ public class ChestSystem : MonoBehaviour
                         playSys.AddGold(5);
                         interaction.DialogueInteraction(true, "You got 5 Golds.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                        objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -211,7 +210,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -221,7 +220,7 @@ public class ChestSystem : MonoBehaviour
                         playSys.AddGold(10);
                         interaction.DialogueInteraction(true, "You got 10 Golds.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -240,7 +239,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -250,7 +249,7 @@ public class ChestSystem : MonoBehaviour
                         playSys.AddGold(20);
                         interaction.DialogueInteraction(true, "You got 20 Golds.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -269,7 +268,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -279,7 +278,7 @@ public class ChestSystem : MonoBehaviour
                         playSys.AddGold(50);
                         interaction.DialogueInteraction(true, "You got 50 Golds.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -298,7 +297,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -311,7 +310,7 @@ public class ChestSystem : MonoBehaviour
                         else
                             interaction.DialogueInteraction(true, "You got LifeBerry.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -330,7 +329,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -343,7 +342,7 @@ public class ChestSystem : MonoBehaviour
                         else
                             interaction.DialogueInteraction(true, "You got Rixile.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -362,7 +361,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -375,7 +374,7 @@ public class ChestSystem : MonoBehaviour
                         else
                             interaction.DialogueInteraction(true, "You got Nicir Plant.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -394,7 +393,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -407,7 +406,7 @@ public class ChestSystem : MonoBehaviour
                         else
                             interaction.DialogueInteraction(true, "You got Mind Remedy.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -426,7 +425,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -439,7 +438,7 @@ public class ChestSystem : MonoBehaviour
                         else
                             interaction.DialogueInteraction(true, "You got Petri-Shroom.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -458,7 +457,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -471,7 +470,7 @@ public class ChestSystem : MonoBehaviour
                         else
                             interaction.DialogueInteraction(true, "You got Relief Ointment.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -490,7 +489,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -503,7 +502,7 @@ public class ChestSystem : MonoBehaviour
                         else
                             interaction.DialogueInteraction(true, "You got Terra Idol.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -522,7 +521,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -535,7 +534,7 @@ public class ChestSystem : MonoBehaviour
                         else
                             interaction.DialogueInteraction(true, "You got Magic Idol.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -554,7 +553,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -567,7 +566,7 @@ public class ChestSystem : MonoBehaviour
                         else
                             interaction.DialogueInteraction(true, "You got Key.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -586,7 +585,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -596,7 +595,7 @@ public class ChestSystem : MonoBehaviour
                         itemSys.GetItem(ItemSystem.Item.DemonMask, 0);
                         interaction.DialogueInteraction(true, "You got Demon Mask.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -615,7 +614,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -625,7 +624,7 @@ public class ChestSystem : MonoBehaviour
                         itemSys.GetItem(ItemSystem.Item.MoonPearl, 0);
                         interaction.DialogueInteraction(true, "You got Moon Pearl.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -644,7 +643,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -654,7 +653,7 @@ public class ChestSystem : MonoBehaviour
                         itemSys.GetItem(ItemSystem.Item.MarkofEtymology, 0);
                         interaction.DialogueInteraction(true, "You got Mark of Etymology.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -673,7 +672,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -683,7 +682,7 @@ public class ChestSystem : MonoBehaviour
                         playSys.AddVitality(1);
                         interaction.DialogueInteraction(true, "You got Vitality Essence.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -702,7 +701,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -712,7 +711,7 @@ public class ChestSystem : MonoBehaviour
                         jewelSys.GetJewel(JewelActive.red);
                         interaction.DialogueInteraction(true, "You got Jewel of Power.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -731,7 +730,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -741,7 +740,7 @@ public class ChestSystem : MonoBehaviour
                         jewelSys.GetJewel(JewelActive.blue);
                         interaction.DialogueInteraction(true, "You got Jewel of Spirit.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -760,7 +759,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -770,7 +769,7 @@ public class ChestSystem : MonoBehaviour
                         jewelSys.GetJewel(JewelActive.green);
                         interaction.DialogueInteraction(true, "You got Jewel of Time.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -789,7 +788,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -799,7 +798,7 @@ public class ChestSystem : MonoBehaviour
                         jewelSys.GetJewel(JewelActive.yellow);
                         interaction.DialogueInteraction(true, "You got Jewel of Light.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -818,7 +817,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -828,7 +827,7 @@ public class ChestSystem : MonoBehaviour
                         jewelSys.GetJewel(JewelActive.purple);
                         interaction.DialogueInteraction(true, "You got Jewel of Dark.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -847,7 +846,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -857,7 +856,7 @@ public class ChestSystem : MonoBehaviour
                         swordSys.GetSword(SwordActive.flare);
                         interaction.DialogueInteraction(true, "You got Flare Sword.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -876,7 +875,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -886,7 +885,7 @@ public class ChestSystem : MonoBehaviour
                         swordSys.GetSword(SwordActive.lightning);
                         interaction.DialogueInteraction(true, "You got Lightning Sword.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -905,7 +904,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -915,7 +914,7 @@ public class ChestSystem : MonoBehaviour
                         swordSys.GetSword(SwordActive.frost);
                         interaction.DialogueInteraction(true, "You got Frost Sword.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -934,7 +933,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -944,7 +943,7 @@ public class ChestSystem : MonoBehaviour
                         swordSys.GetSword(SwordActive.terra);
                         interaction.DialogueInteraction(true, "You got Terra Sword.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -963,7 +962,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -973,7 +972,7 @@ public class ChestSystem : MonoBehaviour
                         playersys.GetArmor(ArmorActive.helix);
                         interaction.DialogueInteraction(true, "You got Helix Armor.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -992,7 +991,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -1002,7 +1001,7 @@ public class ChestSystem : MonoBehaviour
                         playersys.GetArmor(ArmorActive.apex);
                         interaction.DialogueInteraction(true, "You got Apex Armor.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -1021,7 +1020,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -1031,7 +1030,7 @@ public class ChestSystem : MonoBehaviour
                         playersys.GetArmor(ArmorActive.mythic);
                         interaction.DialogueInteraction(true, "You got Mythic Armor.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -1050,7 +1049,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -1060,7 +1059,7 @@ public class ChestSystem : MonoBehaviour
                         playersys.GetArmor(ArmorActive.legendary);
                         interaction.DialogueInteraction(true, "You got Legendary Armor.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -1079,7 +1078,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -1089,7 +1088,7 @@ public class ChestSystem : MonoBehaviour
                         playersys.GetBoots(BootActive.hover);
                         interaction.DialogueInteraction(true, "You got Hovers.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -1108,7 +1107,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -1118,7 +1117,7 @@ public class ChestSystem : MonoBehaviour
                         playersys.GetBoots(BootActive.cinder);
                         interaction.DialogueInteraction(true, "You got Cinders.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -1137,7 +1136,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -1147,7 +1146,7 @@ public class ChestSystem : MonoBehaviour
                         playersys.GetBoots(BootActive.storm);
                         interaction.DialogueInteraction(true, "You got Storms.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -1166,7 +1165,7 @@ public class ChestSystem : MonoBehaviour
                     else
                     {
                         money.SetActive(false);
-                        playSys.musicAudioSrc.Pause();
+                        AudioSystem.MusicPauseUnPause(true);
                         chestAudioSrc = GetComponent<AudioSource>();
                         chestAudioSrc.volume = 0.8f;
                         chestAudioSrc.pitch = 1f;
@@ -1176,7 +1175,7 @@ public class ChestSystem : MonoBehaviour
                         playersys.GetBoots(BootActive.medical);
                         interaction.DialogueInteraction(true, "You got Medicals.");
                         anim.StopPlayback();
-                        objectSystem.SetChestActive(currentChest);
+                         objectSystem.SetActiveObject(currentChest, ObjectSystem.gameChest);
                         coreObj.SetGameProgress(0.2f);
                     }
                     break;
@@ -1203,315 +1202,16 @@ public class ChestSystem : MonoBehaviour
         anim = GetComponent<Animator>();
         if (!isChecked && !isOpen)
         {
-            if (chest == 1)
+            for (int c = 0; c < ObjectSystem.gameChest.Length; c++)
             {
-                if (ObjectSystem.chest1)
-                    OpenChest();
-            }         
-            else if (chest == 2)
-            {
-                if (ObjectSystem.chest2)
-                    OpenChest();
-            }
-            else if(chest == 3)
-            {
-                if (ObjectSystem.chest3)
-                    OpenChest();
-            }
-            else if(chest == 4)
-            {
-                if (ObjectSystem.chest4)
-                    OpenChest();
-            }
-            else if(chest == 5)
-            {
-                if (ObjectSystem.chest5)
-                    OpenChest();
-            }
-            else if(chest == 6)
-            {
-                if (ObjectSystem.chest6)
-                    OpenChest();
-            }
-            else if(chest == 7)
-            {
-                if (ObjectSystem.chest7)
-                    OpenChest();
-            }
-            else if(chest == 8)
-            {
-                if (ObjectSystem.chest8)
-                    OpenChest();
-            }
-            else if (chest == 9)
-            {
-                if (ObjectSystem.chest9)
-                    OpenChest();
-            }
-            else if (chest == 10)
-            {
-                if (ObjectSystem.chest10)
-                    OpenChest();
-            }
-            else if (chest == 11)
-            {
-                if (ObjectSystem.chest11)
-                    OpenChest();
-            }
-            else if (chest == 12)
-            {
-                if (ObjectSystem.chest12)
-                    OpenChest();
-            }
-            else if (chest == 13)
-            {
-                if (ObjectSystem.chest13)
-                    OpenChest();
-            }
-            else if (chest == 14)
-            {
-                if (ObjectSystem.chest14)
-                    OpenChest();
-            }
-            else if (chest == 15)
-            {
-                if (ObjectSystem.chest15)
-                    OpenChest();
-            }
-            else if (chest == 16)
-            {
-                if (ObjectSystem.chest16)
-                    OpenChest();
-            }
-            else if (chest == 17)
-            {
-                if (ObjectSystem.chest17)
-                    OpenChest();
-            }
-            else if (chest == 18)
-            {
-                if (ObjectSystem.chest18)
-                    OpenChest();
-            }
-            else if (chest == 19)
-            {
-                if (ObjectSystem.chest19)
-                    OpenChest();
-            }
-            else if (chest == 20)
-            {
-                if (ObjectSystem.chest20)
-                    OpenChest();
-            }
-            else if (chest == 21)
-            {
-                if (ObjectSystem.chest21)
-                    OpenChest();
-            }
-            else if (chest == 22)
-            {
-                if (ObjectSystem.chest22)
-                    OpenChest();
-            }
-            else if (chest == 23)
-            {
-                if (ObjectSystem.chest23)
-                    OpenChest();
-            }
-            else if (chest == 24)
-            {
-                if (ObjectSystem.chest24)
-                    OpenChest();
-            }
-            else if (chest == 25)
-            {
-                if (ObjectSystem.chest25)
-                    OpenChest();
-            }
-            else if (chest == 26)
-            {
-                if (ObjectSystem.chest26)
-                    OpenChest();
-            }
-            else if (chest == 27)
-            {
-                if (ObjectSystem.chest27)
-                    OpenChest();
-            }
-            else if (chest == 28)
-            {
-                if (ObjectSystem.chest28)
-                    OpenChest();
-            }
-            else if (chest == 29)
-            {
-                if (ObjectSystem.chest29)
-                    OpenChest();
-            }
-            else if (chest == 30)
-            {
-                if (ObjectSystem.chest30)
-                    OpenChest();
-            }
-            else if (chest == 31)
-            {
-                if (ObjectSystem.chest31)
-                    OpenChest();
-            }
-            else if (chest == 32)
-            {
-                if (ObjectSystem.chest32)
-                    OpenChest();
-            }
-            else if (chest == 33)
-            {
-                if (ObjectSystem.chest33)
-                    OpenChest();
-            }
-            else if (chest == 34)
-            {
-                if (ObjectSystem.chest34)
-                    OpenChest();
-            }
-            else if (chest == 35)
-            {
-                if (ObjectSystem.chest35)
-                    OpenChest();
-            }
-            else if (chest == 36)
-            {
-                if (ObjectSystem.chest36)
-                    OpenChest();
-            }
-            else if (chest == 37)
-            {
-                if (ObjectSystem.chest37)
-                    OpenChest();
-            }
-            else if (chest == 38)
-            {
-                if (ObjectSystem.chest38)
-                    OpenChest();
-            }
-            else if (chest == 39)
-            {
-                if (ObjectSystem.chest39)
-                    OpenChest();
-            }
-            else if (chest == 40)
-            {
-                if (ObjectSystem.chest40)
-                    OpenChest();
-            }
-            else if (chest == 41)
-            {
-                if (ObjectSystem.chest41)
-                    OpenChest();
-            }
-            else if (chest == 42)
-            {
-                if (ObjectSystem.chest42)
-                    OpenChest();
-            }
-            else if (chest == 43)
-            {
-                if (ObjectSystem.chest43)
-                    OpenChest();
-            }
-            else if (chest == 44)
-            {
-                if (ObjectSystem.chest44)
-                    OpenChest();
-            }
-            else if (chest == 45)
-            {
-                if (ObjectSystem.chest45)
-                    OpenChest();
-            }
-            else if (chest == 46)
-            {
-                if (ObjectSystem.chest46)
-                    OpenChest();
-            }
-            else if (chest == 47)
-            {
-                if (ObjectSystem.chest47)
-                    OpenChest();
-            }
-            else if (chest == 48)
-            {
-                if (ObjectSystem.chest48)
-                    OpenChest();
-            }
-            else if (chest == 49)
-            {
-                if (ObjectSystem.chest49)
-                    OpenChest();
-            }
-            else if (chest == 50)
-            {
-                if (ObjectSystem.chest50)
-                    OpenChest();
-            }
-            else if (chest == 51)
-            {
-                if (ObjectSystem.chest51)
-                    OpenChest();
-            }
-            else if (chest == 52)
-            {
-                if (ObjectSystem.chest52)
-                    OpenChest();
-            }
-            else if (chest == 53)
-            {
-                if (ObjectSystem.chest53)
-                    OpenChest();
-            }
-            else if (chest == 54)
-            {
-                if (ObjectSystem.chest54)
-                    OpenChest();
-            }
-            else if (chest == 55)
-            {
-                if (ObjectSystem.chest55)
-                    OpenChest();
-            }
-            else if (chest == 56)
-            {
-                if (ObjectSystem.chest56)
-                    OpenChest();
-            }
-            else if (chest == 57)
-            {
-                if (ObjectSystem.chest57)
-                    OpenChest();
-            }
-            else if (chest == 58)
-            {
-                if (ObjectSystem.chest58)
-                    OpenChest();
-            }
-            else if (chest == 59)
-            {
-                if (ObjectSystem.chest59)
-                    OpenChest();
-            }
-            else if (chest == 60)
-            {
-                if (ObjectSystem.chest60)
-                    OpenChest();
-            }
-            else if (chest == 61)
-            {
-                if (ObjectSystem.chest61)
-                    OpenChest();
-            }
-            else if (chest == 62)
-            {
-                if (ObjectSystem.chest62)
-                    OpenChest();
+                if (c == chest)
+                {
+                    if (ObjectSystem.gameChest[c])
+                    {
+                        OpenChest();
+                        break;
+                    }
+                }
             }
         }
     }

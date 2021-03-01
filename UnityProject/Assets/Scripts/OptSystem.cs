@@ -32,12 +32,14 @@ public class OptSystem
     public WaitForFixedUpdate FixedUpdate { get { return _FixedUpdate; } }
     public WaitForSeconds Wait(float seconds)
     {
+        _TimeInterval = new Dictionary<float, WaitForSeconds>(100);
         if (!_TimeInterval.ContainsKey(seconds))
             _TimeInterval.Add(seconds, new WaitForSeconds(seconds));
         return _TimeInterval[seconds];
     }
     public WaitForSecondsRealtime WaitRealtime(float seconds)
     {
+        _RealTimeInterval = new Dictionary<float, WaitForSecondsRealtime>(100);
         if (!_RealTimeInterval.ContainsKey(seconds))
             _RealTimeInterval.Add(seconds, new WaitForSecondsRealtime(seconds));
         return _RealTimeInterval[seconds];

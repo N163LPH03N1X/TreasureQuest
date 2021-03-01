@@ -77,6 +77,21 @@ public class AudioSystem : MonoBehaviour
         else
             return null;
     }
+    public static void FadeMusic(bool fadeIn)
+    {
+        FadeSource(fadeIn, audioSystem.M_audioSrc);
+    }
+    public static void MusicPlayStop(bool play)
+    {
+        if(play) audioSystem.M_audioSrc.Play();
+        else audioSystem.M_audioSrc.Stop();
+    }
+    public static void MusicPauseUnPause(bool pause)
+    {
+        if (pause) { if (audioSystem.M_audioSrc.isPlaying) audioSystem.M_audioSrc.Pause(); }
+        else { if (!audioSystem.M_audioSrc.isPlaying) audioSystem.M_audioSrc.Play(); }
+
+    }
     public void OnSelectable(AudioClip clip)
     {
         PlayAudioSource(clip, 1, 1);
